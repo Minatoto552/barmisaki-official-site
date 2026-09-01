@@ -1,7 +1,7 @@
 import 'server-only';
 import { casts as fallbackCasts, news as fallbackNews, type Cast } from './data';
 
-const adminOrigin = 'https://barmisaki-admin.yuuki-n-yugichu400.chatgpt.site';
+const adminOrigin = 'https://barmisaki-manage.yuuki-n-yugichu400.chatgpt.site';
 type ManagedCast = { id: string; name: string; category: string; role: string; imageUrl: string; xUrl: string; favorite: string; message: string; isPickup: boolean; pickupOrder: number | null };
 type ManagedNews = { id: string; title: string; date: string; thumbnailUrl: string; content: string; published: boolean };
 
