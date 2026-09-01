@@ -3,10 +3,10 @@
 import { ArrowRight, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock3, DoorOpen, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { casts, gallery, news, type Cast } from './data';
+import { gallery, type Cast } from './data';
 import { CastCard, ImageOrPlaceholder, Modal, SectionTitle } from '@/components/site-elements';
 
-export function HomeClient() {
+export function HomeClient({ casts, news }: { casts: Cast[]; news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> }) {
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);

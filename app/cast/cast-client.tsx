@@ -2,12 +2,12 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { casts, type Cast } from '../data';
+import { type Cast } from '../data';
 import { CastCard, ImageOrPlaceholder, Modal } from '@/components/site-elements';
 
 const categories = ['すべて', '1期生', '2期生 花組', '2期生 月組', 'スタッフ'];
 
-export function CastClient() {
+export function CastClient({ casts }: { casts: Cast[] }) {
   const [category, setCategory] = useState('すべて');
   const [selected, setSelected] = useState<Cast | null>(null);
   const visible = useMemo(() => casts.filter((cast) => category === 'すべて' || (category === 'スタッフ' ? cast.generation === 'スタッフ' : `${cast.generation}${cast.group ? ` ${cast.group}` : ''}` === category)), [category]);
