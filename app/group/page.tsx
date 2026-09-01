@@ -1,7 +1,0 @@
-import type { Metadata } from 'next';
-import { ArrowUpRight } from 'lucide-react';
-import { externalLinks } from '../data';
-import { PageHero } from '@/components/site-elements';
-
-export const metadata: Metadata = { title: 'GROUP | BarMisaki', description: 'BarMisakiの団体利用についてご案内します。' };
-export default function GroupPage() { return <main><PageHero eyebrow="FOR GROUPS" title={<>団体様向け<em className="text-[#c8a4ff]">ご案内</em></>} intro="団体でのご来店をご希望の場合は、必要事項をご記入の上、BarMisaki公式Xからご相談ください。" /><section className="content-section"><div className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-3">{[['01', '団体名', '活動名・グループ名'], ['02', '団体人数', '5〜10名'], ['03', '希望日程', '1か月前まで／第5希望まで']].map(([number, title, value]) => <div key={number} className="glass-card p-7"><span className="display text-3xl italic text-[#7b39fc]">{number}</span><p className="mt-8 text-sm text-white/40">{title}</p><p className="mt-2 text-lg font-semibold">{value}</p></div>)}</div><div className="mx-auto mt-6 max-w-5xl rounded-2xl border border-white/[.08] bg-white/[.025] p-6 text-sm leading-7 text-white/55"><p>希望日程は第5希望まで記載し、ご希望日の1か月前までにご相談ください。</p><p className="mt-3 text-xs text-white/35">※キャストのシフト状況によっては、お断りする場合がございます。</p></div><div className="mt-8 text-center"><a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="primary-button inline-flex items-center gap-2">公式Xから相談する <ArrowUpRight size={17} /></a></div></section></main>; }
