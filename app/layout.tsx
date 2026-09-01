@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cabin, Instrument_Serif, Inter, Manrope } from 'next/font/google';
+import { SiteFooter, SiteHeader } from '@/components/site-chrome';
 import './globals.css';
 
 const manrope = Manrope({ variable: '--font-manrope', subsets: ['latin'] });
@@ -26,5 +27,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}>{children}</body></html>;
+  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader />{children}<SiteFooter /></body></html>;
 }
