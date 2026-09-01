@@ -9,7 +9,7 @@ export async function getManagedData(): Promise<{ casts: Cast[]; news: typeof fa
   const token = process.env.ADMIN_DATA_API_TOKEN;
   if (!token) return { casts: fallbackCasts, news: fallbackNews };
   try {
-    const response = await fetch(`${adminOrigin}/api/public/data`, { headers: { 'OAI-Sites-Authorization': `Bearer ${token}` }, cache: 'no-store' });
+    const response = await fetch(`${adminOrigin}/api/public/data`, { headers: { 'OAI-Sites-Authorization': `Bearer ${token}` }, next: { revalidate: 60 } });
     if (!response.ok) throw new Error('Managed data unavailable');
     const payload = await response.json() as { casts: ManagedCast[]; news: ManagedNews[] };
     return {
