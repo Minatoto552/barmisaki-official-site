@@ -17,6 +17,9 @@ const localCastImages: Record<string, string> = {
   'ゆらぎ・L': '/cast/1st/yuragi-l.png',
   'りんごぼーろ': '/cast/1st/ringoboro.png',
   'akiyuki0721': '/cast/1st/akiyuki0721.png',
+  '桜庭ルイ': '/cast/staff/sakuraba-rui.png',
+  'みな_とと': '/cast/staff/mina-toto.png',
+  'ぽよ': '/cast/staff/poyo.png',
 };
 
 export async function loadManagedCasts(): Promise<Cast[] | null> {
