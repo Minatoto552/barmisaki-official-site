@@ -7,5 +7,5 @@ export const metadata: Metadata = { title: 'CAST | BarMisaki', description: 'Bar
 
 export default async function CastPage() {
   const data = await getManagedData();
-  return <main><PageHero eyebrow="CAST" title={<>CAST</>} /><section className="content-section bg-[#0c0a16]"><CastClient casts={data.casts} /></section></main>;
+  return <main><PageHero eyebrow="CAST" title={<>キャスト一覧</>} /><section className="content-section bg-[#0c0a16]"><CastClient casts={data.casts} /></section></main>;
 }
