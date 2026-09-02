@@ -13,6 +13,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
+  const [pickupProgress, setPickupProgress] = useState(0);
   const galleryRef = useRef<HTMLDivElement>(null);
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
@@ -28,6 +29,12 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
     return () => window.clearInterval(timer);
   }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
+  const updatePickupProgress = () => {
+    const el = pickupRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setPickupProgress(max > 0 ? el.scrollLeft / max : 0);
+  };
 
   return <main className="home-luxury overflow-hidden bg-[#07060d] text-white">
     <section className="luxury-hero">
@@ -58,8 +65,8 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">MONTHLY SELECTION</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">Pick Up <em className="text-[#c9a1ff]">Cast</em></h2></div><Link href="/cast" className="luxury-outline-link">ALL CAST <ArrowRight size={17} /></Link></div>
-      <div className="luxury-full-slider mt-14"><div ref={pickupRef} className="no-scrollbar luxury-slider-track luxury-cast-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{pickups.map((cast, index) => <button key={cast.id} onClick={() => setSelectedCast(cast)} className="luxury-cast-slide group"><span className="luxury-cast-image"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace className="transition duration-1000 group-hover:scale-[1.035]" /><span className="luxury-cast-count">{String(index + 1).padStart(2, '0')}</span><span className="luxury-cast-pick"><Star size={10} fill="currentColor" /> PICK UP</span></span><span className="luxury-cast-copy"><small>{cast.generation} {cast.group} / {cast.role}</small><strong className="display">{cast.name}</strong><span>VIEW PROFILE <ArrowUpRight size={15} /></span></span></button>)}</div></div>{!pickups.length && <div className="mt-14 border-y border-white/10 py-16 text-center text-sm tracking-[.18em] text-white/35">NEXT SELECTION COMING SOON</div>}
-      <div className="mt-6 flex justify-end gap-3"><button onClick={() => scroll(pickupRef, -1)} className="round-button" aria-label="前のキャスト"><ChevronLeft /></button><button onClick={() => scroll(pickupRef, 1)} className="round-button" aria-label="次のキャスト"><ChevronRight /></button></div>
+      <div className="luxury-full-slider mt-14"><div ref={pickupRef} onScroll={updatePickupProgress} className="no-scrollbar luxury-slider-track luxury-cast-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{pickups.map((cast, index) => <button key={cast.id} onClick={() => setSelectedCast(cast)} className="luxury-cast-slide group"><span className="luxury-cast-image"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace className="transition duration-1000 group-hover:scale-[1.035]" /><span className="luxury-cast-count">{String(index + 1).padStart(2, '0')}</span><span className="luxury-cast-pick"><Star size={10} fill="currentColor" /> PICK UP</span></span><span className="luxury-cast-copy"><small>{cast.generation} {cast.group} / {cast.role}</small><strong className="display">{cast.name}</strong><span>VIEW PROFILE <ArrowUpRight size={15} /></span></span></button>)}</div></div>{!pickups.length && <div className="mt-14 border-y border-white/10 py-16 text-center text-sm tracking-[.18em] text-white/35">NEXT SELECTION COMING SOON</div>}
+      <div className="luxury-slider-controls"><div className="luxury-progress" aria-hidden="true"><span style={{ width: `${Math.max(12, 12 + pickupProgress * 88)}%` }} /></div><button onClick={() => scroll(pickupRef, -1)} className="luxury-arrow-pill" aria-label="前のキャスト"><ChevronLeft size={18} /></button><button onClick={() => scroll(pickupRef, 1)} className="luxury-arrow-pill" aria-label="次のキャスト"><ChevronRight size={18} /></button></div>
     </div></section>
 
     <section className="luxury-section luxury-news"><div className="luxury-section-index"><span>04</span> NEWS</div><div className="mx-auto max-w-[1240px]">

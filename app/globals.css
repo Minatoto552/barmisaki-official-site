@@ -95,6 +95,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 .luxury-cast-copy small { grid-column: 1/-1; margin-bottom: .45rem; font-size: .56rem; letter-spacing: .17em; color: #d7b85b; }
 .luxury-cast-copy strong { font-size: clamp(1.8rem,2.5vw,2.5rem); font-weight: 400; line-height: 1; }
 .luxury-cast-copy > span { display: flex; align-items: center; gap: .35rem; padding-bottom: .25rem; font-size: .48rem; letter-spacing: .13em; color: rgba(255,255,255,.48); }
+.luxury-slider-controls { display: grid; grid-template-columns: minmax(160px,1fr) 108px 108px; align-items: center; gap: 1rem; margin-top: 2.3rem; }
+.luxury-progress { position: relative; height: 1px; overflow: hidden; background: rgba(255,255,255,.34); }
+.luxury-progress span { position: absolute; inset: 0 auto 0 0; min-width: 12%; background: #d7b85b; transition: width .18s linear; }
+.luxury-arrow-pill { display: grid; width: 108px; height: 42px; place-items: center; border: 1px solid rgba(255,255,255,.85); border-radius: 999px; color: #fff; transition: .25s ease; }
+.luxury-arrow-pill:hover { border-color: #d7b85b; background: rgba(215,184,91,.12); color: #e8d57e; }
 .luxury-outline-link { display: inline-flex; flex-shrink: 0; align-items: center; gap: 1rem; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 1rem 1.4rem; font-size: .65rem; font-weight: 700; letter-spacing: .18em; transition: .25s ease; }
 .luxury-outline-link:hover { border-color: #c9a1ff; background: rgba(123,57,252,.16); }
 .luxury-news { background: #090810; }
@@ -122,6 +127,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
   .luxury-gallery-card { width: 91vw; min-width: 91vw; height: 62vh; }
   .luxury-cast-slide { width: 72vw; min-width: 72vw; }
   .luxury-cast-copy > span { display: none; }
+  .luxury-slider-controls { grid-template-columns: 1fr 64px 64px; gap: .6rem; }
+  .luxury-arrow-pill { width: 64px; height: 38px; }
   .luxury-news-row { grid-template-columns: 28px 1fr 22px; gap: .75rem; padding-block: 1.3rem; }
   .luxury-news-row time { grid-column: 2; grid-row: 1; }
   .luxury-news-row h3 { grid-column: 2; grid-row: 2; }
