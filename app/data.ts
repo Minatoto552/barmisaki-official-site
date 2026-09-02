@@ -22,6 +22,7 @@ export const recruitment = {
 
 export const externalLinks = {
   officialX: 'https://x.com/BarMisaki_VRC',
+  vrcGroup: 'https://vrc.group/BARMIS.9013',
   lotteryUrl: '',
 };
 
