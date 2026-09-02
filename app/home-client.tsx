@@ -4,14 +4,17 @@ import { ArrowRight, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Cloc
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { gallery, type Cast } from './data';
+import { loadManagedCasts } from './managed-data-client';
 import { CastCard, ImageOrPlaceholder, Modal, SectionTitle } from '@/components/site-elements';
 
-export function HomeClient({ casts, news }: { casts: Cast[]; news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> }) {
+export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> }) {
+  const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const pickupRef = useRef<HTMLDivElement>(null);
-  const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), []);
+  const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
+  useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
   useEffect(() => { const timer = window.setInterval(() => { const el = galleryRef.current; if (!el || document.hidden) return; const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 24; el.scrollTo({ left: end ? 0 : el.scrollLeft + el.clientWidth * .72, behavior: 'smooth' }); }, 5200); return () => window.clearInterval(timer); }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
 
