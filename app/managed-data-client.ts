@@ -25,6 +25,7 @@ const localCastImages: Record<string, string | string[]> = {
   '雪都yukito': '/cast/hana/yukito.png',
   'けろ__': '/cast/hana/kero.png',
   'あおみつししぇる': '/cast/hana/aomitsu-shishel.png',
+  'ReruCh1': '/cast/hana/reruch1.png',
 };
 
 const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ']);
