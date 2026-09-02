@@ -13,65 +13,12 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
-  const [atmosphereProgress, setAtmosphereProgress] = useState(0);
   const [pickupProgress, setPickupProgress] = useState(0);
-  const atmosphereRef = useRef<HTMLDivElement>(null);
-  const atmosphereManualUntil = useRef(0);
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
-  useEffect(() => {
-    let frame = 0;
-    let previous = 0;
-    let lastProgress = 0;
-    const move = (time: number) => {
-      const el = atmosphereRef.current;
-      if (el && !document.hidden) {
-        const delta = previous ? time - previous : 0;
-        const cycleWidth = el.scrollWidth / 2;
-        if (cycleWidth > 1) {
-          if (time > atmosphereManualUntil.current) el.scrollLeft += delta * .04;
-          if (el.scrollLeft >= cycleWidth) el.scrollLeft -= cycleWidth;
-          if (el.scrollLeft < 0) el.scrollLeft += cycleWidth;
-          if (time - lastProgress > 120) {
-            setAtmosphereProgress(el.scrollLeft / cycleWidth);
-            lastProgress = time;
-          }
-        }
-      }
-      previous = time;
-      frame = window.requestAnimationFrame(move);
-    };
-    frame = window.requestAnimationFrame(move);
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
-  const prioritizeAtmosphere = () => { atmosphereManualUntil.current = performance.now() + 9000; };
-  const updateAtmosphereProgress = () => {
-    const el = atmosphereRef.current;
-    if (!el) return;
-    const cycleWidth = el.scrollWidth / 2;
-    if (cycleWidth > 1) setAtmosphereProgress((el.scrollLeft % cycleWidth) / cycleWidth);
-  };
-  const scrollAtmosphere = (direction: number) => {
-    const el = atmosphereRef.current;
-    if (!el) return;
-    prioritizeAtmosphere();
-    const cycleWidth = el.scrollWidth / 2;
-    const next = el.scrollLeft + direction * el.clientWidth * .8;
-    el.scrollTo({ left: Math.max(0, Math.min(cycleWidth - 1, next)), behavior: 'smooth' });
-    window.setTimeout(updateAtmosphereProgress, 350);
-  };
-  const seekAtmosphere = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const el = atmosphereRef.current;
-    if (!el) return;
-    prioritizeAtmosphere();
-    const rect = event.currentTarget.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-    el.scrollTo({ left: ratio * (el.scrollWidth / 2), behavior: 'smooth' });
-    setAtmosphereProgress(ratio);
-  };
   const updatePickupProgress = () => {
     const el = pickupRef.current;
     if (!el) return;
@@ -103,8 +50,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
-      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onScroll={updateAtmosphereProgress} className="no-scrollbar luxury-slider-track luxury-atmosphere-track flex gap-5 overflow-x-auto pb-4">{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div>
-      <div className="luxury-slider-controls luxury-atmosphere-controls"><button onClick={seekAtmosphere} className="luxury-progress luxury-progress-button" aria-label="店内写真の位置を選択"><span style={{ width: `${Math.max(12, 12 + atmosphereProgress * 88)}%` }} /></button><button onClick={() => scrollAtmosphere(-1)} className="luxury-arrow-pill" aria-label="前の店内写真"><ChevronLeft size={18} /></button><button onClick={() => scrollAtmosphere(1)} className="luxury-arrow-pill" aria-label="次の店内写真"><ChevronRight size={18} /></button></div>
+      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div className="luxury-slider-track luxury-atmosphere-track flex gap-5 pb-4">{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div>
     </div></section>
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
