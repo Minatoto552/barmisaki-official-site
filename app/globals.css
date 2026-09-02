@@ -77,7 +77,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 .luxury-atmosphere { background: #07060d; }
 .luxury-full-slider { width: 100vw; margin-left: calc(50% - 50vw); }
 .luxury-slider-track { scroll-padding-inline: max(1.5rem,calc((100vw - 1240px)/2)); padding-inline: max(1.5rem,calc((100vw - 1240px)/2)); }
-.luxury-atmosphere-track { scroll-behavior: auto; }
+.luxury-atmosphere-slider { overflow: hidden; }
+.luxury-atmosphere-track { width: max-content; padding-inline: 0; animation: atmosphere-marquee 92s linear infinite; will-change: transform; }
+.luxury-atmosphere-track:hover { animation-play-state: paused; }
 .luxury-gallery-card { position: relative; width: min(84vw,1120px); min-width: min(84vw,1120px); height: min(72vh,760px); overflow: hidden; border: 1px solid rgba(255,255,255,.13); text-align: left; scroll-snap-align: center; }
 .luxury-gallery-card img { transition: transform 1s cubic-bezier(.2,.7,.2,1),opacity 1.8s ease !important; }
 .luxury-gallery-card:hover img { transform: scale(1.025); }
@@ -113,6 +115,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 .luxury-finale-glow { position: absolute; inset: 15% 25%; border-radius: 999px; background: #7b39fc; opacity: .12; filter: blur(140px); }
 .luxury-seal-static { position: relative; right: auto; bottom: auto; margin-inline: auto; }
 
+@keyframes atmosphere-marquee {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(calc(-50% - .625rem),0,0); }
+}
+
 @media (max-width: 700px) {
   .luxury-side { display: none; }
   .luxury-hero { padding-inline: .75rem; padding-bottom: .75rem; }
@@ -125,6 +132,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
   .luxury-heading-row { align-items: flex-start; flex-direction: column; }
   .luxury-stat { min-height: 210px; }
   .luxury-slider-track { scroll-padding-inline: .75rem; padding-inline: .75rem; }
+  .luxury-atmosphere-track { animation-duration: 72s; }
   .luxury-gallery-card { width: 91vw; min-width: 91vw; height: 62vh; }
   .luxury-cast-slide { width: 72vw; min-width: 72vw; }
   .luxury-cast-copy > span { display: none; }
@@ -138,4 +146,5 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .luxury-atmosphere-slider { overflow-x: auto; }
 }
