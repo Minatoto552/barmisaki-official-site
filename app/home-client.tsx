@@ -1,31 +1,75 @@
 'use client';
 
-import { ArrowRight, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock3, DoorOpen, Star, Users } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock3, DoorOpen, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { gallery, type Cast } from './data';
 import { loadManagedCasts } from './managed-data-client';
-import { CastCard, ImageOrPlaceholder, Modal, SectionTitle } from '@/components/site-elements';
+import { CastCard, ImageOrPlaceholder, Modal } from '@/components/site-elements';
 
-export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> }) {
+type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
+
+export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news: NewsItem[] }) {
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
+
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
-  useEffect(() => { const timer = window.setInterval(() => { const el = galleryRef.current; if (!el || document.hidden) return; const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 24; el.scrollTo({ left: end ? 0 : el.scrollLeft + el.clientWidth * .72, behavior: 'smooth' }); }, 5200); return () => window.clearInterval(timer); }, []);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      const el = galleryRef.current;
+      if (!el || document.hidden) return;
+      const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 24;
+      el.scrollTo({ left: end ? 0 : el.scrollLeft + el.clientWidth * .72, behavior: 'smooth' });
+    }, 5200);
+    return () => window.clearInterval(timer);
+  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
 
-  return <main className="overflow-hidden bg-[#080710] text-white">
-    <section className="relative isolate flex min-h-screen flex-col overflow-hidden bg-[#080710] pt-[76px]"><video className="absolute inset-0 -z-20 h-full w-full bg-[#080710] object-cover" autoPlay loop muted playsInline preload="auto"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4" type="video/mp4" /></video><div className="relative z-10 mx-auto flex w-full max-w-[1120px] flex-1 flex-col items-center justify-center px-6 py-20 text-center"><div className="mb-7 flex h-[38px] items-center gap-2 rounded-[10px] border border-[rgba(220,185,255,.45)] bg-[rgba(35,27,55,.45)] px-2.5 pr-4 backdrop-blur-xl"><span className="ui rounded-md bg-[#7b39fc] px-2.5 py-1 text-xs font-medium">VRChat</span><span className="button-font text-sm font-medium tracking-wide">１アバターオリジナルイベント</span></div><p className="mb-4 text-xs font-semibold tracking-[.32em] text-[#f4d98b] sm:text-sm">WELCOME TO BAR MISAKI</p><h1 className="display max-w-[980px] text-[clamp(3.35rem,8.3vw,6rem)] leading-[.96] [text-shadow:0_4px_35px_rgba(0,0,0,.35)]">BarMisaki</h1><p className="mt-7 max-w-[660px] text-[15px] leading-8 text-white/75 [text-shadow:0_2px_18px_rgba(0,0,0,.7)] sm:text-lg">キャストもスタッフも、みんな海咲ちゃん。VRChatで出会う、上品で少し不思議なBarイベント。</p><div className="mt-9 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row"><Link href="/how-to-join" className="primary-button">参加方法はこちら！</Link><Link href="/cast" className="button-font rounded-[10px] border border-white/15 bg-[#2b2344]/90 px-8 py-4 font-semibold backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-[#3a2e5b]">CASTを見る</Link></div></div></section>
-    <section className="section relative border-t border-white/[.06]"><div className="ambient ambient-a" /><SectionTitle eyebrow="ABOUT BAR MISAKI" intro="落ち着いた距離感で会話を楽しめる、海咲ちゃんだけの特別なBarです。" compact>海咲ちゃんが紡ぐ、<em className="text-[#c8a4ff]">やさしい夜</em></SectionTitle><div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 md:grid-cols-4">{[[CalendarDays, '月2回', '不定期開催'], [Clock3, '22:50 – 24:00', '22:40 当選者入場'], [Users, '1 : 2', 'キャスト1名／お客様2名'], [DoorOpen, '2 ROTATIONS', '']].map(([Icon, value, note]) => <div key={String(value)} className="glass-card min-h-44 p-5 sm:p-7"><Icon className="mb-8 text-[#d7b85b]" size={25} strokeWidth={1.5} /><p className="display text-2xl sm:text-3xl">{String(value)}</p>{note && <p className="mt-2 text-xs leading-5 text-white/48 sm:text-sm">{String(note)}</p>}</div>)}</div></section>
-    <section className="section bg-[#0c0a16]"><SectionTitle eyebrow="ATMOSPHER">店内の<em className="text-[#c8a4ff]">雰囲気</em></SectionTitle><div className="relative mx-auto max-w-[1240px]"><div ref={galleryRef} className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-3">{gallery.map((item, index) => <button key={item.id} onClick={() => setSelectedGallery(item)} className="group relative aspect-[4/3] min-w-[88%] snap-center overflow-hidden rounded-[22px] border border-white/10 text-left sm:min-w-[47%] lg:min-w-[32%]"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="absolute right-4 top-4 grid size-10 place-items-center rounded-full border border-white/15 bg-black/25 opacity-0 backdrop-blur transition group-hover:opacity-100"><ArrowUpRight size={17} /></span><span className="absolute bottom-4 right-4 text-xs tracking-[.18em] text-white/45">0{index + 1}</span></button>)}</div><div className="mt-5 flex justify-center gap-3"><button onClick={() => scroll(galleryRef, -1)} className="round-button" aria-label="前の写真"><ChevronLeft /></button><button onClick={() => scroll(galleryRef, 1)} className="round-button" aria-label="次の写真"><ChevronRight /></button></div></div></section>
-    <section className="section relative"><div className="ambient ambient-b" /><SectionTitle eyebrow="MONTHLY SELECTION">今月の<em className="text-[#c8a4ff]">ピックアップ</em></SectionTitle><div className="relative mx-auto max-w-[1240px]"><div ref={pickupRef} className="no-scrollbar flex snap-x gap-4 overflow-x-auto pb-3">{pickups.map((cast) => <CastCard key={cast.id} cast={cast} onClick={() => setSelectedCast(cast)} wide />)}</div><div className="mt-6 flex flex-col items-center gap-5"><div className="flex gap-3"><button onClick={() => scroll(pickupRef, -1)} className="round-button" aria-label="前のキャスト"><ChevronLeft /></button><button onClick={() => scroll(pickupRef, 1)} className="round-button" aria-label="次のキャスト"><ChevronRight /></button></div><Link href="/cast" className="inline-link">CAST一覧を見る <ArrowRight size={16} /></Link></div></div></section>
-    <section className="section bg-[#0c0a16]"><SectionTitle eyebrow="LATEST NEWS">最新のお知らせ</SectionTitle><div className="mx-auto grid max-w-[1240px] grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{news.slice(0, 8).map((item) => <Link key={item.id} href={`/news/${item.id}`} className="group overflow-hidden rounded-2xl border border-white/[.08] bg-white/[.025] text-left transition hover:-translate-y-1 hover:border-[#9d69ff]/45"><div className="aspect-[4/3] overflow-hidden"><ImageOrPlaceholder src={item.thumbnail} alt={item.title} className="transition duration-500 group-hover:scale-105" /></div><div className="p-4"><time className="text-[10px] tracking-[.13em] text-[#d7b85b]">{item.date}</time><h3 className="mt-2 text-sm font-semibold leading-6 text-white/88">{item.title}</h3></div></Link>)}</div><div className="mt-10 text-center"><Link href="/news" className="inline-link">お知らせをもっと見る <ArrowRight size={16} /></Link></div></section>
-    <section className="content-section text-center"><Star className="mx-auto text-[#d7b85b]" /><h2 className="display mt-5 text-4xl sm:text-6xl">今夜、BarMisakiで。</h2><p className="mx-auto mt-5 max-w-lg text-sm leading-7 text-white/55">参加方法を確認して、月に二度だけの特別な夜へお越しください。</p><Link href="/how-to-join" className="primary-button mt-8 inline-flex">参加方法を見る</Link></section>
-    {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.image} alt={selectedCast.name} /></div><div className="p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-5xl">{selectedCast.name}</h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><Link href="/cast" className="primary-button mt-8 inline-flex">プロフィールを見る</Link></div></div></Modal>}
+  return <main className="home-luxury overflow-hidden bg-[#07060d] text-white">
+    <section className="luxury-hero">
+      <div className="luxury-side luxury-side-left" aria-hidden="true"># BAR MISAKI　# VRCHAT　# ONE AVATAR</div>
+      <div className="luxury-side luxury-side-right" aria-hidden="true">ELEGANT NIGHT　# CAST　# CONVERSATION</div>
+      <div className="luxury-hero-frame">
+        <video className="absolute inset-0 h-full w-full bg-[#080710] object-cover" autoPlay loop muted playsInline preload="auto"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4" type="video/mp4" /></video>
+        <div className="luxury-hero-shade" /><div className="luxury-hero-lines" aria-hidden="true" />
+        <div className="luxury-hero-copy"><p className="luxury-kicker">VRCHAT ORIGINAL BAR EVENT</p><h1 className="display luxury-hero-title"><span>Bar</span><em>Misaki</em></h1><p className="luxury-hero-lead">キャストもスタッフも、みんな海咲ちゃん。<br className="hidden sm:block" />月に二度だけ扉が開く、上品で少し不思議な夜。</p></div>
+        <div className="luxury-hero-number" aria-hidden="true"><span>EST.</span>2025</div>
+        <Link href="/how-to-join" className="luxury-seal"><span className="luxury-seal-ring" /><span className="luxury-seal-core">参加<br />方法</span></Link>
+        <a href="#about" className="luxury-scroll" aria-label="次のセクションへ"><span>SCROLL</span><ArrowDown size={15} /></a>
+      </div>
+    </section>
+
+    <section id="about" className="luxury-manifesto">
+      <p className="luxury-ghost" aria-hidden="true">MISAKI</p><div className="luxury-section-index"><span>01</span> ABOUT</div>
+      <div className="relative z-10 mx-auto grid max-w-[1240px] gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-end"><div><p className="luxury-kicker">ABOUT BAR MISAKI</p><h2 className="display mt-5 text-[clamp(3rem,6vw,6.5rem)] leading-[.95]">海咲ちゃんが<br />紡ぐ、<em className="text-[#c9a1ff]">やさしい夜</em></h2></div><div className="lg:pb-2"><p className="max-w-xl text-base leading-9 text-white/62 sm:text-lg">落ち着いた距離感で会話を楽しめる、海咲ちゃんだけの特別なBar。静かな高揚感と、ここでしか生まれない出会いを。</p><Link href="/how-to-join" className="luxury-text-link mt-8">HOW TO JOIN <ArrowUpRight size={18} /></Link></div></div>
+      <div className="relative z-10 mx-auto mt-20 grid max-w-[1240px] grid-cols-2 border-l border-t border-white/12 md:grid-cols-4">
+        {[[CalendarDays, '月2回', '不定期開催'], [Clock3, '22:50 – 24:00', '22:40 当選者入場'], [Users, '1 : 2', 'キャスト1名／お客様2名'], [DoorOpen, '2 ROTATIONS', '二部入替制']].map(([Icon, value, note], index) => <div key={String(value)} className="luxury-stat"><span className="luxury-stat-number">0{index + 1}</span><Icon size={24} strokeWidth={1.35} /><p className="display mt-10 text-2xl sm:text-3xl">{String(value)}</p><p className="mt-2 text-[11px] tracking-[.08em] text-white/42 sm:text-xs">{String(note)}</p></div>)}
+      </div>
+    </section>
+
+    <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
+      <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
+      <div className="relative mt-14"><div ref={galleryRef} className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{gallery.map((item, index) => <button key={item.id} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">0{index + 1}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div><div className="mt-6 flex justify-end gap-3"><button onClick={() => scroll(galleryRef, -1)} className="round-button" aria-label="前の写真"><ChevronLeft /></button><button onClick={() => scroll(galleryRef, 1)} className="round-button" aria-label="次の写真"><ChevronRight /></button></div></div>
+    </div></section>
+
+    <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
+      <div className="luxury-heading-row"><div><p className="luxury-kicker">MONTHLY SELECTION</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">Pick Up <em className="text-[#c9a1ff]">Cast</em></h2></div><Link href="/cast" className="luxury-outline-link">ALL CAST <ArrowRight size={17} /></Link></div>
+      <div ref={pickupRef} className="no-scrollbar mt-14 flex snap-x gap-5 overflow-x-auto pb-4">{pickups.map((cast) => <CastCard key={cast.id} cast={cast} onClick={() => setSelectedCast(cast)} wide />)}</div>{!pickups.length && <div className="mt-14 border-y border-white/10 py-16 text-center text-sm tracking-[.18em] text-white/35">NEXT SELECTION COMING SOON</div>}
+      <div className="mt-6 flex justify-end gap-3"><button onClick={() => scroll(pickupRef, -1)} className="round-button" aria-label="前のキャスト"><ChevronLeft /></button><button onClick={() => scroll(pickupRef, 1)} className="round-button" aria-label="次のキャスト"><ChevronRight /></button></div>
+    </div></section>
+
+    <section className="luxury-section luxury-news"><div className="luxury-section-index"><span>04</span> NEWS</div><div className="mx-auto max-w-[1240px]">
+      <div className="luxury-heading-row"><div><p className="luxury-kicker">LATEST INFORMATION</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">News</h2></div><Link href="/news" className="luxury-outline-link">VIEW MORE <ArrowRight size={17} /></Link></div>
+      <div className="mt-14 border-t border-white/12">{news.slice(0, 4).map((item, index) => <Link key={item.id} href={`/news/${item.id}`} className="luxury-news-row"><span className="text-xs text-[#d7b85b]">0{index + 1}</span><time>{item.date}</time><h3>{item.title}</h3><ArrowUpRight size={20} /></Link>)}{!news.length && <div className="py-16 text-center text-sm tracking-[.18em] text-white/35">LATEST NEWS COMING SOON</div>}</div>
+    </div></section>
+
+    <section className="luxury-finale"><div className="luxury-finale-glow" /><p className="luxury-kicker">WELCOME TO THE SPECIAL NIGHT</p><Star className="mx-auto mt-7 text-[#d7b85b]" /><h2 className="display mt-7 text-[clamp(3.3rem,8vw,8rem)] leading-none">今夜、<em className="text-[#c9a1ff]">BarMisaki</em>で。</h2><p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-white/55">参加方法を確認して、月に二度だけの特別な夜へ。</p><Link href="/how-to-join" className="luxury-seal luxury-seal-static mt-12"><span className="luxury-seal-ring" /><span className="luxury-seal-core">参加<br />方法</span></Link></section>
+
+    {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.images?.length ? selectedCast.images : selectedCast.image} alt={selectedCast.name} /></div><div className="p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-5xl">{selectedCast.name}</h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><Link href="/cast" className="primary-button mt-8 inline-flex">プロフィールを見る</Link></div></div></Modal>}
     {selectedGallery && <Modal onClose={() => setSelectedGallery(null)}><div className="aspect-[16/10] overflow-hidden"><ImageOrPlaceholder src={selectedGallery.image} alt={selectedGallery.alt} /></div></Modal>}
   </main>;
 }
