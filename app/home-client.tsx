@@ -26,11 +26,11 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
     let previous = 0;
     const move = (time: number) => {
       const el = atmosphereRef.current;
-      if (el && !document.hidden) {
+      if (el) {
         const first = el.children[0] as HTMLElement | undefined;
         const duplicate = el.children[gallery.length] as HTMLElement | undefined;
         const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
-        if (!atmosphereDrag.current.active && previous && cycleWidth > 1) el.scrollLeft += (time - previous) * .04;
+        if (!atmosphereDrag.current.active && previous && cycleWidth > 1) el.scrollLeft += (time - previous) * .075;
         if (cycleWidth > 1) {
           if (el.scrollLeft >= cycleWidth) el.scrollLeft -= cycleWidth;
           if (el.scrollLeft < 0) el.scrollLeft += cycleWidth;
