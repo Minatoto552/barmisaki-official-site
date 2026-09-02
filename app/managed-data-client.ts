@@ -12,7 +12,7 @@ export async function loadManagedCasts(): Promise<Cast[] | null> {
     const response = await fetch(`${endpoint}?t=${Date.now()}`, { cache: 'no-store' });
     if (!response.ok) return null;
     const data = await response.json() as { casts?: ManagedCast[] } | null;
-    if (!data?.casts?.length) return null;
+    if (!data || !Array.isArray(data.casts)) return null;
     return data.casts.map((item, index) => {
       const [generation, group = ''] = item.category === 'スタッフ'
         ? ['スタッフ', '']
