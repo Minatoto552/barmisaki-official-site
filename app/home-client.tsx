@@ -13,12 +13,67 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
+  const [isAtmosphereDragging, setIsAtmosphereDragging] = useState(false);
   const [pickupProgress, setPickupProgress] = useState(0);
+  const atmosphereRef = useRef<HTMLDivElement>(null);
+  const atmosphereDrag = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false });
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
+  useEffect(() => {
+    let frame = 0;
+    let previous = 0;
+    const move = (time: number) => {
+      const el = atmosphereRef.current;
+      if (el && !document.hidden) {
+        const first = el.children[0] as HTMLElement | undefined;
+        const duplicate = el.children[gallery.length] as HTMLElement | undefined;
+        const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
+        if (!atmosphereDrag.current.active && previous && cycleWidth > 1) el.scrollLeft += (time - previous) * .04;
+        if (cycleWidth > 1) {
+          if (el.scrollLeft >= cycleWidth) el.scrollLeft -= cycleWidth;
+          if (el.scrollLeft < 0) el.scrollLeft += cycleWidth;
+        }
+      }
+      previous = time;
+      frame = window.requestAnimationFrame(move);
+    };
+    frame = window.requestAnimationFrame(move);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
+  const startAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = atmosphereRef.current;
+    if (!el) return;
+    const first = el.children[0] as HTMLElement | undefined;
+    const duplicate = el.children[gallery.length] as HTMLElement | undefined;
+    const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
+    if (cycleWidth > 1 && el.scrollLeft < 4) el.scrollLeft += cycleWidth;
+    atmosphereDrag.current = { active: true, startX: event.clientX, scrollLeft: el.scrollLeft, moved: false };
+    setIsAtmosphereDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const moveAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const el = atmosphereRef.current;
+    const drag = atmosphereDrag.current;
+    if (!el || !drag.active) return;
+    const delta = event.clientX - drag.startX;
+    if (Math.abs(delta) > 5) drag.moved = true;
+    el.scrollLeft = drag.scrollLeft - delta;
+  };
+  const endAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    atmosphereDrag.current.active = false;
+    setIsAtmosphereDragging(false);
+  };
+  const openGalleryItem = (item: (typeof gallery)[number]) => {
+    if (atmosphereDrag.current.moved) {
+      atmosphereDrag.current.moved = false;
+      return;
+    }
+    setSelectedGallery(item);
+  };
   const updatePickupProgress = () => {
     const el = pickupRef.current;
     if (!el) return;
@@ -50,7 +105,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
-      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div className="luxury-slider-track luxury-atmosphere-track flex gap-5 pb-4">{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div>
+      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`no-scrollbar luxury-slider-track luxury-atmosphere-track flex gap-5 overflow-x-auto pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}>{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div>
     </div></section>
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
