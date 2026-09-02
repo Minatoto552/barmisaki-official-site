@@ -18,6 +18,7 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
 
 export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string | string[]; alt: string; className?: string }) {
   const images = Array.isArray(src) ? src.filter(Boolean) : src ? [src] : [];
+  const position = alt === 'けろ__' ? 'object-[center_35%]' : 'object-center';
   const [index, setIndex] = useState(0);
   useEffect(() => {
     setIndex(0);
@@ -25,7 +26,7 @@ export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string |
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % images.length), 15000);
     return () => window.clearInterval(timer);
   }, [images.join('|')]);
-  return images.length ? <div className="relative h-full w-full overflow-hidden">{images.map((image, imageIndex) => <img key={image} src={image} alt={imageIndex === index ? alt : ''} aria-hidden={imageIndex === index ? undefined : true} className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-[1800ms] ease-in-out ${imageIndex === index ? 'opacity-100' : 'opacity-0'} ${className}`} />)}</div> : <Placeholder label={alt} className={className} />;
+  return images.length ? <div className="relative h-full w-full overflow-hidden">{images.map((image, imageIndex) => <img key={image} src={image} alt={imageIndex === index ? alt : ''} aria-hidden={imageIndex === index ? undefined : true} className={`absolute inset-0 h-full w-full object-cover ${position} transition-opacity duration-[1800ms] ease-in-out ${imageIndex === index ? 'opacity-100' : 'opacity-0'} ${className}`} />)}</div> : <Placeholder label={alt} className={className} />;
 }
 
 export function CastCard({ cast, onClick, wide = false }: { cast: Cast; onClick: () => void; wide?: boolean }) {
