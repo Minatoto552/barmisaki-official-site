@@ -21,35 +21,10 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
-  useEffect(() => {
-    let frame = 0;
-    let previous = 0;
-    const move = (time: number) => {
-      const el = atmosphereRef.current;
-      if (el) {
-        const first = el.children[0] as HTMLElement | undefined;
-        const duplicate = el.children[gallery.length] as HTMLElement | undefined;
-        const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
-        if (!atmosphereDrag.current.active && previous && cycleWidth > 1) el.scrollLeft += (time - previous) * .075;
-        if (cycleWidth > 1) {
-          if (el.scrollLeft >= cycleWidth) el.scrollLeft -= cycleWidth;
-          if (el.scrollLeft < 0) el.scrollLeft += cycleWidth;
-        }
-      }
-      previous = time;
-      frame = window.requestAnimationFrame(move);
-    };
-    frame = window.requestAnimationFrame(move);
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
   const startAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     const el = atmosphereRef.current;
     if (!el) return;
-    const first = el.children[0] as HTMLElement | undefined;
-    const duplicate = el.children[gallery.length] as HTMLElement | undefined;
-    const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
-    if (cycleWidth > 1 && el.scrollLeft < 4) el.scrollLeft += cycleWidth;
     atmosphereDrag.current = { active: true, startX: event.clientX, scrollLeft: el.scrollLeft, moved: false };
     setIsAtmosphereDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -105,7 +80,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
-      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`no-scrollbar luxury-slider-track luxury-atmosphere-track flex gap-5 overflow-x-auto pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}>{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div>
+      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`no-scrollbar luxury-atmosphere-track overflow-x-auto pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}><div className="luxury-atmosphere-belt">{[0, 1].map((set) => <div key={set} className="luxury-atmosphere-set">{gallery.map((item, index) => <button key={`${set}-${item.id}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String(index + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div>)}</div></div></div>
     </div></section>
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
