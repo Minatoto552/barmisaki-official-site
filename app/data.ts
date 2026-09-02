@@ -9,10 +9,14 @@ export const casts: Cast[] = [];
 export const news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> = [];
 
 export const gallery = [
-  { id: 'lounge', image: '', alt: 'BarMisaki ラウンジ' },
-  { id: 'counter', image: '', alt: 'カウンターでの接客風景' },
-  { id: 'room', image: '', alt: '個室の雰囲気' },
-  { id: 'event', image: '', alt: 'イベント当日の様子' },
+  { id: 'entrance', image: '/atmosphere/interior-01.png', alt: 'BarMisaki エントランス' },
+  { id: 'main-floor', image: '/atmosphere/interior-02.png', alt: 'メインフロア' },
+  { id: 'lounge-red', image: '/atmosphere/interior-03.png', alt: 'ラウンジスペース' },
+  { id: 'lounge-white', image: '/atmosphere/interior-04.png', alt: 'ボックス席' },
+  { id: 'counter', image: '/atmosphere/interior-05.png', alt: 'バーカウンター' },
+  { id: 'corridor', image: '/atmosphere/interior-06.png', alt: '店内通路' },
+  { id: 'blue-bar', image: '/atmosphere/interior-07.png', alt: 'ブルーバー' },
+  { id: 'blue-lounge', image: '/atmosphere/interior-08.png', alt: 'ブルーラウンジ' },
 ];
 
 export const recruitment = {

@@ -20,13 +20,22 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
   useEffect(() => {
-    const timer = window.setInterval(() => {
+    let frame = 0;
+    let previous = 0;
+    const move = (time: number) => {
       const el = galleryRef.current;
-      if (!el || document.hidden) return;
-      const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 24;
-      el.scrollTo({ left: end ? 0 : el.scrollLeft + el.clientWidth * .72, behavior: 'smooth' });
-    }, 5200);
-    return () => window.clearInterval(timer);
+      if (el && !document.hidden && previous) {
+        el.scrollLeft += (time - previous) * .022;
+        const first = el.children[0] as HTMLElement | undefined;
+        const duplicate = el.children[gallery.length] as HTMLElement | undefined;
+        const cycleWidth = first && duplicate ? duplicate.offsetLeft - first.offsetLeft : el.scrollWidth / 2;
+        if (el.scrollLeft >= cycleWidth) el.scrollLeft -= cycleWidth;
+      }
+      previous = time;
+      frame = window.requestAnimationFrame(move);
+    };
+    frame = window.requestAnimationFrame(move);
+    return () => window.cancelAnimationFrame(frame);
   }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
   const updatePickupProgress = () => {
@@ -60,7 +69,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
-      <div className="luxury-full-slider mt-14"><div ref={galleryRef} className="no-scrollbar luxury-slider-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{gallery.map((item, index) => <button key={item.id} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">0{index + 1}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div><div className="mt-6 flex justify-end gap-3"><button onClick={() => scroll(galleryRef, -1)} className="round-button" aria-label="前の写真"><ChevronLeft /></button><button onClick={() => scroll(galleryRef, 1)} className="round-button" aria-label="次の写真"><ChevronRight /></button></div>
+      <div className="luxury-full-slider mt-14"><div ref={galleryRef} className="no-scrollbar luxury-slider-track luxury-atmosphere-track flex gap-5 overflow-x-auto pb-4">{[...gallery, ...gallery].map((item, index) => <button key={`${item.id}-${index}`} onClick={() => setSelectedGallery(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String((index % gallery.length) + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div></div><div className="mt-6 flex justify-end gap-3"><button onClick={() => scroll(galleryRef, -1)} className="round-button" aria-label="前の写真"><ChevronLeft /></button><button onClick={() => scroll(galleryRef, 1)} className="round-button" aria-label="次の写真"><ChevronRight /></button></div>
     </div></section>
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
