@@ -22,6 +22,8 @@ const localCastImages: Record<string, string> = {
   'ぽよ': '/cast/staff/poyo.png',
 };
 
+const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ']);
+
 export async function loadManagedCasts(): Promise<Cast[] | null> {
   try {
     const response = await fetch(`${endpoint}?t=${Date.now()}`, { cache: 'no-store' });
@@ -37,7 +39,7 @@ export async function loadManagedCasts(): Promise<Cast[] | null> {
         name: item.name,
         generation,
         group,
-        role: item.role,
+        role: localStaffNames.has(item.name) ? 'STAFF' : item.role,
         image: item.imageUrl || localCastImages[item.name] || '',
         xUrl: item.xUrl || '',
         favorite: item.favorite || '',

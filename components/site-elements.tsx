@@ -16,7 +16,8 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
 }
 
 export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
-  return src ? <img src={src} alt={alt} className={`h-full w-full object-cover object-center ${className}`} /> : <Placeholder label={alt} className={className} />;
+  const position = alt === 'みな_とと' ? 'object-[72%_center]' : 'object-center';
+  return src ? <img src={src} alt={alt} className={`h-full w-full object-cover ${position} ${className}`} /> : <Placeholder label={alt} className={className} />;
 }
 
 export function CastCard({ cast, onClick, wide = false }: { cast: Cast; onClick: () => void; wide?: boolean }) {
