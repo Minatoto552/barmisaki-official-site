@@ -7,6 +7,17 @@ type ManagedCast = {
   xUrl?: string; favorite?: string; message?: string; isPickup?: boolean;
 };
 
+const localCastImages: Record<string, string> = {
+  'くりん': '/cast/1st/kurin.png',
+  'セッチャン': '/cast/1st/secchan.png',
+  'たま': '/cast/1st/tama.png',
+  'なべち！': '/cast/1st/nabechi.png',
+  'べあ': '/cast/1st/bear.png',
+  'みすず': '/cast/1st/misuzu.png',
+  'ゆらぎ・L': '/cast/1st/yuragi-l.png',
+  'りんごぼーろ': '/cast/1st/ringoboro.png',
+};
+
 export async function loadManagedCasts(): Promise<Cast[] | null> {
   try {
     const response = await fetch(`${endpoint}?t=${Date.now()}`, { cache: 'no-store' });
@@ -23,7 +34,7 @@ export async function loadManagedCasts(): Promise<Cast[] | null> {
         generation,
         group,
         role: item.role,
-        image: item.imageUrl || '',
+        image: item.imageUrl || localCastImages[item.name] || '',
         xUrl: item.xUrl || '',
         favorite: item.favorite || '',
         message: item.message || '',
