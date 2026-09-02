@@ -3,8 +3,8 @@
 import { ArrowRight, Star, X } from 'lucide-react';
 import type { Cast } from '@/app/data';
 
-export function SectionTitle({ eyebrow, children, intro }: { eyebrow: string; children: React.ReactNode; intro?: string }) {
-  return <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-14"><p className="mb-3 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h2 className="display text-4xl leading-tight sm:text-6xl">{children}</h2>{intro && <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div>;
+export function SectionTitle({ eyebrow, children, intro, compact = false }: { eyebrow: string; children: React.ReactNode; intro?: string; compact?: boolean }) {
+  return <div className={`mx-auto mb-10 text-center sm:mb-14 ${compact ? 'max-w-[1180px]' : 'max-w-3xl'}`}><p className="mb-3 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h2 className={`display leading-tight ${compact ? 'whitespace-nowrap text-[clamp(2rem,6.2vw,4.8rem)]' : 'text-4xl sm:text-6xl'}`}>{children}</h2>{intro && <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div>;
 }
 
 export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: React.ReactNode; intro: string }) {
