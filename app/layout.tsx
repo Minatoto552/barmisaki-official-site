@@ -3,12 +3,16 @@ import { Cabin, Instrument_Serif, Inter, Manrope } from 'next/font/google';
 import { SiteFooter, SiteHeader } from '@/components/site-chrome';
 import './globals.css';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+
 const manrope = Manrope({ variable: '--font-manrope', subsets: ['latin'] });
 const cabin = Cabin({ variable: '--font-cabin', subsets: ['latin'] });
 const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
 const instrument = Instrument_Serif({ variable: '--font-instrument', subsets: ['latin'], weight: '400', style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'BarMisaki | VRChat Bar Event',
   description: 'キャスト＆スタッフ全員が海咲ちゃん。VRChatで月2回開催するBarイベント「BarMisaki」の公式サイトです。',
   icons: { icon: '/barmisaki-icon.png' },
