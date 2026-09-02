@@ -30,19 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-const speculationRules = {
-  prerender: [{
-    source: 'list',
-    urls: ['/cast', '/news', '/how-to-join', '/recruit', '/rule', '/group'],
-    eagerness: 'moderate',
-  }],
-  prefetch: [{
-    source: 'list',
-    urls: ['/', '/cast', '/news', '/how-to-join', '/recruit', '/rule', '/group'],
-    eagerness: 'eager',
-  }],
-};
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja"><head><script type="speculationrules" dangerouslySetInnerHTML={{ __html: JSON.stringify(speculationRules) }} /></head><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader />{children}<SiteFooter /></body></html>;
+  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader />{children}<SiteFooter /></body></html>;
 }
