@@ -7,7 +7,7 @@ type ManagedCast = {
   xUrl?: string; favorite?: string; message?: string; isPickup?: boolean;
 };
 
-const localCastImages: Record<string, string> = {
+const localCastImages: Record<string, string | string[]> = {
   'くりん': '/cast/1st/kurin.png',
   'セッチャン': '/cast/1st/secchan.png',
   'たま': '/cast/1st/tama.png',
@@ -20,6 +20,11 @@ const localCastImages: Record<string, string> = {
   '桜庭ルイ': '/cast/staff/sakuraba-rui.png',
   'みな_とと': '/cast/staff/mina-toto.png',
   'ぽよ': '/cast/staff/poyo.png',
+  '春風桜華': '/cast/hana/harukaze-ouka.jpg',
+  'Kuragechannnn': ['/cast/hana/kuragechannnn.png', '/cast/hana/kuragechannnn-2.png'],
+  '雪都yukito': '/cast/hana/yukito.png',
+  'けろ__': '/cast/hana/kero.png',
+  'あおみつししぇる': '/cast/hana/aomitsu-shishel.png',
 };
 
 const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ']);
@@ -34,13 +39,16 @@ export async function loadManagedCasts(): Promise<Cast[] | null> {
       const [generation, group = ''] = item.category === 'スタッフ'
         ? ['スタッフ', '']
         : item.category.split(' ');
+      const localImage = localCastImages[item.name];
+      const images = Array.isArray(localImage) ? localImage : localImage ? [localImage] : [];
       return {
         id: item.id,
         name: item.name,
         generation,
         group,
         role: localStaffNames.has(item.name) ? 'STAFF' : item.role,
-        image: item.imageUrl || localCastImages[item.name] || '',
+        image: item.imageUrl || images[0] || '',
+        images: item.imageUrl ? [item.imageUrl] : images,
         xUrl: item.xUrl || '',
         favorite: item.favorite || '',
         message: item.message || '',

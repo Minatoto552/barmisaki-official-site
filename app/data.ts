@@ -1,6 +1,6 @@
 export type Cast = {
   id: string; name: string; generation: string; group: string; role: string;
-  image: string; xUrl: string; favorite: string; message: string;
+  image: string; images?: string[]; xUrl: string; favorite: string; message: string;
   isPickup: boolean; pickupOrder: number | null;
 };
 

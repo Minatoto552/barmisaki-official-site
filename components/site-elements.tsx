@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight, Star, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import type { Cast } from '@/app/data';
 
 export function SectionTitle({ eyebrow, children, intro, compact = false }: { eyebrow: string; children: React.ReactNode; intro?: string; compact?: boolean }) {
@@ -15,12 +16,20 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
   return <div className={`placeholder relative flex h-full w-full items-center justify-center overflow-hidden ${className}`}><div className="absolute inset-0 opacity-25 [background:radial-gradient(circle_at_50%_30%,#a372ff,transparent_52%)]" /><img src="/barmisaki-icon.png" alt="" className="relative w-24 rounded-full opacity-20 mix-blend-screen sm:w-32" /><span className="absolute bottom-5 left-5 text-xs font-semibold tracking-[.18em] text-white/48">{label}</span></div>;
 }
 
-export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
-  return src ? <img src={src} alt={alt} className={`h-full w-full object-cover object-center ${className}`} /> : <Placeholder label={alt} className={className} />;
+export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string | string[]; alt: string; className?: string }) {
+  const images = Array.isArray(src) ? src.filter(Boolean) : src ? [src] : [];
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    setIndex(0);
+    if (images.length < 2) return;
+    const timer = window.setInterval(() => setIndex((value) => (value + 1) % images.length), 15000);
+    return () => window.clearInterval(timer);
+  }, [images.join('|')]);
+  return images.length ? <img src={images[index]} alt={alt} className={`h-full w-full object-cover object-center ${className}`} /> : <Placeholder label={alt} className={className} />;
 }
 
 export function CastCard({ cast, onClick, wide = false }: { cast: Cast; onClick: () => void; wide?: boolean }) {
-  return <button onClick={onClick} className={`group relative shrink-0 overflow-hidden rounded-[20px] border border-white/[.08] bg-white/[.025] text-left transition duration-300 hover:-translate-y-1 hover:border-[#9d69ff]/45 ${wide ? 'w-[74vw] max-w-[300px] snap-center sm:w-[290px]' : ''}`}><div className="relative aspect-[4/5] overflow-hidden"><ImageOrPlaceholder src={cast.image} alt={cast.name} className="transition duration-700 group-hover:scale-[1.035]" />{cast.isPickup && <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-[#7b39fc] px-2.5 py-1 text-[9px] font-bold tracking-[.1em]"><Star size={10} fill="currentColor" /> PICK UP</span>}</div><div className="flex items-end justify-between p-4 sm:p-5"><div><p className="text-[10px] tracking-[.16em] text-[#d7b85b]">{cast.role}</p><h3 className="display mt-1 text-2xl">{cast.name}</h3><p className="mt-1 text-[11px] text-white/40">{cast.generation} {cast.group}</p></div><ArrowRight size={17} className="mb-1 text-white/35 transition group-hover:translate-x-1 group-hover:text-white" /></div></button>;
+  return <button onClick={onClick} className={`group relative shrink-0 overflow-hidden rounded-[20px] border border-white/[.08] bg-white/[.025] text-left transition duration-300 hover:-translate-y-1 hover:border-[#9d69ff]/45 ${wide ? 'w-[74vw] max-w-[300px] snap-center sm:w-[290px]' : ''}`}><div className="relative aspect-[4/5] overflow-hidden"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} className="transition duration-700 group-hover:scale-[1.035]" />{cast.isPickup && <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-[#7b39fc] px-2.5 py-1 text-[9px] font-bold tracking-[.1em]"><Star size={10} fill="currentColor" /> PICK UP</span>}</div><div className="flex items-end justify-between p-4 sm:p-5"><div><p className="text-[10px] tracking-[.16em] text-[#d7b85b]">{cast.role}</p><h3 className="display mt-1 text-2xl">{cast.name}</h3><p className="mt-1 text-[11px] text-white/40">{cast.generation} {cast.group}</p></div><ArrowRight size={17} className="mb-1 text-white/35 transition group-hover:translate-x-1 group-hover:text-white" /></div></button>;
 }
 
 export function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
