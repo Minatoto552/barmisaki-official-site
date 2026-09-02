@@ -25,7 +25,7 @@ export function ImageOrPlaceholder({ src, alt, className = '' }: { src: string |
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % images.length), 15000);
     return () => window.clearInterval(timer);
   }, [images.join('|')]);
-  return images.length ? <img src={images[index]} alt={alt} className={`h-full w-full object-cover object-center ${className}`} /> : <Placeholder label={alt} className={className} />;
+  return images.length ? <div className="relative h-full w-full overflow-hidden">{images.map((image, imageIndex) => <img key={image} src={image} alt={imageIndex === index ? alt : ''} aria-hidden={imageIndex === index ? undefined : true} className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-[1800ms] ease-in-out ${imageIndex === index ? 'opacity-100' : 'opacity-0'} ${className}`} />)}</div> : <Placeholder label={alt} className={className} />;
 }
 
 export function CastCard({ cast, onClick, wide = false }: { cast: Cast; onClick: () => void; wide?: boolean }) {
