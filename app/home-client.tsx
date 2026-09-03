@@ -96,7 +96,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
         <div className="luxury-hero-shade" /><div className="luxury-hero-lines" aria-hidden="true" />
         <div className="luxury-hero-copy"><p className="luxury-kicker">VRCHAT ORIGINAL BAR EVENT</p><h1 className="display luxury-hero-title"><span>Bar</span><em>Misaki</em></h1><p className="luxury-hero-lead">キャストもスタッフも、みんな海咲ちゃん。<br className="hidden sm:block" />月に二度だけ扉が開く、上品で少し不思議な夜。</p></div>
         <div className="luxury-hero-number" aria-hidden="true"><span>EST.</span>2025</div>
-        <Link href="/how-to-join" className="luxury-seal"><span className="luxury-seal-ring" /><span className="luxury-seal-core">参加<br />方法</span></Link>
+        <Link href="/how-to-join" className="luxury-seal"><span className="luxury-seal-ring" /><svg className="luxury-seal-orbit" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="join-seal-orbit" d="M60 60 m -47 0 a 47 47 0 1 1 94 0 a 47 47 0 1 1 -94 0" /></defs><text><textPath href="#join-seal-orbit">JOIN BAR MISAKI · CHECK THE ENTRY GUIDE · </textPath></text></svg><span className="luxury-seal-core">参加<br />方法</span></Link>
         <a href="#about" className="luxury-scroll" aria-label="次のセクションへ"><span>SCROLL</span><ArrowDown size={15} /></a>
       </div>
     </section>
