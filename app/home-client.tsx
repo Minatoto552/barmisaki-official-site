@@ -92,8 +92,6 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
   return <main className="home-luxury overflow-hidden bg-[#07060d] text-white">
     <section className="luxury-hero">
-      <div className="luxury-side luxury-side-left" aria-hidden="true"># BAR MISAKI　# VRCHAT　# ONE AVATAR</div>
-      <div className="luxury-side luxury-side-right" aria-hidden="true">ELEGANT NIGHT　# CAST　# CONVERSATION</div>
       <div className="luxury-hero-frame">
         <video className="absolute inset-0 h-full w-full bg-[#080710] object-cover" autoPlay loop muted playsInline preload="auto"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4" type="video/mp4" /></video>
         <div className="luxury-hero-shade" /><div className="luxury-hero-lines" aria-hidden="true" />

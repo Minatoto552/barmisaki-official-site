@@ -31,5 +31,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader />{children}<SiteFooter /></body></html>;
+  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader /><div className="luxury-side luxury-side-left" aria-hidden="true"># BAR MISAKI　# VRCHAT　# ONE AVATAR</div><div className="luxury-side luxury-side-right" aria-hidden="true">ELEGANT NIGHT　# CAST　# CONVERSATION</div>{children}<SiteFooter /></body></html>;
 }

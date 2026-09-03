@@ -16,25 +16,27 @@ export default function MisakiPage() {
   return (
     <main className="misaki-page">
       <section className="misaki-opening" aria-labelledby="misaki-title">
-        <div className="misaki-opening-heading">
-          <div>
-            <p className="misaki-eyebrow">THE AVATAR BEHIND OUR NIGHTS</p>
-            <h1 id="misaki-title">Misakiについて</h1>
+        <div className="misaki-cinema">
+          <div className="misaki-opening-heading">
+            <div>
+              <p className="misaki-eyebrow">THE AVATAR BEHIND OUR NIGHTS</p>
+              <h1 id="misaki-title">Misakiについて</h1>
+            </div>
+            <span className="misaki-edition">
+              海咲 −Misaki−
+              <br />
+              ORIGINAL 3D AVATAR
+            </span>
           </div>
-          <span className="misaki-edition">
-            海咲 −Misaki−
-            <br />
-            ORIGINAL 3D AVATAR
-          </span>
-        </div>
-        <div className="misaki-film">
-          <iframe
-            src="https://www.youtube.com/embed/Ubmy48zaJAI?autoplay=1&mute=1&playsinline=1&rel=0&loop=1&playlist=Ubmy48zaJAI"
-            title="海咲 -Misaki- 公式プロモーションPV（Long Ver.）"
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
+          <div className="misaki-film">
+            <iframe
+              src="https://www.youtube.com/embed/Ubmy48zaJAI?autoplay=1&mute=1&playsinline=1&rel=0&loop=1&playlist=Ubmy48zaJAI"
+              title="海咲 -Misaki- 公式プロモーションPV（Long Ver.）"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
         </div>
         <div className="misaki-film-caption">
           <span>OFFICIAL PROMOTION FILM / LONG VER.</span>
