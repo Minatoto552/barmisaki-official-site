@@ -46,7 +46,6 @@ export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: C
         <p className="cast-portrait-role">{cast.role}</p>
         <h2 className="display cast-portrait-name">{cast.name}</h2>
         <p className="cast-portrait-generation">{cast.generation} {cast.group}</p>
-        {cast.favorite && <p className="cast-portrait-favorite">{cast.favorite}</p>}
         <button type="button" className="cast-portrait-more" aria-label={`${cast.name}の詳しい紹介を見る`} onClick={onMore}>More <ArrowUpRight size={14} aria-hidden="true" /></button>
       </div>
     </div>
