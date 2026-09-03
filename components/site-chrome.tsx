@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu, X } from 'lucide-react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { externalLinks } from '@/app/data';
@@ -49,5 +49,32 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
-  return <footer className="border-t border-white/[.07] bg-[#06050b] px-6 py-10"><div className="mx-auto flex max-w-[1240px] flex-col items-center justify-between gap-8 md:flex-row"><a href="/"><img src="/barmisaki-logo.png" alt="BarMisaki" width="84" height="56" className="h-14 w-auto" /></a><nav className="flex flex-wrap justify-center gap-x-5 gap-y-3">{navigation.map((item) => <a key={item.href} href={item.href} className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">{item.label}</a>)}<a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">公式X</a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">グループ</a></nav><p className="text-xs text-white/28">Copyright © BarMisaki</p></div></footer>;
+  const partnerLinks = [
+    { label: 'VISION TOKYO X', href: externalLinks.visionTokyoX },
+    { label: 'VISION TOKYO BOOTH', href: externalLinks.visionTokyoBooth },
+    { label: '海咲 販売ページ', href: externalLinks.misakiBooth },
+  ];
+  const hashtags = [
+    { label: '#VRC_BarMisaki', href: externalLinks.hashtagBarMisaki },
+    { label: '#海咲3D', href: externalLinks.hashtagMisaki3D },
+    { label: '#VISIONTOKYO', href: externalLinks.hashtagVisionTokyo },
+  ];
+
+  return <footer className="border-t border-white/[.07] bg-[#06050b] px-6 py-10">
+    <div className="mx-auto flex max-w-[1240px] flex-col items-center justify-between gap-8 md:flex-row"><a href="/"><img src="/barmisaki-logo.png" alt="BarMisaki" width="84" height="56" className="h-14 w-auto" /></a><nav className="flex flex-wrap justify-center gap-x-5 gap-y-3">{navigation.map((item) => <a key={item.href} href={item.href} className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">{item.label}</a>)}<a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">公式X</a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">グループ</a></nav><p className="text-xs text-white/28">Copyright © BarMisaki</p></div>
+    <div className="mx-auto mt-9 grid max-w-[1240px] gap-5 border-t border-white/[.07] pt-7 lg:grid-cols-[1fr_auto]">
+      <div>
+        <p className="ui text-[10px] font-bold tracking-[.28em] text-[#d7b85b]">OFFICIAL AVATAR PARTNER</p>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/50">BarMisakiは、海咲アバターを制作された VISION TOKYO さんより公認をいただいて運営しています。</p>
+      </div>
+      <div className="flex flex-col gap-3 lg:items-end">
+        <nav className="flex flex-wrap gap-2" aria-label="VISION TOKYO 関連リンク">
+          {partnerLinks.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="ui inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold tracking-[.08em] text-white/52 transition hover:border-[#d7b85b]/60 hover:text-white">{item.label}<ArrowUpRight size={12} /></a>)}
+        </nav>
+        <nav className="flex flex-wrap gap-x-3 gap-y-2 text-xs" aria-label="関連ハッシュタグ">
+          {hashtags.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="text-[#c9a9ff]/68 transition hover:text-[#d7b85b]">{item.label}</a>)}
+        </nav>
+      </div>
+    </div>
+  </footer>;
 }

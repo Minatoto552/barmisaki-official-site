@@ -28,6 +28,12 @@ export const externalLinks = {
   officialX: 'https://x.com/BarMisaki_VRC',
   vrcGroup: 'https://vrc.group/BARMIS.9013',
   lotteryUrl: '',
+  visionTokyoX: 'https://x.com/VisionTokyo2026?s=20',
+  visionTokyoBooth: 'https://t.co/7qxahXM2OC',
+  misakiBooth: 'https://visiontokyo.booth.pm/items/8325804',
+  hashtagBarMisaki: 'https://x.com/search?q=%23VRC_BarMisaki&src=hashtag_click',
+  hashtagMisaki3D: 'https://x.com/search?q=%23%E6%B5%B7%E5%92%B23D&src=hashtag_click',
+  hashtagVisionTokyo: 'https://x.com/search?q=%23VISIONTOKYO&src=hashtag_click',
 };
 
 export const rules = [
