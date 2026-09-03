@@ -7,6 +7,7 @@ import { externalLinks } from '@/app/data';
 
 export const navigation = [
   { label: 'HOME', href: '/' },
+  { label: 'Misakiについて', href: '/misaki' },
   { label: 'CAST', href: '/cast' },
   { label: 'NEWS', href: '/news' },
   { label: 'HOW TO JOIN', href: '/how-to-join' },

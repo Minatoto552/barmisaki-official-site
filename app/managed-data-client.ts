@@ -7,7 +7,7 @@ type ManagedCast = {
   xUrl?: string; favorite?: string; message?: string; isPickup?: boolean;
 };
 
-const localCastImages: Record<string, string | string[]> = {
+export const localCastImages: Record<string, string | string[]> = {
   'くりん': '/cast/1st/kurin.png',
   'セッチャン': '/cast/1st/secchan.png',
   'たま': '/cast/1st/tama.png',
