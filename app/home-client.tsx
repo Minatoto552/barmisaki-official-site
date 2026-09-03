@@ -8,10 +8,11 @@ import { loadManagedCasts } from './managed-data-client';
 import { FittedName, FittedText, ImageOrPlaceholder, Modal } from '@/components/site-elements';
 import { CastProfile } from './cast/cast-portrait';
 import './pickup.css';
+import { HomeNews } from './news/news-client';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
-export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news: NewsItem[] }) {
+export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsItem[] }) {
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
@@ -122,7 +123,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-news"><div className="luxury-section-index"><span>04</span> NEWS</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">LATEST INFORMATION</p><h2 className="display luxury-section-title mt-3"><FittedText>News</FittedText></h2></div><Link href="/news" className="luxury-outline-link">VIEW MORE <ArrowRight size={17} /></Link></div>
-      <div className="mt-14 border-t border-white/12">{news.slice(0, 4).map((item, index) => <Link key={item.id} href={`/news/${item.id}`} className="luxury-news-row"><span className="text-xs text-[#d7b85b]">0{index + 1}</span><time>{item.date}</time><h3>{item.title}</h3><ArrowUpRight size={20} /></Link>)}{!news.length && <div className="py-16 text-center text-sm tracking-[.18em] text-white/35">LATEST NEWS COMING SOON</div>}</div>
+      <HomeNews />
     </div></section>
 
     {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.images?.length ? selectedCast.images : selectedCast.image} alt={selectedCast.name} focusFace /></div><div className="min-w-0 p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-[clamp(1.75rem,4vw,2.6rem)]"><FittedName name={selectedCast.name} /></h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><button type="button" onClick={() => { setProfileCast(selectedCast); setSelectedCast(null); }} className="primary-button mt-8 inline-flex">プロフィールを見る</button></div></div></Modal>}

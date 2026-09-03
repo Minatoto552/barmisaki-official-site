@@ -1,6 +1,17 @@
 import type { Metadata } from 'next';
+import { ArrowUpRight } from 'lucide-react';
 import { recruitment } from '../data';
-import { PageHero } from '@/components/site-elements';
+import { EditorialHero, EditorialHeading, StatusBadge } from '@/components/editorial';
 
 export const metadata: Metadata = { title: 'RECRUIT | BarMisaki', description: 'BarMisakiのキャスト・スタッフ募集情報です。' };
-export default function RecruitPage() { return <main><PageHero eyebrow="RECRUIT" title={<>キャスト<em className="text-[#c8a4ff]">andスタッフ募集</em></>} intro="BarMisakiの夜を一緒につくる仲間を募集します。" /><section className="content-section"><div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">{[['cast', 'CAST', 'キャスト募集', 'お客様との会話を楽しみながら、BarMisakiらしい時間を届けるキャストです。'], ['staff', 'STAFF', 'スタッフ募集', '受付や運営を通して、心地よいイベントづくりを支えるスタッフです。']].map(([key, en, title, text]) => { const state = recruitment[key as keyof typeof recruitment]; return <article key={key} className="glass-card p-7 sm:p-10"><div className="flex items-center justify-between"><span className="display text-4xl">{en}</span><span className={`rounded-full px-3 py-1 text-xs ${state.enabled ? 'bg-emerald-400/15 text-emerald-200' : 'bg-white/[.06] text-white/38'}`}>{state.enabled ? '募集中' : '募集停止'}</span></div><h2 className="mt-10 text-xl font-semibold">{title}</h2><p className="mt-3 text-sm leading-7 text-white/52">{text}</p>{state.enabled && state.url ? <a href={state.url} className="primary-button mt-7 inline-flex">応募はこちら</a> : <button disabled className="mt-7 rounded-lg border border-white/10 px-5 py-3 text-sm text-white/32">現在は募集を行っておりません</button>}</article>; })}</div></section></main>; }
+export default function RecruitPage() {
+  return <main className="editorial-page">
+    <EditorialHero index="07" eyebrow="RECRUIT" word="OUR TEAM" title={<>キャスト・<em>スタッフ募集</em></>} intro="BarMisakiの夜を一緒につくる仲間を募集します。" />
+    <section className="editorial-content"><EditorialHeading eyebrow="JOIN OUR TEAM" title="Create the night." note="それぞれの役割で、ひとつの夜を。" />
+      <div className="recruit-grid">{[
+        ['cast', 'CAST', 'キャスト募集', 'お客様との会話を楽しみながら、BarMisakiらしい時間を届けるキャストです。'],
+        ['staff', 'STAFF', 'スタッフ募集', '受付や運営を通して、心地よいイベントづくりを支えるスタッフです。'],
+      ].map(([key, en, title, text], index) => { const state = recruitment[key as keyof typeof recruitment]; return <article key={key} className="recruit-editorial-card"><div className="recruit-top"><span className="editorial-kicker">0{index + 1} / {en}</span><StatusBadge state={state.enabled ? 'open' : 'closed'}>{state.enabled ? 'OPEN · 募集中' : 'CLOSED · 募集停止'}</StatusBadge></div><p className="recruit-word display" aria-hidden="true">{en}</p><h2>{title}</h2><p className="recruit-description">{text}</p><div className="recruit-action">{state.enabled && state.url ? <a href={state.url} className="editorial-button">応募する <ArrowUpRight size={18} /></a> : <p>{state.enabled ? '応募先は準備中です。' : '現在は募集を行っておりません。'}</p>}</div></article>; })}</div>
+    </section>
+  </main>;
+}

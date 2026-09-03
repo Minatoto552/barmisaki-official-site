@@ -81,21 +81,22 @@ export function SiteFooter() {
     { label: '#VISIONTOKYO', href: externalLinks.hashtagVisionTokyo },
   ];
 
-  return <footer className="border-t border-white/[.07] bg-[#06050b] px-6 py-10">
-    <div className="mx-auto flex max-w-[1240px] flex-col items-center justify-between gap-8 md:flex-row"><a href="/"><img src="/barmisaki-logo.png" alt="BarMisaki" width="84" height="56" className="h-14 w-auto" /></a><nav className="flex flex-wrap justify-center gap-x-5 gap-y-3">{navigation.map((item) => <a key={item.href} href={item.href} className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">{item.label}</a>)}<a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">公式X</a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" className="ui text-[10px] tracking-[.1em] text-white/42 hover:text-white">グループ</a></nav><p className="text-xs text-white/28">Copyright © BarMisaki</p></div>
-    <div className="mx-auto mt-9 grid max-w-[1240px] gap-5 border-t border-white/[.07] pt-7 lg:grid-cols-[1fr_auto]">
+  return <footer className="site-footer">
+    <div className="site-footer-main"><a href="/" className="site-footer-brand" aria-label="BarMisaki ホーム"><img src="/barmisaki-logo.png" alt="BarMisaki" width="144" height="96" /><span>VRCHAT BAR EVENT</span></a><nav className="site-footer-navigation" aria-label="フッターナビゲーション">{navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav><div className="site-footer-social"><span>STAY CONNECTED</span><a href={externalLinks.officialX} target="_blank" rel="noreferrer">公式X <ArrowUpRight size={15} /></a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer">VRChatグループ <ArrowUpRight size={15} /></a></div></div>
+    <div className="site-footer-partner">
       <div>
-        <p className="ui text-[10px] font-bold tracking-[.28em] text-[#d7b85b]">OFFICIAL AVATAR PARTNER</p>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/50">BarMisakiは、海咲アバターを制作された VISION TOKYO さんより公認をいただいて運営しています。</p>
+        <p className="site-footer-label">OFFICIAL AVATAR PARTNER</p>
+        <p className="site-footer-partner-copy">BarMisakiは、海咲アバターを制作された VISION TOKYO さんより公認をいただいて運営しています。</p>
       </div>
       <div className="flex flex-col gap-3 lg:items-end">
-        <nav className="flex flex-wrap gap-2" aria-label="VISION TOKYO 関連リンク">
-          {partnerLinks.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="ui inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold tracking-[.08em] text-white/52 transition hover:border-[#d7b85b]/60 hover:text-white">{item.label}<ArrowUpRight size={12} /></a>)}
+        <nav className="site-footer-partner-links" aria-label="VISION TOKYO 関連リンク">
+          {partnerLinks.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noreferrer">{item.label}<ArrowUpRight size={12} /></a>)}
         </nav>
         <nav className="flex flex-wrap gap-x-3 gap-y-2 text-xs" aria-label="関連ハッシュタグ">
           {hashtags.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className="text-[#c9a9ff]/68 transition hover:text-[#d7b85b]">{item.label}</a>)}
         </nav>
       </div>
     </div>
+    <p className="site-footer-copyright">© BarMisaki <span>ONE AVATAR. MANY PERSONALITIES.</span></p>
   </footer>;
 }

@@ -1,7 +1,29 @@
 import type { Metadata } from 'next';
-import { ArrowUpRight, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Clock3, Sparkles } from 'lucide-react';
 import { externalLinks } from '../data';
-import { PageHero } from '@/components/site-elements';
+import { EditorialHero, EditorialHeading, StatusBadge } from '@/components/editorial';
 
 export const metadata: Metadata = { title: 'HOW TO JOIN | BarMisaki', description: 'BarMisakiへの参加方法をご案内します。' };
-export default function HowToJoinPage() { return <main><PageHero eyebrow="HOW TO JOIN" title={<>BarMisakiへの<em className="text-[#c8a4ff]">参加方法</em></>} intro="VRChatイベントが初めての方も、3つのステップでご参加いただけます。" /><section className="content-section bg-[#0c0a16]"><div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-3">{[['01', 'フレンド申請', '公式Xの案内を確認し、「BarMisaki_Bot」へVRChatでフレンド申請します。'], ['02', '抽選に応募', '公式Xで案内される抽選システムから応募します。'], ['03', '抽選結果を確認', '当選した方は22:40〜22:50にBarMisaki_BotへRequest Inviteしてください。']].map(([step, title, text], index) => <article key={step} className="glass-card p-7 sm:p-9"><span className="display text-5xl italic text-[#7b39fc]/65">{step}</span><h2 className="mt-7 text-xl font-semibold">{title}</h2><p className="mt-4 min-h-20 text-sm leading-7 text-white/55">{text}</p>{index === 0 && <a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="inline-link mt-5">公式Xを見る <ArrowUpRight size={15} /></a>}{index === 1 && (externalLinks.lotteryUrl ? <a href={externalLinks.lotteryUrl} className="primary-button mt-5 inline-flex">抽選に応募する</a> : <button disabled className="mt-5 rounded-lg border border-white/10 bg-white/[.045] px-5 py-3 text-sm text-white/38">現在受付準備中です</button>)}{index === 2 && <div className="mt-5 flex items-center gap-2 text-sm text-[#c9a9ff]"><CheckCircle2 size={16} /> 営業時間 22:50〜24:00</div>}</article>)}</div><div className="mx-auto mt-5 flex max-w-6xl items-center gap-5 rounded-2xl border border-[#d7b85b]/25 bg-[#d7b85b]/[.07] p-5 sm:p-7"><Sparkles className="shrink-0 text-[#efd878]" /><div><h2 className="font-semibold text-[#fff0b4]">当日リクイン枠もあります！</h2><p className="mt-1 text-sm leading-6 text-white/52">通常の抽選とは別に当日枠をご用意する場合があります。詳細は公式Xをご確認ください。</p></div></div></section></main>; }
+const steps = [
+  ['FRIEND REQUEST', 'フレンド申請', '公式Xの案内を確認し、「BarMisaki_Bot」へVRChatでフレンド申請します。'],
+  ['LOTTERY ENTRY', '抽選に応募', '公式Xで案内される抽選システムから応募します。'],
+  ['REQUEST INVITE', '抽選結果を確認', '当選した方は22:40〜22:50にBarMisaki_BotへRequest Inviteしてください。'],
+];
+export default function HowToJoinPage() {
+  return <main className="editorial-page">
+    <EditorialHero index="03" eyebrow="HOW TO JOIN" word="JOIN US" title={<>BarMisakiへの<em>参加方法</em></>} intro="VRChatイベントが初めての方も、3つのステップでご参加いただけます。" />
+    <section className="editorial-content">
+      <EditorialHeading eyebrow="YOUR FIRST NIGHT" title="3 steps to Misaki." note="ご来店までの流れ" />
+      <ol className="entry-steps">{steps.map(([en, title, text], index) => <li key={en} className="entry-step">
+        <div className="entry-step-top"><span className="editorial-number">0{index + 1}</span><span>{en}</span></div>
+        <h2>{title}</h2><p>{text}</p>
+        <div className="entry-step-action">
+          {index === 0 && <a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="editorial-text-link">公式Xを見る <ArrowUpRight size={18} /></a>}
+          {index === 1 && (externalLinks.lotteryUrl ? <a href={externalLinks.lotteryUrl} className="editorial-button">抽選に応募する <ArrowUpRight size={18} /></a> : <div className="editorial-state-note"><StatusBadge state="soon" /><span>現在受付準備中です</span></div>)}
+          {index === 2 && <div className="entry-hours"><Clock3 size={18} /><div><small>OPEN HOURS</small><span>22:50 — 24:00</span></div></div>}
+        </div>
+      </li>)}</ol>
+      <aside className="same-day-entry"><Sparkles size={28} strokeWidth={1} /><div><p className="editorial-kicker">SAME DAY ENTRY</p><h2>当日リクイン枠もあります</h2><p>通常の抽選とは別に当日枠をご用意する場合があります。詳細は公式Xをご確認ください。</p></div><a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="editorial-text-link">公式Xを見る <ArrowUpRight size={18} /></a></aside>
+    </section>
+  </main>;
+}
