@@ -16,26 +16,57 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
   const [isAtmosphereDragging, setIsAtmosphereDragging] = useState(false);
   const [pickupProgress, setPickupProgress] = useState(0);
   const atmosphereRef = useRef<HTMLDivElement>(null);
-  const atmosphereDrag = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false });
+  const atmosphereBeltRef = useRef<HTMLDivElement>(null);
+  const atmosphereSetWidth = useRef(0);
+  const atmosphereOffset = useRef(0);
+  const atmosphereDrag = useRef({ active: false, startX: 0, startOffset: 0, moved: false });
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
+  useEffect(() => {
+    let frame = 0;
+    let last = 0;
+    const measure = () => {
+      const set = atmosphereBeltRef.current?.querySelector<HTMLElement>('.luxury-atmosphere-set');
+      atmosphereSetWidth.current = set?.offsetWidth ?? 0;
+    };
+    const applyOffset = (offset: number) => {
+      const width = atmosphereSetWidth.current;
+      if (!width || !atmosphereBeltRef.current) return;
+      atmosphereOffset.current = ((offset % width) + width) % width;
+      atmosphereBeltRef.current.style.transform = `translate3d(${-atmosphereOffset.current}px,0,0)`;
+    };
+    const tick = (time: number) => {
+      if (!last) last = time;
+      const delta = time - last;
+      last = time;
+      if (!atmosphereDrag.current.active) applyOffset(atmosphereOffset.current + delta * 0.025);
+      frame = requestAnimationFrame(tick);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    frame = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener('resize', measure);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
   const startAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    const el = atmosphereRef.current;
-    if (!el) return;
-    atmosphereDrag.current = { active: true, startX: event.clientX, scrollLeft: el.scrollLeft, moved: false };
+    if (!atmosphereRef.current) return;
+    atmosphereDrag.current = { active: true, startX: event.clientX, startOffset: atmosphereOffset.current, moved: false };
     setIsAtmosphereDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const moveAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    const el = atmosphereRef.current;
     const drag = atmosphereDrag.current;
-    if (!el || !drag.active) return;
+    const width = atmosphereSetWidth.current;
+    if (!width || !drag.active || !atmosphereBeltRef.current) return;
     const delta = event.clientX - drag.startX;
     if (Math.abs(delta) > 5) drag.moved = true;
-    el.scrollLeft = drag.scrollLeft - delta;
+    atmosphereOffset.current = ((drag.startOffset - delta) % width + width) % width;
+    atmosphereBeltRef.current.style.transform = `translate3d(${-atmosphereOffset.current}px,0,0)`;
   };
   const endAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
@@ -80,7 +111,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">店内の<em className="text-[#c9a1ff]">雰囲気</em></h2></div><p className="hidden max-w-xs text-sm leading-7 text-white/45 lg:block">光、音、会話。そのすべてがゆっくりと混ざり合う、BarMisakiの夜。</p></div>
-      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`no-scrollbar luxury-atmosphere-track overflow-x-auto pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}><div className="luxury-atmosphere-belt">{[0, 1].map((set) => <div key={set} className="luxury-atmosphere-set">{gallery.map((item, index) => <button key={`${set}-${item.id}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String(index + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div>)}</div></div></div>
+      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`luxury-atmosphere-track pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}><div ref={atmosphereBeltRef} className="luxury-atmosphere-belt">{[0, 1].map((set) => <div key={set} className="luxury-atmosphere-set">{gallery.map((item, index) => <button key={`${set}-${item.id}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String(index + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div>)}</div></div></div>
     </div></section>
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
