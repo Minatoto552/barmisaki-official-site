@@ -52,6 +52,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 .cast-portrait-photo { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
 .cast-portrait-photo .placeholder > span { display: none; }
 .cast-portrait-photo img { user-select: none; -webkit-user-drag: none; }
+.cast-portrait-pickup { position: absolute; z-index: 3; top: .85rem; right: .85rem; display: inline-flex; align-items: center; gap: .32rem; border-radius: 999px; background: #7b39fc; padding: .38rem .62rem; color: #fff; font-family: var(--font-manrope),sans-serif; font-size: .52rem; font-weight: 800; letter-spacing: .08em; line-height: 1; box-shadow: 0 8px 18px rgba(0,0,0,.35); pointer-events: none; }
 .cast-portrait-reveal { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; border: 1px solid #ffffff1f; border-radius: inherit; background: transparent; cursor: pointer; }
 .cast-portrait-shade,.cast-portrait-shine { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .45s ease; }
 .cast-portrait-shade { background: linear-gradient(0deg,rgba(5,4,9,.93),rgba(5,4,9,.5) 35%,transparent 80%); }
@@ -93,6 +94,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
   .cast-portrait { width: calc((100% - var(--card-gap))/2); }
   .cast-portrait-surface { border-radius: 11px; }
   .cast-portrait-intro { right: .6rem; bottom: .8rem; left: .6rem; }
+  .cast-portrait-pickup { top: .55rem; right: .55rem; padding: .32rem .48rem; font-size: .46rem; }
   .cast-portrait-name { font-size: 1.25rem; }
   .cast-portrait-generation { font-size: .62rem; }
   .cast-portrait-more { min-width: 100px; margin-top: .65rem; padding: .4rem 1rem; }
