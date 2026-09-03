@@ -47,6 +47,12 @@ export default function MisakiPage() {
         <p className="misaki-video-note">
           海咲 -Misaki- ｜ 公式プロモーションPV（Long Ver.）
         </p>
+        <p className="misaki-video-production">
+          PV Production{' '}
+          <a href="https://x.com/vkkoox" target="_blank" rel="noreferrer">
+            あれ。（@vkkoox） <ArrowUpRight size={13} />
+          </a>
+        </p>
       </section>
 
       <section
@@ -75,7 +81,7 @@ export default function MisakiPage() {
             <p>
               都会でモデルとして活動しながら、自分らしい世界観を大切に生きる女性。
               <br />
-              クールなファッションを纏いながらも、ふっとした瞬間明るくやわらかな一面を見せるような存在をイメージして制作しました。
+              クールなファッションを纏いながらも、ふっとした瞬間明るくやわらかな一面を見せるような存在をイメージして制作されました。
             </p>
             <footer>
               引用：
