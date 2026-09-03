@@ -22,7 +22,7 @@ const localCastImages: Record<string, string | string[]> = {
   'ぽよ': '/cast/staff/poyo.png',
   '春風桜華': '/cast/hana/harukaze-ouka.jpg',
   'Kuragechannnn': ['/cast/hana/kuragechannnn.png', '/cast/hana/kuragechannnn-2.png'],
-  '雪都yukito': '/cast/hana/yukito.png',
+  '雪都yukito': ['/cast/hana/yukito.png', '/cast/hana/yukito-2.png'],
   'けろ__': '/cast/hana/kero.png',
   'あおみつししぇる': '/cast/hana/aomitsu-shishel.png',
   'ReruCh1': '/cast/hana/reruch1.png',
