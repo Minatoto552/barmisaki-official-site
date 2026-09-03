@@ -43,7 +43,7 @@ export default function MisakiPage() {
           </a>
         </div>
         <p className="misaki-video-note">
-          ミュートで自動再生します。音声・全画面表示は動画内の操作から。自動再生されない場合は再生ボタンを押してください。
+          海咲 -Misaki- ｜ 公式プロモーションPV（Long Ver.）
         </p>
       </section>
 
