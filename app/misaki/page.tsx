@@ -16,14 +16,8 @@ const videoUrl = 'https://www.youtube.com/watch?v=Ubmy48zaJAI';
 export default function MisakiPage() {
   return (
     <main className="misaki-page">
-      <section className="misaki-opening" aria-labelledby="misaki-title">
+      <section className="misaki-opening" aria-label="海咲 公式プロモーションPV">
         <div className="misaki-cinema">
-          <div className="misaki-opening-heading">
-            <h1 id="misaki-title">Misakiについて</h1>
-            <span className="misaki-edition">
-              海咲 −Misaki− / ORIGINAL 3D AVATAR
-            </span>
-          </div>
           <div className="misaki-film">
             <iframe
               src="https://www.youtube.com/embed/Ubmy48zaJAI?autoplay=1&mute=1&playsinline=1&rel=0&loop=1&playlist=Ubmy48zaJAI"
@@ -55,8 +49,9 @@ export default function MisakiPage() {
 
       <section
         className="misaki-story misaki-wrap"
-        aria-labelledby="misaki-story-title"
+        aria-labelledby="misaki-title"
       >
+        <h1 id="misaki-title" className="misaki-story-heading">海咲について</h1>
         <div>
           <p className="misaki-eyebrow">BEAUTY, WITH A PERSONALITY.</p>
           <h2 id="misaki-story-title"><FittedText>

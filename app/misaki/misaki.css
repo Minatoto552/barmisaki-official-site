@@ -39,33 +39,16 @@
   padding: 22px clamp(24px, 4vw, 80px) 26px;
   border-top: 1px solid #ffffff18;
 }
-.misaki-opening-heading {
-  position: absolute;
-  z-index: 2;
-  top: clamp(18px, 2.2vw, 34px);
-  left: clamp(24px, 4vw, 78px);
-  right: clamp(24px, 4vw, 78px);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px 20px;
-  pointer-events: none;
-  text-shadow: 0 2px 18px #000;
-}
-.misaki-opening h1 {
+.misaki-story-heading {
+  grid-column: 1 / -1;
+  justify-self: start;
+  align-self: start;
   margin: 0;
   font-family: serif;
-  font-size: clamp(19px, 1.7vw, 30px);
+  font-size: clamp(24px, 2.4vw, 40px);
   font-weight: 400;
   letter-spacing: 0.05em;
-}
-.misaki-edition {
-  font-size: 10px;
-  line-height: 1.9;
-  letter-spacing: 0.12em;
-  text-align: right;
-  color: var(--misaki-muted);
+  white-space: nowrap;
 }
 .misaki-film {
   position: relative;
@@ -120,7 +103,8 @@
   gap: clamp(40px, 7vw, 140px);
   min-height: 90svh;
   align-items: center;
-  padding-block: clamp(90px, 10vw, 180px);
+  padding-block: clamp(36px, 4vw, 72px) clamp(90px, 10vw, 180px);
+  row-gap: clamp(32px, 4vw, 64px);
 }
 .misaki-page h2 {
   margin: 22px 0;
@@ -527,20 +511,6 @@
     font-size: 10px;
     letter-spacing: 0.14em;
   }
-  .misaki-opening-heading {
-    top: 14px;
-    left: 18px;
-    right: 18px;
-    gap: 4px 14px;
-  }
-  .misaki-opening h1 {
-    font-size: 20px;
-  }
-  .misaki-edition {
-    text-align: left;
-    font-size: 9px;
-    line-height: 1.5;
-  }
   .misaki-film-caption,
   .misaki-video-note {
     margin-inline: 0;
@@ -555,7 +525,7 @@
   .misaki-story {
     grid-template-columns: 1fr;
     gap: 25px;
-    padding-block: 65px;
+    padding-block: 32px 65px;
     min-height: 0;
   }
   .misaki-story-sign {
@@ -658,4 +628,3 @@
 }
 
 .misaki-page h2 { min-width: 0; white-space: nowrap; }
-.misaki-opening h1 { white-space: nowrap; }
