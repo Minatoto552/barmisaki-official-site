@@ -18,7 +18,7 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
 
 export function ImageOrPlaceholder({ src, alt, className = '', focusFace = false }: { src: string | string[]; alt: string; className?: string; focusFace?: boolean }) {
   const images = Array.isArray(src) ? src.filter(Boolean) : src ? [src] : [];
-  const position = focusFace ? 'object-[center_18%]' : alt === 'けろ__' ? 'object-[center_35%]' : alt === 'ReruCh1' ? 'object-[58%_35%]' : 'object-center';
+  const position = alt === 'ayadora' ? 'object-[center_22%]' : alt === 'けろ__' ? 'object-[center_35%]' : alt === 'ReruCh1' ? 'object-[58%_35%]' : focusFace ? 'object-[center_18%]' : 'object-center';
   const [index, setIndex] = useState(0);
   useEffect(() => {
     setIndex(0);
