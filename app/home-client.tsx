@@ -5,13 +5,15 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { gallery, type Cast } from './data';
 import { loadManagedCasts } from './managed-data-client';
-import { ImageOrPlaceholder, Modal } from '@/components/site-elements';
+import { FittedName, ImageOrPlaceholder, Modal } from '@/components/site-elements';
+import { CastProfile } from './cast/cast-portrait';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
 export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news: NewsItem[] }) {
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
+  const [profileCast, setProfileCast] = useState<Cast | null>(null);
   const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
   const [isAtmosphereDragging, setIsAtmosphereDragging] = useState(false);
   const [pickupProgress, setPickupProgress] = useState(0);
@@ -115,7 +117,7 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">MONTHLY SELECTION</p><h2 className="display mt-3 text-[clamp(3.2rem,7vw,7rem)] leading-none">Pick Up <em className="text-[#c9a1ff]">Cast</em></h2></div><Link href="/cast" className="luxury-outline-link">ALL CAST <ArrowRight size={17} /></Link></div>
-      <div className="luxury-full-slider mt-14"><div ref={pickupRef} onScroll={updatePickupProgress} className="no-scrollbar luxury-slider-track luxury-cast-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{pickups.map((cast, index) => <button key={cast.id} onClick={() => setSelectedCast(cast)} className="luxury-cast-slide group"><span className="luxury-cast-image"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace className="transition duration-1000 group-hover:scale-[1.035]" /><span className="luxury-cast-count">{String(index + 1).padStart(2, '0')}</span><span className="luxury-cast-pick"><Star size={10} fill="currentColor" /> PICK UP</span></span><span className="luxury-cast-copy"><small>{cast.generation} {cast.group} / {cast.role}</small><strong className="display">{cast.name}</strong><span>VIEW PROFILE <ArrowUpRight size={15} /></span></span></button>)}</div></div>{!pickups.length && <div className="mt-14 border-y border-white/10 py-16 text-center text-sm tracking-[.18em] text-white/35">NEXT SELECTION COMING SOON</div>}
+      <div className="luxury-full-slider mt-14"><div ref={pickupRef} onScroll={updatePickupProgress} className="no-scrollbar luxury-slider-track luxury-cast-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">{pickups.map((cast, index) => <button key={cast.id} onClick={() => setSelectedCast(cast)} className="luxury-cast-slide group"><span className="luxury-cast-image"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace className="transition duration-1000 group-hover:scale-[1.035]" /><span className="luxury-cast-count">{String(index + 1).padStart(2, '0')}</span><span className="luxury-cast-pick"><Star size={10} fill="currentColor" /> PICK UP</span></span><span className="luxury-cast-copy"><small>{cast.generation} {cast.group} / {cast.role}</small><strong className="display"><FittedName name={cast.name} /></strong></span></button>)}</div></div>{!pickups.length && <div className="mt-14 border-y border-white/10 py-16 text-center text-sm tracking-[.18em] text-white/35">NEXT SELECTION COMING SOON</div>}
       <div className="luxury-slider-controls"><div className="luxury-progress" aria-hidden="true"><span style={{ width: `${Math.max(12, 12 + pickupProgress * 88)}%` }} /></div><button onClick={() => scroll(pickupRef, -1)} className="luxury-arrow-pill" aria-label="前のキャスト"><ChevronLeft size={18} /></button><button onClick={() => scroll(pickupRef, 1)} className="luxury-arrow-pill" aria-label="次のキャスト"><ChevronRight size={18} /></button></div>
     </div></section>
 
@@ -124,7 +126,8 @@ export function HomeClient({ casts: initialCasts, news }: { casts: Cast[]; news:
       <div className="mt-14 border-t border-white/12">{news.slice(0, 4).map((item, index) => <Link key={item.id} href={`/news/${item.id}`} className="luxury-news-row"><span className="text-xs text-[#d7b85b]">0{index + 1}</span><time>{item.date}</time><h3>{item.title}</h3><ArrowUpRight size={20} /></Link>)}{!news.length && <div className="py-16 text-center text-sm tracking-[.18em] text-white/35">LATEST NEWS COMING SOON</div>}</div>
     </div></section>
 
-    {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.images?.length ? selectedCast.images : selectedCast.image} alt={selectedCast.name} /></div><div className="p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-5xl">{selectedCast.name}</h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><Link href="/cast" className="primary-button mt-8 inline-flex">プロフィールを見る</Link></div></div></Modal>}
+    {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.images?.length ? selectedCast.images : selectedCast.image} alt={selectedCast.name} focusFace /></div><div className="min-w-0 p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-[clamp(1.75rem,4vw,2.6rem)]"><FittedName name={selectedCast.name} /></h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><button type="button" onClick={() => { setProfileCast(selectedCast); setSelectedCast(null); }} className="primary-button mt-8 inline-flex">プロフィールを見る</button></div></div></Modal>}
+    {profileCast && <CastProfile cast={profileCast} onClose={() => setProfileCast(null)} backLabel="ピックアップに戻る" />}
     {selectedGallery && <Modal onClose={() => setSelectedGallery(null)}><div className="aspect-[16/10] overflow-hidden"><ImageOrPlaceholder src={selectedGallery.image} alt={selectedGallery.alt} /></div></Modal>}
   </main>;
 }

@@ -1,11 +1,35 @@
 'use client';
 
 import { ArrowRight, Star, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Cast } from '@/app/data';
 
 export function SectionTitle({ eyebrow, children, intro, compact = false }: { eyebrow: string; children: React.ReactNode; intro?: string; compact?: boolean }) {
   return <div className={`mx-auto mb-10 text-center sm:mb-14 ${compact ? 'max-w-[1180px]' : 'max-w-3xl'}`}><p className="mb-3 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h2 className={`display text-4xl leading-tight sm:text-6xl ${compact ? 'whitespace-nowrap' : ''}`}>{children}</h2>{intro && <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div>;
+}
+
+export function FittedName({ name }: { name: string }) {
+  const container = useRef<HTMLSpanElement>(null);
+  const text = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const outer = container.current;
+    const inner = text.current;
+    if (!outer || !inner) return;
+    let active = true;
+    const fit = () => {
+      if (!active || !outer.clientWidth) return;
+      const baseSize = parseFloat(getComputedStyle(outer).fontSize);
+      inner.style.fontSize = `${baseSize}px`;
+      const naturalWidth = inner.getBoundingClientRect().width;
+      if (naturalWidth > outer.clientWidth) inner.style.fontSize = `${baseSize * (outer.clientWidth - 1) / naturalWidth}px`;
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(outer);
+    void document.fonts.ready.then(fit);
+    return () => { active = false; observer.disconnect(); };
+  }, [name]);
+  return <span ref={container} className="block w-full min-w-0 whitespace-nowrap"><span ref={text} className="inline-block">{name}</span></span>;
 }
 
 export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: React.ReactNode; intro?: string }) {

@@ -52,7 +52,7 @@ export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: C
   </article>;
 }
 
-export function CastProfile({ cast, onClose }: { cast: Cast; onClose: () => void }) {
+export function CastProfile({ cast, onClose, backLabel = 'キャスト一覧に戻る' }: { cast: Cast; onClose: () => void; backLabel?: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const images = cast.images?.length ? cast.images : cast.image ? [cast.image] : [];
@@ -90,7 +90,7 @@ export function CastProfile({ cast, onClose }: { cast: Cast; onClose: () => void
           {cast.xUrl && <a href={cast.xUrl} target="_blank" rel="noreferrer" className="cast-profile-social">Xを見る <ArrowUpRight size={16} /></a>}
         </div>
       </div>
-      <button type="button" className="cast-profile-back" onClick={onClose}>キャスト一覧に戻る</button>
+      <button type="button" className="cast-profile-back" onClick={onClose}>{backLabel}</button>
     </div>
   </dialog>;
 }
