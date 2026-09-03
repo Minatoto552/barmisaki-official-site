@@ -38,9 +38,12 @@ export async function loadManagedCasts(): Promise<Cast[] | null> {
     const data = await response.json() as { casts?: ManagedCast[] } | null;
     if (!data || !Array.isArray(data.casts)) return null;
     return data.casts.map((item, index) => {
-      const [generation, group = ''] = item.category === 'スタッフ'
+      const [rawGeneration, rawGroup = ''] = item.category === 'スタッフ'
         ? ['スタッフ', '']
         : item.category.split(' ');
+      const isSecondGeneration = rawGeneration === '2期生' || rawGeneration === '２期生';
+      const generation = isSecondGeneration ? '２期生' : rawGeneration;
+      const group = isSecondGeneration ? '' : rawGroup;
       const localImage = localCastImages[item.name];
       const images = Array.isArray(localImage) ? localImage : localImage ? [localImage] : [];
       return {

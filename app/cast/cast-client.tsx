@@ -5,7 +5,7 @@ import { type Cast } from '../data';
 import { loadManagedCasts } from '../managed-data-client';
 import { CastPortraitCard, CastProfile } from './cast-portrait';
 
-const categories = ['すべて', '1期生', '2期生 花組', '2期生 月組', 'スタッフ'];
+const categories = ['すべて', '1期生', '２期生', 'スタッフ'];
 const staffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ']);
 const isStaff = (cast: Cast) => cast.role === 'STAFF' || cast.generation === 'スタッフ' || staffNames.has(cast.name);
 
