@@ -3,11 +3,12 @@
 import { ArrowDown, ArrowRight, ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock3, DoorOpen, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { gallery, type Cast } from './data';
+import { type Cast } from './data';
 import { loadManagedCasts } from './managed-data-client';
 import { FittedName, FittedText, ImageOrPlaceholder, Modal } from '@/components/site-elements';
 import { CastProfile } from './cast/cast-portrait';
 import './pickup.css';
+import { AtmosphereGallery } from './atmosphere-gallery';
 import { HomeNews } from './news/news-client';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
@@ -16,74 +17,12 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
   const [casts, setCasts] = useState(initialCasts);
   const [selectedCast, setSelectedCast] = useState<Cast | null>(null);
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
-  const [selectedGallery, setSelectedGallery] = useState<(typeof gallery)[number] | null>(null);
-  const [isAtmosphereDragging, setIsAtmosphereDragging] = useState(false);
   const [pickupProgress, setPickupProgress] = useState(0);
-  const atmosphereRef = useRef<HTMLDivElement>(null);
-  const atmosphereBeltRef = useRef<HTMLDivElement>(null);
-  const atmosphereSetWidth = useRef(0);
-  const atmosphereOffset = useRef(0);
-  const atmosphereDrag = useRef({ active: false, startX: 0, startOffset: 0, moved: false });
   const pickupRef = useRef<HTMLDivElement>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
-  useEffect(() => {
-    let frame = 0;
-    let last = 0;
-    const measure = () => {
-      const set = atmosphereBeltRef.current?.querySelector<HTMLElement>('.luxury-atmosphere-set');
-      atmosphereSetWidth.current = set?.offsetWidth ?? 0;
-    };
-    const applyOffset = (offset: number) => {
-      const width = atmosphereSetWidth.current;
-      if (!width || !atmosphereBeltRef.current) return;
-      atmosphereOffset.current = ((offset % width) + width) % width;
-      atmosphereBeltRef.current.style.transform = `translate3d(${-atmosphereOffset.current}px,0,0)`;
-    };
-    const tick = (time: number) => {
-      if (!last) last = time;
-      const delta = time - last;
-      last = time;
-      if (!atmosphereDrag.current.active) applyOffset(atmosphereOffset.current + delta * 0.025);
-      frame = requestAnimationFrame(tick);
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    frame = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener('resize', measure);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
   const scroll = (ref: React.RefObject<HTMLDivElement | null>, direction: number) => ref.current?.scrollBy({ left: direction * ref.current.clientWidth * .8, behavior: 'smooth' });
-  const startAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!atmosphereRef.current) return;
-    atmosphereDrag.current = { active: true, startX: event.clientX, startOffset: atmosphereOffset.current, moved: false };
-    setIsAtmosphereDragging(true);
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-  const moveAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    const drag = atmosphereDrag.current;
-    const width = atmosphereSetWidth.current;
-    if (!width || !drag.active || !atmosphereBeltRef.current) return;
-    const delta = event.clientX - drag.startX;
-    if (Math.abs(delta) > 5) drag.moved = true;
-    atmosphereOffset.current = ((drag.startOffset - delta) % width + width) % width;
-    atmosphereBeltRef.current.style.transform = `translate3d(${-atmosphereOffset.current}px,0,0)`;
-  };
-  const endAtmosphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    atmosphereDrag.current.active = false;
-    setIsAtmosphereDragging(false);
-  };
-  const openGalleryItem = (item: (typeof gallery)[number]) => {
-    if (atmosphereDrag.current.moved) {
-      atmosphereDrag.current.moved = false;
-      return;
-    }
-    setSelectedGallery(item);
-  };
   const updatePickupProgress = () => {
     const el = pickupRef.current;
     if (!el) return;
@@ -110,10 +49,7 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
       </div>
     </section>
 
-    <section className="luxury-section luxury-atmosphere"><div className="luxury-section-index"><span>02</span> ATMOSPHERE</div><div className="mx-auto max-w-[1240px]">
-      <div className="luxury-heading-row"><div><p className="luxury-kicker">THE WORLD OF BAR MISAKI</p><h2 className="display luxury-section-title mt-3"><FittedText>店内の<em className="text-[#c9a1ff]">雰囲気</em></FittedText></h2></div></div>
-      <div className="luxury-full-slider luxury-atmosphere-slider mt-14"><div ref={atmosphereRef} onPointerDown={startAtmosphereDrag} onPointerMove={moveAtmosphereDrag} onPointerUp={endAtmosphereDrag} onPointerCancel={endAtmosphereDrag} onPointerLeave={(event) => { if (atmosphereDrag.current.active) endAtmosphereDrag(event); }} className={`luxury-atmosphere-track pb-4 ${isAtmosphereDragging ? 'is-dragging' : ''}`}><div ref={atmosphereBeltRef} className="luxury-atmosphere-belt">{[0, 1].map((set) => <div key={set} className="luxury-atmosphere-set">{gallery.map((item, index) => <button key={`${set}-${item.id}`} onClick={() => openGalleryItem(item)} className="luxury-gallery-card group"><ImageOrPlaceholder src={item.image} alt={item.alt} /><span className="luxury-gallery-gradient" /><span className="luxury-gallery-index">{String(index + 1).padStart(2, '0')}</span><span className="luxury-gallery-label">{item.alt}<ArrowUpRight size={18} /></span></button>)}</div>)}</div></div></div>
-    </div></section>
+    <AtmosphereGallery />
 
     <section className="luxury-section luxury-pickup"><div className="luxury-section-index"><span>03</span> CAST</div><div className="mx-auto max-w-[1240px]">
       <div className="luxury-heading-row"><div><p className="luxury-kicker">MONTHLY SELECTION</p><h2 className="display luxury-section-title mt-3"><FittedText>Pick Up <em className="text-[#c9a1ff]">Cast</em></FittedText></h2></div><Link href="/cast" className="luxury-outline-link">ALL CAST <ArrowRight size={17} /></Link></div>
@@ -128,6 +64,5 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
 
     {selectedCast && <Modal onClose={() => setSelectedCast(null)}><div className="grid overflow-hidden md:grid-cols-[.9fr_1.1fr]"><div className="min-h-[320px]"><ImageOrPlaceholder src={selectedCast.images?.length ? selectedCast.images : selectedCast.image} alt={selectedCast.name} focusFace /></div><div className="min-w-0 p-7 sm:p-10"><p className="text-xs tracking-[.2em] text-[#d7b85b]">{selectedCast.generation} {selectedCast.group} / {selectedCast.role}</p><h2 className="display mt-4 text-[clamp(1.75rem,4vw,2.6rem)]"><FittedName name={selectedCast.name} /></h2><p className="mt-8 leading-7 text-white/68">{selectedCast.message}</p><button type="button" onClick={() => { setProfileCast(selectedCast); setSelectedCast(null); }} className="primary-button mt-8 inline-flex">プロフィールを見る</button></div></div></Modal>}
     {profileCast && <CastProfile cast={profileCast} onClose={() => setProfileCast(null)} backLabel="ピックアップに戻る" />}
-    {selectedGallery && <Modal onClose={() => setSelectedGallery(null)}><div className="aspect-[16/10] overflow-hidden"><ImageOrPlaceholder src={selectedGallery.image} alt={selectedGallery.alt} /></div></Modal>}
   </main>;
 }
