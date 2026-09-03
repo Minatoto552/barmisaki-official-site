@@ -120,16 +120,26 @@ button:focus-visible, a:focus-visible { outline: 2px solid #c8a4ff; outline-offs
 
 @media (max-width: 700px) {
   .luxury-side { display: none; }
-  .luxury-hero { padding-inline: .75rem; padding-bottom: .75rem; }
-  .luxury-hero-frame { min-height: calc(100svh - 108px); }
-  .luxury-hero-copy { bottom: 8.5rem; }
-  .luxury-hero-title { font-size: clamp(4.25rem,24vw,7rem); }
+  .luxury-hero { min-height: 100svh; padding: 76px .65rem .65rem; }
+  .luxury-hero-frame { min-height: calc(100svh - 88px); }
+  .luxury-hero-copy { right: 1.1rem; bottom: 7.2rem; left: 1.1rem; max-width: none; }
+  .luxury-kicker { letter-spacing: .22em; }
+  .luxury-hero-title { font-size: clamp(4rem,21vw,5.55rem); line-height: .74; }
   .luxury-hero-title em { margin-left: 1.2rem; }
-  .luxury-seal { right: 1.2rem; bottom: 1.25rem; width: 108px; }
+  .luxury-hero-lead { margin-top: 1.45rem; padding-left: .9rem; font-size: .76rem; line-height: 1.8; }
+  .luxury-seal { right: .65rem; bottom: .65rem; width: 74px; }
+  .luxury-seal-ring::before { inset: 10px; }
+  .luxury-seal-orbit { inset: 5px; }
+  .luxury-seal-orbit text { font-size: 5.25px; letter-spacing: .06em; }
+  .luxury-seal-core { font-size: .78rem; }
+  .luxury-scroll { bottom: 1.1rem; left: 1.1rem; }
+  .luxury-manifesto,.luxury-section { padding: clamp(5rem,18vw,6.5rem) 1rem; }
+  .luxury-section-index { top: 2.15rem; left: 1rem; }
+  .luxury-about-title { font-size: clamp(2.35rem,11vw,3rem); line-height: .9; }
   .luxury-heading-row { align-items: flex-start; flex-direction: column; }
   .luxury-stat { min-height: 210px; }
-  .luxury-slider-track { scroll-padding-inline: .75rem; padding-inline: .75rem; }
-  .luxury-gallery-card { width: 91vw; min-width: 91vw; height: 62vh; }
+  .luxury-slider-track { scroll-padding-inline: 1rem; padding-inline: 1rem; }
+  .luxury-gallery-card { width: 86vw; min-width: 86vw; height: 50vh; }
   .luxury-cast-slide { width: 72vw; min-width: 72vw; }
   .luxury-cast-copy > span { display: none; }
   .luxury-slider-controls { grid-template-columns: 1fr 64px 64px; gap: .6rem; }
