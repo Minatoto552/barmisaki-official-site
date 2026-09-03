@@ -18,6 +18,12 @@ export default function MisakiPage() {
     <main className="misaki-page">
       <section className="misaki-opening" aria-labelledby="misaki-title">
         <div className="misaki-cinema">
+          <div className="misaki-opening-heading">
+            <h1 id="misaki-title">Misakiについて</h1>
+            <span className="misaki-edition">
+              海咲 −Misaki− / ORIGINAL 3D AVATAR
+            </span>
+          </div>
           <div className="misaki-film">
             <iframe
               src="https://www.youtube.com/embed/Ubmy48zaJAI?autoplay=1&mute=1&playsinline=1&rel=0&loop=1&playlist=Ubmy48zaJAI"
@@ -29,27 +35,21 @@ export default function MisakiPage() {
           </div>
         </div>
         <div className="misaki-film-details">
-          <div className="misaki-opening-heading">
-            <h1 id="misaki-title">Misakiについて</h1>
-            <span className="misaki-edition">
-              海咲 −Misaki− / ORIGINAL 3D AVATAR
-            </span>
+          <div className="misaki-film-caption">
+            <span>OFFICIAL PROMOTION FILM / LONG VER.</span>
+            <a href={videoUrl} target="_blank" rel="noreferrer">
+              YouTubeで見る <ArrowUpRight size={16} />
+            </a>
           </div>
-        <div className="misaki-film-caption">
-          <span>OFFICIAL PROMOTION FILM / LONG VER.</span>
-          <a href={videoUrl} target="_blank" rel="noreferrer">
-            YouTubeで見る <ArrowUpRight size={16} />
-          </a>
-        </div>
-        <p className="misaki-video-note">
-          海咲 -Misaki- ｜ 公式プロモーションPV（Long Ver.）
-        </p>
-        <p className="misaki-video-production">
-          PV Production{' '}
-          <a href="https://x.com/vkkoox" target="_blank" rel="noreferrer">
-            あれ。（@vkkoox） <ArrowUpRight size={13} />
-          </a>
-        </p>
+          <p className="misaki-video-note">
+            海咲 -Misaki- ｜ 公式プロモーションPV（Long Ver.）
+          </p>
+          <p className="misaki-video-production">
+            PV Production{' '}
+            <a href="https://x.com/vkkoox" target="_blank" rel="noreferrer">
+              あれ。（@vkkoox） <ArrowUpRight size={13} />
+            </a>
+          </p>
         </div>
       </section>
 

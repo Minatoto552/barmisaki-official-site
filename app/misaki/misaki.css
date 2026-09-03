@@ -40,17 +40,23 @@
   border-top: 1px solid #ffffff18;
 }
 .misaki-opening-heading {
+  position: absolute;
+  z-index: 2;
+  top: clamp(18px, 2.2vw, 34px);
+  left: clamp(24px, 4vw, 78px);
+  right: clamp(24px, 4vw, 78px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 8px 20px;
-  background: #000;
+  pointer-events: none;
+  text-shadow: 0 2px 18px #000;
 }
 .misaki-opening h1 {
   margin: 0;
   font-family: serif;
-  font-size: clamp(20px, 1.6vw, 26px);
+  font-size: clamp(19px, 1.7vw, 30px);
   font-weight: 400;
   letter-spacing: 0.05em;
 }
@@ -521,8 +527,19 @@
     font-size: 10px;
     letter-spacing: 0.14em;
   }
+  .misaki-opening-heading {
+    top: 14px;
+    left: 18px;
+    right: 18px;
+    gap: 4px 14px;
+  }
+  .misaki-opening h1 {
+    font-size: 20px;
+  }
   .misaki-edition {
     text-align: left;
+    font-size: 9px;
+    line-height: 1.5;
   }
   .misaki-film-caption,
   .misaki-video-note {
