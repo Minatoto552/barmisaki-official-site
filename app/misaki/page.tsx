@@ -1,3 +1,4 @@
+import { FittedText } from '@/components/site-elements';
 import type { Metadata } from 'next';
 import { ArrowUpRight } from 'lucide-react';
 import { externalLinks } from '../data';
@@ -60,11 +61,10 @@ export default function MisakiPage() {
       >
         <div>
           <p className="misaki-eyebrow">BEAUTY, WITH A PERSONALITY.</p>
-          <h2 id="misaki-story-title">
+          <h2 id="misaki-story-title"><FittedText>
             凛と、美しく。
-            <br />
             <em>ふと、愛らしく。</em>
-          </h2>
+          </FittedText></h2>
           <p className="misaki-story-sign display">
             海咲 <span>−Misaki−</span>
           </p>
@@ -126,11 +126,10 @@ export default function MisakiPage() {
       >
         <div className="misaki-section-heading">
           <p className="misaki-eyebrow">MADE TO BE YOURS</p>
-          <h2 id="misaki-features-title">
+          <h2 id="misaki-features-title"><FittedText>
             好きな姿へ。
-            <br className="misaki-mobile-break" />
             自然な表情のまま。
-          </h2>
+          </FittedText></h2>
           <p>
             見た目の美しさだけでなく、毎日使うアバターとしての扱いやすさまで。
             <br />
@@ -175,9 +174,9 @@ export default function MisakiPage() {
       >
         <div className="misaki-wrap misaki-section-heading">
           <p className="misaki-eyebrow">ONE MISAKI. SO MANY EXPRESSIONS.</p>
-          <h2 id="misaki-variations-title">
+          <h2 id="misaki-variations-title"><FittedText>
             同じ海咲から、<em>こんなにも自由に。</em>
-          </h2>
+          </FittedText></h2>
           <p>
             髪、衣装、メイク、そして表情。
             <br />
@@ -196,11 +195,10 @@ export default function MisakiPage() {
       >
         <div>
           <p className="misaki-eyebrow">OFFICIAL FILM & CREDITS</p>
-          <h2 id="misaki-pv-title">
+          <h2 id="misaki-pv-title"><FittedText>
             「静かなときめきを、
-            <br />
             <em>あなたに。」</em>
-          </h2>
+          </FittedText></h2>
           <p className="misaki-source">引用：VISION TOKYO 公式XのPV告知</p>
         </div>
         <div>
@@ -252,11 +250,10 @@ export default function MisakiPage() {
 
       <section className="misaki-thanks misaki-wrap">
         <p className="misaki-eyebrow">WITH LOVE & RESPECT</p>
-        <h2>
+        <h2><FittedText>
           この出会いは、
-          <br />
           <em>海咲からはじまった。</em>
-        </h2>
+        </FittedText></h2>
         <p>
           それぞれの「好き」を映せる海咲がいるから、
           <br />

@@ -115,7 +115,7 @@
 }
 .misaki-story {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: clamp(40px, 7vw, 140px);
   min-height: 90svh;
   align-items: center;
@@ -223,7 +223,7 @@
   background: linear-gradient(#100d19, #080710);
 }
 .misaki-variations h2 em {
-  display: block;
+  display: inline;
 }
 .misaki-gallery {
   width: 100%;
@@ -427,7 +427,7 @@
 }
 .misaki-pv-details {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(40px, 7vw, 140px);
   padding-block: clamp(85px, 9vw, 160px);
   border-bottom: 1px solid #ffffff18;
@@ -649,3 +649,6 @@
     transition: none;
   }
 }
+
+.misaki-page h2 { min-width: 0; white-space: nowrap; }
+.misaki-opening h1 { white-space: nowrap; }

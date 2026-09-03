@@ -4,7 +4,8 @@ import { ArrowRight, ArrowUpRight, Users } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { externalLinks } from '@/app/data';
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog } from '@base-ui/react/dialog';
+import './site-chrome.css';
 
 export const navigation = [
   { label: 'HOME', href: '/' },
@@ -26,25 +27,24 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <header className="site-header">
         <a href="/" className="site-brand" aria-label="BarMisaki ホーム">
           <img src="/barmisaki-logo.png" alt="BarMisaki" width="96" height="64" />
         </a>
         <div className="site-header-actions">
           <SocialLinks />
-          <DialogTrigger className="site-menu-toggle" aria-label="メニューを開く">Menu</DialogTrigger>
+          <Dialog.Trigger className="site-menu-toggle" aria-label="メニューを開く">Menu</Dialog.Trigger>
         </div>
       </header>
-      <DialogContent className="site-menu" showCloseButton={false}>
-        <DialogTitle className="sr-only">メインメニュー</DialogTitle>
+      <Dialog.Portal>
+      <Dialog.Backdrop className="site-menu-backdrop" />
+      <Dialog.Popup className="site-menu-panel">
+        <Dialog.Title className="sr-only">メインメニュー</Dialog.Title>
         <div className="site-menu-top">
-          <a href="/" className="site-brand" aria-label="BarMisaki ホーム" onClick={() => setOpen(false)}>
-            <img src="/barmisaki-logo.png" alt="BarMisaki" width="96" height="64" />
-          </a>
           <div className="site-header-actions">
             <SocialLinks />
-            <DialogClose className="site-menu-toggle" aria-label="メニューを閉じる">Close</DialogClose>
+            <Dialog.Close className="site-menu-toggle" aria-label="メニューを閉じる">Close</Dialog.Close>
           </div>
         </div>
         <nav className="site-menu-links" aria-label="メインナビゲーション">
@@ -54,8 +54,9 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-      </DialogContent>
-    </Dialog>
+      </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 

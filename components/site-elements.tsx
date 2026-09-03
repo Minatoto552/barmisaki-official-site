@@ -5,10 +5,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Cast } from '@/app/data';
 
 export function SectionTitle({ eyebrow, children, intro, compact = false }: { eyebrow: string; children: React.ReactNode; intro?: string; compact?: boolean }) {
-  return <div className={`mx-auto mb-10 text-center sm:mb-14 ${compact ? 'max-w-[1180px]' : 'max-w-3xl'}`}><p className="mb-3 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h2 className={`display text-4xl leading-tight sm:text-6xl ${compact ? 'whitespace-nowrap' : ''}`}>{children}</h2>{intro && <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div>;
+  return <div className={`mx-auto mb-10 text-center sm:mb-14 ${compact ? 'max-w-[1180px]' : 'max-w-3xl'}`}><p className="mb-3 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h2 className={`display text-4xl leading-tight sm:text-6xl ${compact ? 'whitespace-nowrap' : ''}`}><FittedText>{children}</FittedText></h2>{intro && <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div>;
 }
 
-export function FittedName({ name }: { name: string }) {
+export function FittedText({ children }: { children: React.ReactNode }) {
   const container = useRef<HTMLSpanElement>(null);
   const text = useRef<HTMLSpanElement>(null);
   useLayoutEffect(() => {
@@ -28,12 +28,16 @@ export function FittedName({ name }: { name: string }) {
     observer.observe(outer);
     void document.fonts.ready.then(fit);
     return () => { active = false; observer.disconnect(); };
-  }, [name]);
-  return <span ref={container} className="block w-full min-w-0 whitespace-nowrap"><span ref={text} className="inline-block">{name}</span></span>;
+  }, [children]);
+  return <span ref={container} className="block w-full min-w-0 whitespace-nowrap" style={{ contain: 'inline-size' }}><span ref={text} className="inline-block">{children}</span></span>;
+}
+
+export function FittedName({ name }: { name: string }) {
+  return <FittedText>{name}</FittedText>;
 }
 
 export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: React.ReactNode; intro?: string }) {
-  return <section className="page-hero"><div className="ambient ambient-a" /><div className="relative mx-auto max-w-4xl text-center"><p className="mb-4 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h1 className="display text-5xl leading-[1.02] sm:text-7xl">{title}</h1>{intro && <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div></section>;
+  return <section className="page-hero"><div className="ambient ambient-a" /><div className="relative mx-auto max-w-4xl text-center"><p className="mb-4 text-xs font-bold tracking-[.28em] text-[#d7b85b]">{eyebrow}</p><h1 className="display page-hero-title"><FittedText>{title}</FittedText></h1>{intro && <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{intro}</p>}</div></section>;
 }
 
 export function Placeholder({ label, className = '' }: { label: string; className?: string }) {
