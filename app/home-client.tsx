@@ -7,6 +7,7 @@ import { gallery, type Cast } from './data';
 import { loadManagedCasts } from './managed-data-client';
 import { FittedName, ImageOrPlaceholder, Modal } from '@/components/site-elements';
 import { CastProfile } from './cast/cast-portrait';
+import './pickup.css';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
