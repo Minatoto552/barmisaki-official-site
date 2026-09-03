@@ -3,7 +3,7 @@
 import { ArrowUpRight, Star, X } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type PointerEvent } from 'react';
 import type { Cast } from '../data';
-import { ImageOrPlaceholder } from '@/components/site-elements';
+import { FittedName, ImageOrPlaceholder } from '@/components/site-elements';
 
 export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: Cast; revealed: boolean; onReveal: (show: boolean) => void; onMore: () => void }) {
   const surface = useRef<HTMLDivElement>(null);
@@ -24,8 +24,8 @@ export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: C
     const rect = event.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
-    surface.current.style.setProperty('--tilt-x', `${(0.5 - y) * 14}deg`);
-    surface.current.style.setProperty('--tilt-y', `${(x - 0.5) * 16}deg`);
+    surface.current.style.setProperty('--tilt-x', `${(0.5 - y) * 5}deg`);
+    surface.current.style.setProperty('--tilt-y', `${(x - 0.5) * 6}deg`);
     surface.current.style.setProperty('--shine-x', `${x * 100}%`);
     surface.current.style.setProperty('--shine-y', `${y * 100}%`);
   }
@@ -38,16 +38,16 @@ export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: C
 
   return <article className="cast-portrait" data-revealed={revealed} onPointerEnter={(event) => { if (event.pointerType === 'mouse') onReveal(true); }} onPointerMove={tilt} onPointerLeave={reset} onPointerCancel={reset} onKeyDown={(event) => { if (event.key === 'Escape') onReveal(false); }}>
     <div ref={surface} className="cast-portrait-surface">
-      <div className="cast-portrait-photo"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace /></div>
+      <div className="cast-portrait-photo"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace loading="lazy" /></div>
       {cast.isPickup && <div className="cast-portrait-pickup"><Star size={11} fill="currentColor" aria-hidden="true" />PICK UP</div>}
       <button type="button" className="cast-portrait-reveal" aria-label={`${cast.name}の簡単な紹介を表示`} aria-expanded={revealed} aria-controls={introId} onClick={() => onReveal(true)} />
       <div className="cast-portrait-shade" />
       <div className="cast-portrait-shine" />
       <div id={introId} className="cast-portrait-intro">
         <p className="cast-portrait-role">{cast.role}</p>
-        <h2 className="display cast-portrait-name">{cast.name}</h2>
+        <h3 className="display cast-portrait-name"><FittedName name={cast.name} /></h3>
         <p className="cast-portrait-generation">{cast.generation} {cast.group}</p>
-        <button type="button" className="cast-portrait-more" aria-label={`${cast.name}の詳しい紹介を見る`} onClick={onMore}>More <ArrowUpRight size={14} aria-hidden="true" /></button>
+        <button type="button" className="cast-portrait-more" aria-label={`${cast.name}の詳しい紹介を見る`} onClick={onMore}>VIEW PROFILE <ArrowUpRight size={14} aria-hidden="true" /></button>
       </div>
     </div>
   </article>;

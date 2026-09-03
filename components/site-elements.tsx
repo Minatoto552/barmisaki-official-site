@@ -44,7 +44,7 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
   return <div className={`placeholder relative flex h-full w-full items-center justify-center overflow-hidden ${className}`}><div className="absolute inset-0 opacity-25 [background:radial-gradient(circle_at_50%_30%,#a372ff,transparent_52%)]" /><img src="/barmisaki-icon.png" alt="" className="relative w-24 rounded-full opacity-20 mix-blend-screen sm:w-32" /><span className="absolute bottom-5 left-5 text-xs font-semibold tracking-[.18em] text-white/48">{label}</span></div>;
 }
 
-export function ImageOrPlaceholder({ src, alt, className = '', focusFace = false }: { src: string | string[]; alt: string; className?: string; focusFace?: boolean }) {
+export function ImageOrPlaceholder({ src, alt, className = '', focusFace = false, loading }: { src: string | string[]; alt: string; className?: string; focusFace?: boolean; loading?: 'lazy' | 'eager' }) {
   const images = Array.isArray(src) ? src.filter(Boolean) : src ? [src] : [];
   const position = alt === 'ayadora' ? 'object-[center_22%]' : alt === 'けろ__' ? 'object-[center_35%]' : alt === 'ReruCh1' ? 'object-[58%_35%]' : alt === 'くろとら96' ? 'object-[47%_center]' : focusFace ? 'object-[center_18%]' : 'object-center';
   const [index, setIndex] = useState(0);
@@ -54,7 +54,7 @@ export function ImageOrPlaceholder({ src, alt, className = '', focusFace = false
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % images.length), 15000);
     return () => window.clearInterval(timer);
   }, [images.join('|')]);
-  return images.length ? <div className="relative h-full w-full overflow-hidden">{images.map((image, imageIndex) => <img key={image} src={image} alt={imageIndex === index ? alt : ''} aria-hidden={imageIndex === index ? undefined : true} className={`absolute inset-0 h-full w-full object-cover ${position} transition-opacity duration-[1800ms] ease-in-out ${imageIndex === index ? 'opacity-100' : 'opacity-0'} ${className}`} />)}</div> : <Placeholder label={alt} className={className} />;
+  return images.length ? <div className="relative h-full w-full overflow-hidden">{images.map((image, imageIndex) => <img key={image} src={image} loading={loading} alt={imageIndex === index ? alt : ''} aria-hidden={imageIndex === index ? undefined : true} className={`absolute inset-0 h-full w-full object-cover ${position} transition-opacity duration-[1800ms] ease-in-out ${imageIndex === index ? 'opacity-100' : 'opacity-0'} ${className}`} />)}</div> : <Placeholder label={alt} className={className} />;
 }
 
 export function CastCard({ cast, onClick, wide = false }: { cast: Cast; onClick: () => void; wide?: boolean }) {
