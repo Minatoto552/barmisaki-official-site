@@ -1,9 +1,10 @@
 'use client';
 
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Users } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { externalLinks } from '@/app/data';
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export const navigation = [
   { label: 'HOME', href: '/' },
@@ -25,28 +26,46 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[.07] bg-[#080710]/72 backdrop-blur-xl">
-      <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 sm:px-8 xl:px-[72px]">
-        <span aria-hidden="true" className="block h-11 w-[72px] shrink-0 sm:h-12" />
-        <nav className="hidden items-stretch self-stretch xl:flex" aria-label="メインナビゲーション">
-          {navigation.map((item) => {
-            const active = isActive(pathname, item.href);
-            return <a key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`ui relative flex items-center px-3.5 text-[11px] font-semibold tracking-[.09em] transition ${active ? 'text-[#c9a9ff]' : 'text-white/65 hover:text-white'}`}>{item.label}{active && <span className="absolute inset-x-3 bottom-0 h-px bg-[#9d69ff] shadow-[0_0_12px_#9d69ff]" />}</a>;
-          })}
-        </nav>
-        <div className="hidden items-center gap-3 sm:flex">
-          <a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="ui rounded-lg border border-white/15 bg-white/[.05] px-4 py-2.5 text-xs font-semibold transition hover:bg-white/10">公式X</a>
-          <a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" className="ui rounded-lg border border-white/15 bg-white/[.05] px-4 py-2.5 text-xs font-semibold transition hover:bg-white/10">グループ</a>
-          <a href="/how-to-join" className="ui rounded-lg bg-[#7b39fc] px-4 py-2.5 text-xs font-semibold shadow-[0_8px_25px_rgba(123,57,252,.32)] transition hover:bg-[#8b51ff]">参加方法</a>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <header className="site-header">
+        <a href="/" className="site-brand" aria-label="BarMisaki ホーム">
+          <img src="/barmisaki-logo.png" alt="BarMisaki" width="96" height="64" />
+        </a>
+        <div className="site-header-actions">
+          <SocialLinks />
+          <DialogTrigger className="site-menu-toggle" aria-label="メニューを開く">Menu</DialogTrigger>
         </div>
-        <button onClick={() => setOpen(true)} className="grid size-11 place-items-center rounded-xl border border-white/15 bg-white/[.04] xl:hidden" aria-label="メニューを開く"><Menu /></button>
-      </div>
-      {open && <div className="fixed inset-0 z-[90] flex min-h-dvh flex-col bg-[#06050b] p-5 xl:hidden">
-        <div className="flex items-center justify-end"><button onClick={() => setOpen(false)} className="grid size-11 place-items-center rounded-xl border border-white/15" aria-label="メニューを閉じる"><X /></button></div>
-        <nav className="my-auto flex flex-col items-center gap-5">{navigation.map((item) => { const active = isActive(pathname, item.href); return <a key={item.href} href={item.href} onClick={() => setOpen(false)} className={`display text-3xl ${active ? 'text-[#c9a9ff]' : 'text-white'}`}>{item.label}</a>; })}<a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="mt-3 rounded-xl bg-[#7b39fc] px-8 py-4 font-semibold">公式Xを見る</a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 px-8 py-4 font-semibold">グループ</a></nav>
-      </div>}
-    </header>
+      </header>
+      <DialogContent className="site-menu" showCloseButton={false}>
+        <DialogTitle className="sr-only">メインメニュー</DialogTitle>
+        <div className="site-menu-top">
+          <a href="/" className="site-brand" aria-label="BarMisaki ホーム" onClick={() => setOpen(false)}>
+            <img src="/barmisaki-logo.png" alt="BarMisaki" width="96" height="64" />
+          </a>
+          <div className="site-header-actions">
+            <SocialLinks />
+            <DialogClose className="site-menu-toggle" aria-label="メニューを閉じる">Close</DialogClose>
+          </div>
+        </div>
+        <nav className="site-menu-links" aria-label="メインナビゲーション">
+          {navigation.map((item) => (
+            <a key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined} onClick={() => setOpen(false)}>
+              <span>{item.label}</span><span className="site-menu-arrow"><ArrowRight size={18} /></span>
+            </a>
+          ))}
+        </nav>
+      </DialogContent>
+    </Dialog>
   );
+}
+
+function SocialLinks() {
+  return <div className="site-social-links">
+    <a href={externalLinks.officialX} target="_blank" rel="noreferrer" aria-label="BarMisaki 公式X" title="公式X">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3L12 14.6 5.5 22H2.3l7.9-9L1.8 2h6.5l4.5 6.7L18.9 2Zm-1.1 18h1.7L7.3 3.9H5.5L17.8 20Z" /></svg>
+    </a>
+    <a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer" aria-label="BarMisaki VRChatグループ" title="VRChatグループ"><Users size={18} /></a>
+  </div>;
 }
 
 export function SiteFooter() {

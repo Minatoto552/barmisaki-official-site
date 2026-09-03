@@ -19,7 +19,6 @@ export default function MisakiPage() {
         <div className="misaki-cinema">
           <div className="misaki-opening-heading">
             <div>
-              <p className="misaki-eyebrow">THE AVATAR BEHIND OUR NIGHTS</p>
               <h1 id="misaki-title">Misakiについて</h1>
             </div>
             <span className="misaki-edition">

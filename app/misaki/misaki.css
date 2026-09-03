@@ -1,7 +1,7 @@
 .misaki-page {
   --misaki-gold: #dec989;
   --misaki-muted: #bcb5c9;
-  padding-top: 76px;
+  padding-top: var(--site-header-height);
   overflow: clip;
   background: #030306;
 }
@@ -32,7 +32,8 @@
   background: #000;
 }
 .misaki-cinema {
-  --film-title-height: clamp(92px, 7vw, 130px);
+  --film-title-height: 64px;
+  --film-credit-height: 110px;
   position: relative;
   padding-top: var(--film-title-height);
   background: #000;
@@ -46,13 +47,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  padding: 16px clamp(24px, 4vw, 80px);
+  padding: 8px clamp(24px, 4vw, 80px);
   background: #000;
 }
 .misaki-opening h1 {
-  margin: 6px 0 0;
+  margin: 0;
   font-family: serif;
-  font-size: clamp(28px, 2.8vw, 50px);
+  font-size: clamp(24px, 2vw, 32px);
   font-weight: 400;
   letter-spacing: 0.05em;
 }
@@ -65,7 +66,8 @@
 }
 .misaki-film {
   position: relative;
-  width: 100%;
+  width: min(100%, calc((100svh - var(--site-header-height) - var(--film-title-height) - var(--film-credit-height)) * 16 / 9));
+  margin-inline: auto;
   aspect-ratio: 16/9;
   background: #000;
   border: 0;
@@ -511,6 +513,10 @@
   }
 }
 @media (max-width: 640px) {
+  .misaki-cinema {
+    --film-title-height: 56px;
+    --film-credit-height: 144px;
+  }
   .misaki-wrap {
     width: calc(100% - 40px);
   }
