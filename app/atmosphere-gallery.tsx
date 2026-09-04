@@ -19,9 +19,11 @@ const SpaceSlide = memo(function SpaceSlide({ item, index, total, position, onSe
   const active = position === 'active';
   return <div className="space-slide" data-position={position} aria-hidden={!active}>
     <button className="space-photo" tabIndex={active ? 0 : -1} aria-label={`${item.alt}を拡大表示`} onClick={() => onSelect(index)}>
+      <span className="space-photo-content">
       <Image src={imageVariant(item.image, 'display')} alt={item.alt} fill unoptimized loading={position === 'distant' ? 'lazy' : 'eager'} decoding="async" sizes="(max-width: 640px) 86vw, 58vw" draggable={false} />
       <span className="space-shade" /><span className="space-number">{number(index % total + 1)}<small> / {number(total)}</small></span>
       <span className="space-label"><small>{item.id.replaceAll('-', ' ').toUpperCase()}</small><strong>{item.alt}</strong><span>EXPLORE THE SPACE <ArrowUpRight size={15} /></span></span>
+      </span>
     </button>
   </div>;
 });

@@ -9,9 +9,15 @@
 .space-viewport:active{cursor:grabbing}
 .space-track{display:flex;align-items:center;will-change:transform}
 .space-slide{flex:0 0 min(58vw,1120px);min-width:0;padding-inline:10px}
-.space-photo{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;text-align:left;transform:scale(.76);opacity:.3;transition:transform .8s cubic-bezier(.22,.61,.36,1),opacity .8s ease;background:#12101a;border:1px solid #ffffff20;cursor:inherit}
-.space-slide[data-position=prev] .space-photo,.space-slide[data-position=next] .space-photo{transform:scale(.88);opacity:.62}
-.space-slide[data-position=active] .space-photo{transform:scale(1);opacity:1}
+/* Keep the moving frame independent of the fading photograph. The 1px inset
+   preserves the former border's content geometry without a scaled CSS border. */
+.space-photo{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;text-align:left;transform:scale(.76);transition:transform .8s cubic-bezier(.22,.61,.36,1);background:transparent;border:0;cursor:inherit;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.space-photo-content{position:absolute;inset:1px;display:block;overflow:hidden;background:#12101a;opacity:.3;transition:opacity .8s ease}
+.space-photo::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px #ffffff20;transition:none}
+.space-slide[data-position=prev] .space-photo,.space-slide[data-position=next] .space-photo{transform:scale(.88)}
+.space-slide[data-position=active] .space-photo{transform:scale(1)}
+.space-slide[data-position=prev] .space-photo-content,.space-slide[data-position=next] .space-photo-content{opacity:.62}
+.space-slide[data-position=active] .space-photo-content{opacity:1}
 .space-photo img{object-fit:cover;transform:scale(1.04);transition:transform 5s ease}
 .space-slide[data-position=active] img{transform:scale(1)}
 .space-slide[data-position=active] .space-photo:hover img{transform:scale(1.015)}
