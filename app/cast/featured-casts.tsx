@@ -7,7 +7,7 @@ import { FittedName, ImageOrPlaceholder } from '@/components/site-elements';
 import type { Cast } from '../data';
 import { AUTOPLAY_DELAY, INTERACTION_DELAY, repeatCount, slidePosition } from './featured-carousel';
 
-export function FeaturedCasts({ casts, onProfile, suspended }: { casts: Cast[]; onProfile: (cast: Cast) => void; suspended: boolean }) {
+export function FeaturedCasts({ casts, onProfile, suspended, home = false }: { casts: Cast[]; onProfile: (cast: Cast) => void; suspended: boolean; home?: boolean }) {
   const [api, setApi] = useState<CarouselApi>();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -21,7 +21,7 @@ export function FeaturedCasts({ casts, onProfile, suspended }: { casts: Cast[]; 
   const lastWheel = useRef(0);
   const members = useMemo(() => casts.slice(0, 9), [casts]);
   const slides = useMemo(() => Array.from({ length: repeatCount(members.length) }, () => members).flat(), [members]);
-  const current = active % members.length;
+  const current = members.length ? active % members.length : 0;
   const playing = !paused && !dragging && !profileFocused && !suspended && !hidden && inView && !reduced && members.length > 1;
   const interact = useCallback(() => setResumeAt(Date.now() + INTERACTION_DELAY), []);
 
@@ -58,8 +58,9 @@ export function FeaturedCasts({ casts, onProfile, suspended }: { casts: Cast[]; 
     return () => window.clearTimeout(timer);
   }, [api, playing, active, resumeAt]);
 
-  return <section ref={section} className="cast-featured" aria-labelledby="cast-featured-title">
-    <div className="cast-featured-heading"><div><p className="cast-kicker">IN THE SPOTLIGHT</p><h2 id="cast-featured-title" className="display">Pick up cast.</h2></div><div className="cast-featured-aside"><p>今月のピックアップ</p><a href="#cast-directory">すべてのキャスト <ArrowUpRight size={15} /></a></div></div>
+  return <section ref={section} className={`cast-featured ${inView ? 'feature-in-view' : ''}`} aria-labelledby="cast-featured-title">
+    <div className="cast-featured-heading"><div><p className="cast-kicker">{home ? 'MONTHLY SELECTION' : 'IN THE SPOTLIGHT'}</p><h2 id="cast-featured-title" className="display">{home ? <>Pick Up <em>Cast</em></> : 'Pick up cast.'}</h2></div><div className="cast-featured-aside"><p>今月のピックアップ</p><a href={home ? '/cast' : '#cast-directory'}>{home ? 'ALL CAST' : 'すべてのキャスト'} <ArrowUpRight size={15} /></a></div></div>
+    {members.length > 0 && <>
     <Carousel opts={{ align: 'center', containScroll: false, loop: members.length > 1, duration: reduced ? 0 : 25 }} setApi={setApi} className="cast-featured-carousel" aria-label="ピックアップキャスト" onKeyDown={interact} onWheel={(event) => {
       // Only horizontal gestures operate the carousel; vertical page scrolling stays native.
       if (Math.abs(event.deltaX) < 15 || Math.abs(event.deltaX) <= Math.abs(event.deltaY) || Date.now() - lastWheel.current < 700) return;
@@ -86,6 +87,6 @@ export function FeaturedCasts({ casts, onProfile, suspended }: { casts: Cast[]; 
         <button type="button" aria-label="次のキャスト" disabled={members.length < 2} onClick={() => { interact(); api?.scrollNext(); }}><ArrowRight size={18} /></button>
         {!reduced && members.length > 1 && <button type="button" data-playback aria-label={paused ? '自動切り替えを再開' : '自動切り替えを停止'} aria-pressed={!paused} onClick={() => { setResumeAt(0); setPaused((value) => !value); }}>{paused ? <Play size={15} /> : <Pause size={15} />}</button>}
       </div>
-    </Carousel>
+    </Carousel></>}
   </section>;
 }
