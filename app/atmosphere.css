@@ -7,7 +7,7 @@
 .space-intro{color:#a9a1b6;font-size:12px;line-height:2.2;letter-spacing:.12em;border-left:1px solid #c9a96e50;padding-left:22px}
 .space-viewport{overflow:hidden;touch-action:pan-y pinch-zoom;cursor:grab}
 .space-viewport:active{cursor:grabbing}
-.space-track{display:flex;align-items:center}
+.space-track{display:flex;align-items:center;will-change:transform}
 .space-slide{flex:0 0 min(58vw,1120px);min-width:0;padding-inline:10px}
 .space-photo{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;text-align:left;transform:scale(.76);opacity:.3;transition:transform .8s cubic-bezier(.22,.61,.36,1),opacity .8s ease;background:#12101a;border:1px solid #ffffff20;cursor:inherit}
 .space-slide[data-position=prev] .space-photo,.space-slide[data-position=next] .space-photo{transform:scale(.88);opacity:.62}
