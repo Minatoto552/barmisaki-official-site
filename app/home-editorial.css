@@ -7,7 +7,7 @@
 .home-luxury .luxury-hero-lead{max-width:480px;font-size:clamp(12px,.9vw,15px);line-height:2.1;margin-top:38px;border-color:#c9a96e;padding-left:20px}
 .home-luxury .luxury-hero-shade{background:linear-gradient(90deg,#03030755,transparent 70%),linear-gradient(0deg,#050409,transparent 25%);pointer-events:none}
 .home-luxury .luxury-hero-lines{opacity:.1}
-.home-luxury .luxury-seal{position:absolute;right:clamp(24px,4vw,75px);bottom:clamp(35px,5svh,65px);width:clamp(105px,9vw,145px);background:#a98b44;border:1px solid #dfc17a;box-shadow:none}
+.home-luxury .luxury-seal{position:fixed;right:clamp(24px,4vw,75px);bottom:clamp(35px,5svh,65px);width:clamp(105px,9vw,145px);background:#a98b44;border:1px solid #dfc17a;box-shadow:none;z-index:100}
 .home-luxury .luxury-seal:hover{transform:none;background:#bda05d}
 .home-luxury .luxury-seal-orbit{animation:none;transition:transform 1s ease}
 .home-luxury .luxury-seal:hover .luxury-seal-orbit{transform:rotate(24deg)}
