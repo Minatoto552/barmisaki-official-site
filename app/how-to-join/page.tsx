@@ -19,7 +19,7 @@ export default function HowToJoinPage() {
         <h2>{title}</h2><p>{text}</p>
         <div className="entry-step-action">
           {index === 0 && <a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="editorial-text-link">公式Xを見る <ArrowUpRight size={18} /></a>}
-          {index === 1 && (externalLinks.lotteryUrl ? <a href={externalLinks.lotteryUrl} className="editorial-button">抽選に応募する <ArrowUpRight size={18} /></a> : <div className="editorial-state-note"><StatusBadge state="soon" /><span>現在受付準備中です</span></div>)}
+          {index === 1 && (externalLinks.lotteryUrl ? <a href={externalLinks.lotteryUrl} target="_blank" rel="noreferrer" className="editorial-button">抽選に応募する <ArrowUpRight size={18} /></a> : <div className="editorial-state-note"><StatusBadge state="soon" /><span>現在受付準備中です</span></div>)}
           {index === 2 && <div className="entry-hours"><Clock3 size={18} /><div><small>OPEN HOURS</small><span>22:50 — 24:00</span></div></div>}
         </div>
       </li>)}</ol>
