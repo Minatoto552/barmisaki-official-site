@@ -11,12 +11,41 @@ const localPhotos: Photo[] = Object.entries(localCastImages).flatMap(
     (Array.isArray(images) ? images : [images]).map((src) => ({ src, name })),
 );
 const localSources = new Set(localPhotos.map((photo) => photo.src));
+const optimizedGallerySlugs = new Set([
+  'akiyuki0721',
+  'aomitsu-shishel',
+  'ayadora',
+  'bear',
+  'harukaze-ouka',
+  'kero-2',
+  'kero-3',
+  'kuragechannnn',
+  'kuragechannnn-2',
+  'kurin',
+  'kurotora96',
+  'mina-toto',
+  'misuzu',
+  'nabechi',
+  'poyo',
+  'reruch1',
+  'ringoboro',
+  'ringoboro-2',
+  'sakuraba-rui',
+  'secchan',
+  'tama',
+  'yukito',
+  'yukito-2',
+  'yukito-3',
+  'yuragi-l',
+]);
 function imageUrl(src: string, thumbnail = false) {
   if (!localSources.has(src)) return src;
-  return `/misaki-gallery/${src
+  const slug = src
     .split('/')
     .pop()
-    ?.replace(/\.[^.]+$/, '')}${thumbnail ? '-thumb' : ''}.webp`;
+    ?.replace(/\.[^.]+$/, '');
+  if (!slug || !optimizedGallerySlugs.has(slug)) return src;
+  return `/misaki-gallery/${slug}${thumbnail ? '-thumb' : ''}.webp`;
 }
 const DURATION = 9000;
 
