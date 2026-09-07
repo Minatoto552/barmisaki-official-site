@@ -21,6 +21,7 @@ export const localCastImages: Record<string, string | string[]> = {
   'みな_とと': '/cast/staff/mina-toto.png',
   'ぽよ': '/cast/staff/poyo.png',
   'くろとら96': '/cast/staff/kurotora96.png',
+  'Daphne_ダフネ': '/cast/staff/daphne.png',
   '春風桜華': '/cast/hana/harukaze-ouka.jpg',
   'Kuragechannnn': ['/cast/hana/kuragechannnn.png', '/cast/hana/kuragechannnn-2.png'],
   '雪都yukito': ['/cast/hana/yukito-3.png', '/cast/hana/yukito-2.png'],
@@ -31,7 +32,7 @@ export const localCastImages: Record<string, string | string[]> = {
   'papiko papi': '/cast/hana/papiko-papi.png',
 };
 
-const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96']);
+const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96', 'Daphne_ダフネ']);
 
 export async function loadManagedCasts(): Promise<Cast[] | null> {
   try {
