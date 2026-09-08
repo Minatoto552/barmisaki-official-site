@@ -12,6 +12,7 @@ import './cast/cast.css';
 import './home-editorial.css';
 import { AtmosphereGallery } from './atmosphere-gallery';
 import { HomeNews } from './news/news-client';
+import { LatestNewsPopup } from './news/latest-news-popup';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
@@ -23,6 +24,7 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
   useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
 
   return <main className="home-luxury overflow-hidden bg-[#07060d] text-white">
+    <LatestNewsPopup />
     <section className="luxury-hero">
       <div className="luxury-hero-frame">
         <video className="absolute inset-0 h-full w-full bg-[#080710] object-cover" autoPlay loop muted playsInline preload="auto"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4" type="video/mp4" /></video>

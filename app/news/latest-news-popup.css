@@ -1,0 +1,24 @@
+.latest-news-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:clamp(20px,4vw,56px);background:#020107b8;backdrop-filter:blur(8px);animation:latest-overlay-in .4s ease both}
+.latest-news-modal{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(310px,.88fr);width:min(940px,94vw);max-height:min(720px,88svh);overflow:hidden;border:1px solid #dfbb8a55;background:linear-gradient(135deg,#15101eea,#090812f5);box-shadow:0 28px 90px #000c,0 0 42px #a35acd1a;animation:latest-card-in .45s cubic-bezier(.22,.78,.24,1) both}
+.latest-news-modal::after{content:'';position:absolute;inset:8px;pointer-events:none;border:1px solid #f0bfd217}
+.latest-news-close{position:absolute;z-index:3;right:18px;top:18px;display:grid;place-items:center;width:44px;height:44px;border:1px solid #e7d6c14d;border-radius:50%;background:#08060cbf;color:#f8f0f6;cursor:pointer;backdrop-filter:blur(8px);transition:border-color .25s,background .25s,transform .25s}
+.latest-news-close:hover{border-color:#e5b6ce;background:#2a1727;transform:rotate(5deg)}
+.latest-news-close svg{width:19px}
+.latest-news-image{position:relative;min-height:530px;overflow:hidden;background:#0c0911}
+.latest-news-image>div{height:100%}
+.latest-news-image img{object-position:center 28%}
+.latest-news-image::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 65%,#100c19cc),linear-gradient(0deg,#08060b66,transparent 40%);pointer-events:none}
+.latest-news-image-number{position:absolute;z-index:1;left:24px;top:22px;font:italic 28px/1 var(--font-instrument),serif;color:#fff9;text-shadow:0 2px 8px #000}
+.latest-news-copy{align-self:center;padding:70px clamp(34px,5vw,68px) 56px;min-width:0}
+.latest-news-kicker{font:700 11px/1 var(--font-manrope),sans-serif;letter-spacing:.32em;color:#d9b96d}
+.latest-news-rule{display:flex;align-items:center;height:1px;margin:24px 0 28px;background:#ffffff1f}.latest-news-rule span{display:block;width:54px;height:1px;background:#dca7c8}
+.latest-news-meta{display:flex;gap:16px;align-items:center;font:11px/1.5 var(--font-manrope),sans-serif;letter-spacing:.08em;color:#b4a6bb}.latest-news-meta time{color:#d0b994}.latest-news-meta span{border-left:1px solid #ffffff32;padding-left:16px}
+.latest-news-copy h2{margin:24px 0 20px;font:400 clamp(25px,3vw,40px)/1.5 serif;color:#f8f4fa;overflow-wrap:anywhere}
+.latest-news-description{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;font-size:14px;line-height:2;color:#afa4b5}
+.latest-news-link{display:inline-flex;align-items:center;gap:32px;margin-top:34px;padding-bottom:9px;border-bottom:1px solid #d1a4bc8c;font:700 11px/1 var(--font-manrope),sans-serif;letter-spacing:.18em;color:#f5eff7;transition:gap .25s,color .25s}
+.latest-news-link:hover{gap:39px;color:#e9b7db}
+.latest-news-overlay.is-closing{animation:latest-overlay-out .38s ease both}.latest-news-overlay.is-closing .latest-news-modal{animation:latest-card-out .38s ease both}
+@keyframes latest-overlay-in{from{opacity:0}to{opacity:1}}@keyframes latest-card-in{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}@keyframes latest-overlay-out{to{opacity:0}}@keyframes latest-card-out{to{opacity:0;transform:translateY(12px)}}
+@media(max-width:700px){.latest-news-overlay{padding:14px}.latest-news-modal{grid-template-columns:1fr;width:min(400px,100%);max-height:calc(100svh - 28px);overflow-y:auto}.latest-news-image{min-height:0;aspect-ratio:16/10}.latest-news-image::after{background:linear-gradient(0deg,#100c19b8,transparent 45%)}.latest-news-image img{object-position:center 24%}.latest-news-copy{padding:30px 25px 34px}.latest-news-close{right:13px;top:13px;width:40px;height:40px}.latest-news-kicker{font-size:10px}.latest-news-rule{margin:18px 0 20px}.latest-news-copy h2{font-size:clamp(23px,7vw,31px);margin:17px 0 14px}.latest-news-description{font-size:13px;line-height:1.85}.latest-news-link{margin-top:24px}}
+@media(max-height:650px) and (min-width:701px){.latest-news-modal{max-height:94svh}.latest-news-image{min-height:450px}.latest-news-copy{padding-block:48px}.latest-news-description{-webkit-line-clamp:2}}
+@media(prefers-reduced-motion:reduce){.latest-news-overlay,.latest-news-modal,.latest-news-overlay.is-closing,.latest-news-overlay.is-closing .latest-news-modal{animation:none}.latest-news-close,.latest-news-link{transition:none}}
