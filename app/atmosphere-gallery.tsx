@@ -13,16 +13,15 @@ type Space = { id: string; image: string; alt: string };
 const number = (value: number) => String(value).padStart(2, '0');
 const imageVariant = (src: string, variant: 'display' | 'thumb') => /^\/atmosphere\/interior-\d+\.png$/.test(src) ? src.replace('.png', `-${variant}.webp`) : src;
 
-const SpaceSlide = memo(function SpaceSlide({ item, index, total, position, onSelect }: {
-  item: Space; index: number; total: number; position: string; onSelect: (index: number) => void;
+const SpaceSlide = memo(function SpaceSlide({ item, index, position, onSelect }: {
+  item: Space; index: number; position: string; onSelect: (index: number) => void;
 }) {
   const active = position === 'active';
   return <div className="space-slide" data-position={position} aria-hidden={!active}>
     <button className="space-photo" tabIndex={active ? 0 : -1} aria-label={`${item.alt}を拡大表示`} onClick={() => onSelect(index)}>
       <span className="space-photo-content">
-      <Image src={imageVariant(item.image, 'display')} alt={item.alt} fill unoptimized loading={position === 'distant' ? 'lazy' : 'eager'} decoding="async" sizes="(max-width: 640px) 86vw, 58vw" draggable={false} />
-      <span className="space-shade" /><span className="space-number">{number(index % total + 1)}<small> / {number(total)}</small></span>
-      <span className="space-label"><small>{item.id.replaceAll('-', ' ').toUpperCase()}</small><strong>{item.alt}</strong><span>EXPLORE THE SPACE <ArrowUpRight size={15} /></span></span>
+        <Image src={imageVariant(item.image, 'display')} alt={item.alt} fill unoptimized loading={position === 'distant' ? 'lazy' : 'eager'} decoding="async" sizes="(max-width: 640px) 86vw, 58vw" draggable={false} />
+        <span className="space-shade" />
       </span>
     </button>
   </div>;
@@ -109,14 +108,13 @@ export function AtmosphereGallery({ items = gallery }: { items?: Space[] }) {
     <header className="space-heading"><div><p className="space-kicker">02 / THE WORLD OF BAR MISAKI</p><h2 id="space-title">店内の<span>雰囲気</span></h2></div><p className="space-intro">光に誘われ、夜の奥へ。<br />あなたの時間が始まる場所。</p></header>
     <div className="space-carousel" role="group" tabIndex={0} aria-roledescription="カルーセル" aria-label="店内写真" onKeyDown={(e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); move(e.key === 'ArrowLeft' ? -1 : 1); } }} onFocusCapture={interact}>
       <div ref={viewport} className="space-viewport"><div className="space-track">
-        {slides.map((item, i) => <SpaceSlide key={`${item.id}-${Math.floor(i / items.length)}`} item={item} index={i} total={items.length} position={slidePosition(i, active, slides.length)} onSelect={selectSlide} />)}
+        {slides.map((item, i) => <SpaceSlide key={`${item.id}-${Math.floor(i / items.length)}`} item={item} index={i} position={slidePosition(i, active, slides.length)} onSelect={selectSlide} />)}
       </div></div>
       <div className="space-bottom"><div className="space-navigation">
-        <div className="space-mobile-caption"><small>{number(current + 1)} / {number(items.length)}</small><h3>{items[current].alt}</h3><p>BarMisakiの夜を、ここから。</p></div>
         <div className="space-controls"><span>{number(current + 1)}</span><div className="space-progress" role="progressbar" aria-label="現在の写真" aria-valuemin={1} aria-valuemax={items.length} aria-valuenow={current + 1}><i style={{ width: `${(current + 1) / items.length * 100}%` }} /></div><span className="space-total">{number(items.length)}</span><button aria-label="前の写真" onClick={() => move(-1)} disabled={items.length < 2}><ChevronLeft size={18} /></button><button aria-label="次の写真" onClick={() => move(1)} disabled={items.length < 2}><ChevronRight size={18} /></button><button aria-label={paused ? '自動再生を再開' : '自動再生を停止'} onClick={() => setPaused(!paused)}>{paused ? <Play size={14} /> : <Pause size={14} />}</button></div>
-        <div className="space-thumbnails">{items.map((item, i) => <button key={item.id} onClick={() => jump(i)} aria-label={`${number(i + 1)} ${item.alt}`} aria-current={i === current ? 'true' : undefined}><Image src={imageVariant(item.image, 'thumb')} alt="" width={240} height={135} decoding="async" unoptimized /><span>{number(i + 1)}</span></button>)}</div>
+        <div className="space-thumbnails">{items.map((item, i) => <button key={item.id} onClick={() => jump(i)} aria-label={`写真 ${number(i + 1)}`} aria-current={i === current ? 'true' : undefined}><Image src={imageVariant(item.image, 'thumb')} alt="" width={240} height={135} decoding="async" unoptimized /><span>{number(i + 1)}</span></button>)}</div>
       </div><Link className="space-join" href="/how-to-join"><small>JOIN THE NIGHT</small><span>参加方法</span><ArrowUpRight size={20} /></Link></div>
     </div>
-    {expanded !== null && <dialog ref={dialog} className="space-dialog" aria-label="店内写真の拡大表示" onCancel={close} onClose={() => setExpanded(null)} onKeyDown={(e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); setExpanded((expanded + (e.key === 'ArrowLeft' ? -1 : 1) + items.length) % items.length); } }}><div className="space-dialog-top"><span>{number(expanded + 1)} / {number(items.length)}</span><button autoFocus onClick={close}>CLOSE <X size={18} /></button></div><div className="space-dialog-photo"><Image src={items[expanded].image} alt={items[expanded].alt} fill unoptimized sizes="95vw" /></div><div className="space-dialog-bottom"><button aria-label="前の写真" onClick={() => setExpanded((expanded - 1 + items.length) % items.length)}><ChevronLeft /></button><h3>{items[expanded].alt}</h3><button aria-label="次の写真" onClick={() => setExpanded((expanded + 1) % items.length)}><ChevronRight /></button></div></dialog>}
+    {expanded !== null && <dialog ref={dialog} className="space-dialog" aria-label="店内写真の拡大表示" onCancel={close} onClose={() => setExpanded(null)} onKeyDown={(e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); setExpanded((expanded + (e.key === 'ArrowLeft' ? -1 : 1) + items.length) % items.length); } }}><div className="space-dialog-top"><span>{number(expanded + 1)} / {number(items.length)}</span><button autoFocus onClick={close}>CLOSE <X size={18} /></button></div><div className="space-dialog-photo"><Image src={items[expanded].image} alt={items[expanded].alt} fill unoptimized sizes="95vw" /></div><div className="space-dialog-bottom"><button aria-label="前の写真" onClick={() => setExpanded((expanded - 1 + items.length) % items.length)}><ChevronLeft /></button><span>{number(expanded + 1)} / {number(items.length)}</span><button aria-label="次の写真" onClick={() => setExpanded((expanded + 1) % items.length)}><ChevronRight /></button></div></dialog>}
   </section>;
 }

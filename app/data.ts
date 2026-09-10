@@ -9,14 +9,13 @@ export const casts: Cast[] = [];
 export const news: Array<{ id: string; title: string; date: string; thumbnail: string; content: string }> = [];
 
 export const gallery = [
-  { id: 'entrance', image: '/atmosphere/interior-01.png', alt: 'BarMisaki エントランス' },
-  { id: 'main-floor', image: '/atmosphere/interior-02.png', alt: 'メインフロア' },
-  { id: 'lounge-red', image: '/atmosphere/interior-03.png', alt: 'ラウンジスペース' },
-  { id: 'lounge-white', image: '/atmosphere/interior-04.png', alt: 'ボックス席' },
-  { id: 'counter', image: '/atmosphere/interior-05.png', alt: 'バーカウンター' },
-  { id: 'corridor', image: '/atmosphere/interior-06.png', alt: '店内通路' },
-  { id: 'blue-bar', image: '/atmosphere/interior-07.png', alt: 'ブルーバー' },
-  { id: 'blue-lounge', image: '/atmosphere/interior-08.png', alt: 'ブルーラウンジ' },
+  { id: 'atmosphere-01', image: '/atmosphere/interior-01.png', alt: 'BarMisaki 店内写真 01' },
+  { id: 'atmosphere-02', image: '/atmosphere/interior-02.png', alt: 'BarMisaki 店内写真 02' },
+  { id: 'atmosphere-03', image: '/atmosphere/interior-03.png', alt: 'BarMisaki 店内写真 03' },
+  { id: 'atmosphere-04', image: '/atmosphere/interior-04.png', alt: 'BarMisaki 店内写真 04' },
+  { id: 'atmosphere-05', image: '/atmosphere/interior-05.png', alt: 'BarMisaki 店内写真 05' },
+  { id: 'atmosphere-06', image: '/atmosphere/interior-06.png', alt: 'BarMisaki 店内写真 06' },
+  { id: 'atmosphere-07', image: '/atmosphere/interior-07.png', alt: 'BarMisaki 店内写真 07' },
 ];
 
 export const recruitment = {
