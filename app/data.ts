@@ -26,6 +26,7 @@ export const recruitment = {
 
 export const externalLinks = {
   officialX: 'https://x.com/BarMisaki_VRC',
+  barMisakiBot: 'https://vrchat.com/home/user/usr_73a16337-1466-465f-86ce-9c9a8f145473',
   vrcGroup: 'https://vrc.group/BARMIS.9013',
   lotteryUrl: 'https://minatoto552.github.io/bar-misaki-lottery/?release=e30fde0#/lottery',
   visionTokyoX: 'https://x.com/VisionTokyo2026?s=20',
