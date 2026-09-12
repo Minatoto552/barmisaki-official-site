@@ -4,7 +4,7 @@ import { SiteFooter, SiteHeader } from '@/components/site-chrome';
 import './globals.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+  ?? 'https://barmisaki-official-site.vercel.app';
 
 const manrope = Manrope({ variable: '--font-manrope', subsets: ['latin'] });
 const cabin = Cabin({ variable: '--font-cabin', subsets: ['latin'] });
