@@ -13,7 +13,6 @@ const localPhotos: Photo[] = Object.entries(localCastImages).flatMap(
 const localSources = new Set(localPhotos.map((photo) => photo.src));
 const optimizedGallerySlugs = new Set([
   'akiyuki0721',
-  'aomitsu-shishel',
   'ayadora',
   'bear',
   'harukaze-ouka',

@@ -28,7 +28,6 @@ export const localCastImages: Record<string, string | string[]> = {
   'Kuragechannnn': ['/cast/hana/kuragechannnn.png', '/cast/hana/kuragechannnn-2.png'],
   '雪都yukito': ['/cast/hana/yukito-3.png', '/cast/hana/yukito-2.png'],
   'けろ__': ['/cast/hana/kero-3.png', '/cast/hana/kero-2.png'],
-  'あおみつししぇる': ['/cast/hana/aomitsu-shishel-2.png', '/cast/hana/aomitsu-shishel.png'],
   'ReruCh1': '/cast/hana/reruch1.png',
   'ayadora': '/cast/hana/ayadora.png',
   'papiko papi': '/cast/hana/papiko-papi.png',
