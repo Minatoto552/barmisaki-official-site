@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: 'HOW TO JOIN | BarMisaki', descriptio
 const steps = [
   ['FRIEND REQUEST', 'インスタンスリーダーへ\nフレンド申請', '営業当日のインスタンスリーダーを、Bar Misaki公式Xにてご案内します。\n\n公式Xをご確認のうえ、案内されたインスタンスリーダーへVRChatでフレンド申請をお願いします。'],
   ['LOTTERY ENTRY', '抽選に応募', '公式Xで案内される抽選システムから応募します。'],
-  ['REQUEST INVITE', '抽選結果を確認', '当選した方は22:40〜22:50に当日のインスタンスリーダーへRequest Inviteしてください。'],
+  ['REQUEST INVITE', '抽選結果を確認', '当選した方は22:40〜22:50に、当日のインスタンスリーダーへRequest Inviteしてください。'],
 ];
 const lines = (text: string) => text.split('\n').map((line, index) => <span key={`${line}-${index}`}>{line}{index < text.split('\n').length - 1 ? <br /> : null}</span>);
 export default function HowToJoinPage() {
