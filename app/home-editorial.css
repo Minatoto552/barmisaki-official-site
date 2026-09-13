@@ -42,6 +42,13 @@
 @keyframes home-reveal{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){.home-luxury .luxury-hero{padding-top:54px}.home-luxury .luxury-hero-frame{min-height:calc(100svh - 54px)}.hero-background-slideshow img{object-position:center center}.home-luxury .luxury-hero-copy{left:22px;right:20px;max-width:none;bottom:160px}.home-luxury .luxury-hero-title{font-size:clamp(88px,24vw,150px);line-height:.8}.home-luxury .luxury-hero-title em{margin-left:25px}.home-luxury .luxury-hero-lead{font-size:11px;line-height:2;margin-top:30px;max-width:290px}.home-luxury .luxury-seal{width:92px;bottom:30px;right:22px}.home-feature .cast-featured-slide{flex-basis:82%;padding:0 8px}.home-feature .cast-featured-heading{gap:14px;align-items:end}.home-feature .cast-featured-aside p{display:none}.home-feature .cast-featured-aside a{display:inline-flex;font-size:9px;gap:8px;white-space:nowrap}.home-feature .cast-featured-heading h2{font-size:clamp(29px,7.7vw,46px)}.home-feature .cast-kicker{font-size:8px;letter-spacing:.18em}.home-feature .cast-featured-copy h3{font-size:32px}}
 @media(max-height:620px) and (min-width:641px){.home-luxury .luxury-hero-copy{bottom:65px}.home-luxury .luxury-hero-title{font-size:24svh}.home-luxury .luxury-hero-lead{margin-top:22px}}
+@media(orientation:landscape) and (max-height:620px){
+  .home-luxury .luxury-seal{right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));width:82px}
+  .home-luxury .luxury-seal-orbit{inset:5px;width:calc(100% - 10px);height:calc(100% - 10px)}
+  .home-luxury .luxury-seal-orbit text{font-size:4.3px;letter-spacing:.08em}
+  .home-luxury .luxury-seal-ring::before{inset:9px}
+  .home-luxury .luxury-seal-core{font-size:.78rem;line-height:1.05}
+}
 @media(prefers-reduced-motion:reduce){.home-luxury .luxury-hero *,.home-feature *{animation:none!important;transition:none!important}}
 /* Explicit square SVG dimensions avoid the intrinsic SVG viewport on mobile. */
 @media(max-width:640px){
