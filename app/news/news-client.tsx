@@ -2,6 +2,9 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
+import remarkGfm from 'remark-gfm';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Search, X } from 'lucide-react';
 import { EditorialHeading, StatusBadge } from '@/components/editorial';
 import { ImageOrPlaceholder } from '@/components/site-elements';
@@ -48,8 +51,13 @@ export function NewsArchive() {
     {news.length === 0 ? <NewsState status={status} retry={retry} /> : filtered.length === 0 ? <div className="news-empty"><p>条件に一致するお知らせがありません。</p><button className="editorial-text-link" onClick={() => { setCategory('ALL'); setQuery(''); }}>絞り込みを解除 <ArrowRight size={16} /></button></div> : <><NewsRows items={filtered.slice(0, limit)} />{filtered.length > limit && <div className="news-load-more"><button className="editorial-text-link" onClick={() => setLimit((value) => value + 8)}>さらにお知らせを表示 <ArrowRight size={18} /></button><span>{Math.min(limit, filtered.length)} / {filtered.length}</span></div>}</>}
   </>;
 }
-function LinkedText({ text }: { text: string }) {
-  return <>{text.split(/(https?:\/\/[^\s<>]+)/g).map((part, index) => /^https?:\/\//.test(part) ? <a href={part} key={index} target="_blank" rel="noreferrer">{part}</a> : part)}</>;
+function MarkdownArticle({ content }: { content: string }) {
+  return <ReactMarkdown
+    remarkPlugins={[remarkGfm, remarkBreaks]}
+    components={{
+      a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
+    }}
+  >{content}</ReactMarkdown>;
 }
 export function NewsArticle() {
   const { news, status, retry } = useNews();
@@ -57,5 +65,5 @@ export function NewsArticle() {
   const id = search === null ? null : new URLSearchParams(search).get('id') || '';
   const item = news.find((entry) => entry.id === id || entry.slug === id);
   useEffect(() => { if (item) document.title = `${item.title} | BarMisaki`; }, [item]);
-  return <main className="editorial-page news-detail-page"><article className="news-detail"><Link href="/news" className="editorial-text-link"><ArrowLeft size={16} /> お知らせ一覧へ</Link>{status === 'loading' || id === null ? <NewsState status="loading" retry={retry} /> : status === 'error' ? <NewsState status={status} retry={retry} /> : !item ? <div className="news-empty"><h1>お知らせが見つかりません</h1><p>公開が終了したか、削除された可能性があります。</p></div> : <><header className="news-detail-heading"><p className="editorial-kicker">NEWS</p><NewsMeta item={item} /><h1>{item.title}</h1></header>{item.thumbnail && <div className="news-detail-image"><Image unoptimized src={item.thumbnail} alt={item.title} width={1600} height={1000} /></div>}<div className="news-detail-body"><LinkedText text={item.content} /></div><Link href="/news" className="editorial-text-link">BACK TO NEWS <ArrowRight size={18} /></Link></>}</article></main>;
+  return <main className="editorial-page news-detail-page"><article className="news-detail"><Link href="/news" className="editorial-text-link"><ArrowLeft size={16} /> お知らせ一覧へ</Link>{status === 'loading' || id === null ? <NewsState status="loading" retry={retry} /> : status === 'error' ? <NewsState status={status} retry={retry} /> : !item ? <div className="news-empty"><h1>お知らせが見つかりません</h1><p>公開が終了したか、削除された可能性があります。</p></div> : <><header className="news-detail-heading"><p className="editorial-kicker">NEWS</p><NewsMeta item={item} /><h1>{item.title}</h1></header>{item.thumbnail && <div className="news-detail-image"><Image unoptimized src={item.thumbnail} alt={item.title} width={1600} height={1000} /></div>}<div className="news-detail-body"><MarkdownArticle content={item.content} /></div><Link href="/news" className="editorial-text-link">BACK TO NEWS <ArrowRight size={18} /></Link></>}</article></main>;
 }
