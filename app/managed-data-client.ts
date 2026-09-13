@@ -38,6 +38,7 @@ export const localCastImages: Record<string, string | string[]> = {
   'usagi210': '/cast/hana/usagi210.webp',
   'ビタミンC不足': '/cast/hana/vitamin-c.png',
   '辻_tsuji': '/cast/hana/tsuji.png',
+  '眠猫なつね': '/cast/hana/nemuri-neko-natsune.png',
 };
 
 const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96', 'Daphne_ダフネ', 'フジジ_Ge', 'J1R0K3N']);
