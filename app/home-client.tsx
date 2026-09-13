@@ -16,6 +16,33 @@ import { LatestNewsPopup } from './news/latest-news-popup';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
+const heroPhotos = [
+  '/hero/group-2026-09-12.webp',
+];
+
+function HeroBackgroundSlideshow({ photos = heroPhotos }: { photos?: string[] }) {
+  const availablePhotos = photos.length ? photos : ['/atmosphere/interior-01-display.webp'];
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (availablePhotos.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const interval = window.setInterval(() => setActive((current) => (current + 1) % availablePhotos.length), 5000);
+    return () => window.clearInterval(interval);
+  }, [availablePhotos.length]);
+
+  return <div className={`hero-background-slideshow${availablePhotos.length < 2 ? ' is-static' : ''}`} aria-hidden="true">
+    {availablePhotos.map((photo, index) => <img
+      key={photo}
+      src={photo}
+      alt=""
+      className={index === active ? 'is-active' : ''}
+      fetchPriority={index === 0 ? 'high' : 'auto'}
+      loading={index < 2 ? 'eager' : 'lazy'}
+      decoding="async"
+    />)}
+  </div>;
+}
+
 export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsItem[] }) {
   const [casts, setCasts] = useState(initialCasts);
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
@@ -27,7 +54,7 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
     <LatestNewsPopup />
     <section className="luxury-hero">
       <div className="luxury-hero-frame">
-        <video className="absolute inset-0 h-full w-full bg-[#080710] object-cover" autoPlay loop muted playsInline preload="auto"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4" type="video/mp4" /></video>
+        <HeroBackgroundSlideshow />
         <div className="home-ambient" aria-hidden="true" /><div className="luxury-hero-shade" /><div className="luxury-hero-lines" aria-hidden="true" />
         <div className="luxury-hero-copy"><p className="luxury-kicker">VRCHAT ORIGINAL BAR EVENT</p><h1 className="display luxury-hero-title"><span>Bar</span><em>Misaki</em></h1><p className="luxury-hero-lead">キャストもスタッフも、みんな海咲ちゃん。<br className="hidden sm:block" />月に二度だけ扉が開く、上品で少し不思議な夜。</p></div>
         <Link href="/how-to-join" className="luxury-seal"><span className="luxury-seal-ring" /><svg className="luxury-seal-orbit" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="join-seal-orbit" d="M60 60 m -47 0 a 47 47 0 1 1 94 0 a 47 47 0 1 1 -94 0" /></defs><text textAnchor="middle"><textPath href="#join-seal-orbit" startOffset="50%">JOIN BAR MISAKI · CHECK THE ENTRY GUIDE ·</textPath></text></svg><span className="luxury-seal-core">参加<br />方法</span></Link>
