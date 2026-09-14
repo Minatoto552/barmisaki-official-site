@@ -40,6 +40,7 @@ export const localCastImages: Record<string, string | string[]> = {
   '辻_tsuji': '/cast/hana/tsuji.png',
   '眠猫なつね': '/cast/hana/nemuri-neko-natsune.png',
   '雪空すばる': '/cast/hana/yukisora-subaru.png',
+  'りゅー16': '/cast/hana/ryu-16.png',
 };
 
 const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96', 'Daphne_ダフネ', 'フジジ_Ge', 'J1R0K3N']);
