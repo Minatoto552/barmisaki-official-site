@@ -16,6 +16,10 @@ export function isNewNews(date: string, now = Date.now()) {
   return newsDateValue(date) > 0 && age >= 0 && age < 7 * 86400000;
 }
 const text = (value: unknown) => typeof value === 'string' ? value : '';
+const localNewsImages: Record<string, string> = {
+  '2a24e646-1c60-4630-9b4c-73ef6cec4960': '/news/second-generation-introduction.png',
+  'bb4820a6-e6f1-4b4d-a0e4-6ed18f3a898f': '/news/open-today-2026-09-18.png',
+};
 export function normalizeNews(raw: unknown): NewsItem[] {
   const records = Array.isArray(raw) ? raw : raw && typeof raw === 'object' ? Object.entries(raw).map(([id, value]) => value && typeof value === 'object' ? { ...value, id } : null) : [];
   return records.flatMap((record): NewsItem[] => {
@@ -27,7 +31,7 @@ export function normalizeNews(raw: unknown): NewsItem[] {
     const categoryValue = text(item.category);
     const category = newsCategories.find(([key, label]) => key === categoryValue.toUpperCase() || label === categoryValue)?.[0] || 'INFORMATION';
     const content = text(item.content);
-    const thumbnail = text(item.thumbnailUrl || item.thumbnail);
+    const thumbnail = localNewsImages[id] || text(item.thumbnailUrl || item.thumbnail);
     return [{ id, slug: text(item.slug) || id, title, date: text(item.date), category,
       content, summary: text(item.summary) || content.replace(/\s+/g, ' ').slice(0, 150),
       thumbnail: /^(https?:\/\/|\/(?!\/)|data:image\/(png|jpeg|webp);base64,)/i.test(thumbnail) ? thumbnail : '',
