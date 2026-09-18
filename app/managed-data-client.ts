@@ -24,6 +24,7 @@ export const localCastImages: Record<string, string | string[]> = {
   'Daphne_ダフネ': '/cast/staff/daphne.png',
   'フジジ_Ge': '/cast/staff/fujiji-ge.png',
   'J1R0K3N': '/cast/staff/j1r0k3n.webp',
+  'vimヲ': '/cast/staff/vimwo.png',
   '春風桜華': '/cast/hana/harukaze-ouka.jpg',
   'Kuragechannnn': ['/cast/hana/kuragechannnn.png', '/cast/hana/kuragechannnn-2.png'],
   '雪都yukito': ['/cast/hana/yukito-3.png', '/cast/hana/yukito-2.png'],
