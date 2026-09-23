@@ -12,6 +12,7 @@ export const navigation = [
   { label: 'Misakiについて', href: '/misaki' },
   { label: 'CAST', href: '/cast' },
   { label: 'NEWS', href: '/news' },
+  { label: 'ALBUM', href: '/album' },
   { label: 'HOW TO JOIN', href: '/how-to-join' },
   { label: 'RECRUIT', href: '/recruit' },
   { label: 'RULE', href: '/rule' },

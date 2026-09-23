@@ -13,6 +13,7 @@ import './home-editorial.css';
 import { AtmosphereGallery } from './atmosphere-gallery';
 import { HomeNews } from './news/news-client';
 import { LatestNewsPopup } from './news/latest-news-popup';
+import { latestAlbumPhotos, loadAlbums } from './album/album-data';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
@@ -45,16 +46,23 @@ function HeroBackgroundSlideshow({ photos = heroPhotos }: { photos?: string[] })
 
 export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsItem[] }) {
   const [casts, setCasts] = useState(initialCasts);
+  const [heroAlbumPhotos, setHeroAlbumPhotos] = useState<string[]>(heroPhotos);
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
-  useEffect(() => { void loadManagedCasts().then((data) => data && setCasts(data)); }, []);
+  useEffect(() => {
+    void loadManagedCasts().then((data) => data && setCasts(data));
+    void loadAlbums().then((albums) => {
+      const latest = latestAlbumPhotos(albums);
+      if (latest.length) setHeroAlbumPhotos(latest);
+    });
+  }, []);
 
   return <main className="home-luxury overflow-hidden bg-[#07060d] text-white">
     <LatestNewsPopup />
     <section className="luxury-hero">
       <div className="luxury-hero-frame">
-        <HeroBackgroundSlideshow />
+        <HeroBackgroundSlideshow photos={heroAlbumPhotos} />
         <div className="home-ambient" aria-hidden="true" /><div className="luxury-hero-shade" /><div className="luxury-hero-lines" aria-hidden="true" />
         <div className="luxury-hero-copy"><p className="luxury-kicker">VRCHAT ORIGINAL BAR EVENT</p><h1 className="display luxury-hero-title"><span>Bar</span><em>Misaki</em></h1><p className="luxury-hero-lead">キャストもスタッフも、みんな海咲ちゃん。<br className="hidden sm:block" />月に二度だけ扉が開く、上品で少し不思議な夜。</p></div>
         <Link href="/how-to-join" className="luxury-seal"><span className="luxury-seal-ring" /><svg className="luxury-seal-orbit" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="join-seal-orbit" d="M60 60 m -47 0 a 47 47 0 1 1 94 0 a 47 47 0 1 1 -94 0" /></defs><text textAnchor="middle"><textPath href="#join-seal-orbit" startOffset="50%">JOIN BAR MISAKI · CHECK THE ENTRY GUIDE ·</textPath></text></svg><span className="luxury-seal-core">参加<br />方法</span></Link>
