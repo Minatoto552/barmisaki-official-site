@@ -17,12 +17,8 @@ import { latestAlbumPhotos, loadAlbums } from './album/album-data';
 
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
-const heroPhotos = [
-  '/hero/group-2026-09-12.webp',
-];
-
-function HeroBackgroundSlideshow({ photos = heroPhotos }: { photos?: string[] }) {
-  const availablePhotos = photos.length ? photos : ['/atmosphere/interior-01-display.webp'];
+function HeroBackgroundSlideshow({ photos }: { photos: string[] }) {
+  const availablePhotos = photos;
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -53,9 +49,7 @@ export function HomeClient({
   initialHeroPhotos: string[];
 }) {
   const [casts, setCasts] = useState(initialCasts);
-  const [heroAlbumPhotos, setHeroAlbumPhotos] = useState<string[]>(
-    initialHeroPhotos.length ? initialHeroPhotos : heroPhotos,
-  );
+  const [heroAlbumPhotos, setHeroAlbumPhotos] = useState<string[]>(initialHeroPhotos);
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
@@ -63,7 +57,7 @@ export function HomeClient({
     void loadManagedCasts().then((data) => data && setCasts(data));
     void loadAlbums().then((albums) => {
       const latest = latestAlbumPhotos(albums);
-      setHeroAlbumPhotos(latest.length ? latest : heroPhotos);
+      setHeroAlbumPhotos(latest);
     });
   }, []);
 
