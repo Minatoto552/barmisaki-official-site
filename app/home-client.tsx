@@ -44,9 +44,18 @@ function HeroBackgroundSlideshow({ photos = heroPhotos }: { photos?: string[] })
   </div>;
 }
 
-export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsItem[] }) {
+export function HomeClient({
+  casts: initialCasts,
+  initialHeroPhotos,
+}: {
+  casts: Cast[];
+  news: NewsItem[];
+  initialHeroPhotos: string[];
+}) {
   const [casts, setCasts] = useState(initialCasts);
-  const [heroAlbumPhotos, setHeroAlbumPhotos] = useState<string[]>(heroPhotos);
+  const [heroAlbumPhotos, setHeroAlbumPhotos] = useState<string[]>(
+    initialHeroPhotos.length ? initialHeroPhotos : heroPhotos,
+  );
   const [profileCast, setProfileCast] = useState<Cast | null>(null);
   const pickups = useMemo(() => casts.filter((cast) => cast.isPickup).sort((a, b) => (a.pickupOrder ?? 99) - (b.pickupOrder ?? 99)), [casts]);
 
@@ -54,7 +63,7 @@ export function HomeClient({ casts: initialCasts }: { casts: Cast[]; news: NewsI
     void loadManagedCasts().then((data) => data && setCasts(data));
     void loadAlbums().then((albums) => {
       const latest = latestAlbumPhotos(albums);
-      if (latest.length) setHeroAlbumPhotos(latest);
+      setHeroAlbumPhotos(latest.length ? latest : heroPhotos);
     });
   }, []);
 
