@@ -27,8 +27,23 @@ function HeroBackgroundSlideshow({ photos }: { photos: string[] }) {
     setActive(0);
     setFirstPhotoLoaded(false);
     setRevealDelayElapsed(false);
+
+    const firstPhoto = availablePhotos[0];
+    if (!firstPhoto) return;
+
+    const preload = new Image();
+    const markLoaded = () => setFirstPhotoLoaded(true);
+    preload.addEventListener('load', markLoaded);
+    preload.addEventListener('error', markLoaded);
+    preload.src = firstPhoto;
+    if (preload.complete) markLoaded();
+
     const revealTimer = window.setTimeout(() => setRevealDelayElapsed(true), 700);
-    return () => window.clearTimeout(revealTimer);
+    return () => {
+      window.clearTimeout(revealTimer);
+      preload.removeEventListener('load', markLoaded);
+      preload.removeEventListener('error', markLoaded);
+    };
   }, [availablePhotos]);
 
   useEffect(() => {
