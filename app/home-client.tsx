@@ -20,6 +20,16 @@ type NewsItem = { id: string; title: string; date: string; thumbnail: string; co
 function HeroBackgroundSlideshow({ photos }: { photos: string[] }) {
   const availablePhotos = photos;
   const [active, setActive] = useState(0);
+  const [firstPhotoLoaded, setFirstPhotoLoaded] = useState(false);
+  const [revealDelayElapsed, setRevealDelayElapsed] = useState(false);
+
+  useEffect(() => {
+    setActive(0);
+    setFirstPhotoLoaded(false);
+    setRevealDelayElapsed(false);
+    const revealTimer = window.setTimeout(() => setRevealDelayElapsed(true), 700);
+    return () => window.clearTimeout(revealTimer);
+  }, [availablePhotos]);
 
   useEffect(() => {
     if (availablePhotos.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -27,12 +37,16 @@ function HeroBackgroundSlideshow({ photos }: { photos: string[] }) {
     return () => window.clearInterval(interval);
   }, [availablePhotos.length]);
 
-  return <div className={`hero-background-slideshow${availablePhotos.length < 2 ? ' is-static' : ''}`} aria-hidden="true">
+  const isReady = firstPhotoLoaded && revealDelayElapsed;
+
+  return <div className={`hero-background-slideshow${isReady ? ' is-ready' : ''}`} aria-hidden="true">
     {availablePhotos.map((photo, index) => <img
       key={photo}
       src={photo}
       alt=""
       className={index === active ? 'is-active' : ''}
+      onLoad={index === 0 ? () => setFirstPhotoLoaded(true) : undefined}
+      onError={index === 0 ? () => setFirstPhotoLoaded(true) : undefined}
       fetchPriority={index === 0 ? 'high' : 'auto'}
       loading={index < 2 ? 'eager' : 'lazy'}
       decoding="async"

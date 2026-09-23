@@ -2,8 +2,8 @@
 .home-luxury .luxury-hero-frame{min-height:calc(100svh - 64px);border-color:#ffffff12;background:#090713}
 .hero-background-slideshow{position:absolute;inset:0;overflow:hidden;background:#090713}
 .hero-background-slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity 1.25s ease;will-change:opacity}
-.hero-background-slideshow img.is-active{opacity:1}
-.hero-background-slideshow.is-static img{transition:none}
+.hero-background-slideshow.is-ready img.is-active{opacity:1}
+@media(prefers-reduced-motion:reduce){.hero-background-slideshow img{transition:none}}
 .home-ambient{position:absolute;inset:-6%;pointer-events:none;background:radial-gradient(ellipse at 28% 60%,#7b3bbb45,transparent 48%),linear-gradient(100deg,transparent 12%,#9c71d514 18%,transparent 20%,#60529716 30%,transparent 44%);animation:home-light 18s ease-in-out infinite alternate}
 .home-luxury .luxury-hero-copy{left:clamp(24px,6vw,110px);bottom:clamp(90px,12svh,150px);max-width:78%}
 .home-luxury .luxury-hero-title{font-size:clamp(100px,min(18vw,25svh),290px);line-height:.75;letter-spacing:-.055em;margin-top:25px;font-weight:400}
