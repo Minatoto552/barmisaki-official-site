@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { normalizeNews, type NewsItem } from './news-data';
 
 // Same Firebase collection used by the existing admin news editor.
-const endpoint = 'https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/news.json';
+const endpoint = '/api/content/news';
 export function useNews() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');

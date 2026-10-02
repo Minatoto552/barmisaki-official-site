@@ -1,6 +1,9 @@
 import type { Cast } from './data';
 
-const endpoint = 'https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content.json';
+// Keep Firebase behind the official-site origin. Some browsers/extensions block
+// direct requests to firebasedatabase.app, which previously emptied every
+// managed section at once.
+const endpoint = '/api/content/all';
 
 type ManagedCast = {
   id: string; name: string; category: string; role: string; imageUrl?: string;
