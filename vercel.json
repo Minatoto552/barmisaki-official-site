@@ -1,15 +1,15 @@
 {
   "rewrites": [
     {
-      "source": "/api/content/all",
+      "source": "/site-data/snapshot.json",
       "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content.json"
     },
     {
-      "source": "/api/content/news",
+      "source": "/site-data/news.json",
       "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/news.json"
     },
     {
-      "source": "/api/content/albums",
+      "source": "/site-data/albums.json",
       "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/albums.json"
     }
   ]

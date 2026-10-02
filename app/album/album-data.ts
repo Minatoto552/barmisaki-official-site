@@ -8,7 +8,7 @@ export type AlbumPhoto = {
 };
 
 const firebaseEndpoint = 'https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/albums.json';
-const endpoint = () => typeof window === 'undefined' ? firebaseEndpoint : '/api/content/albums';
+const endpoint = () => typeof window === 'undefined' ? firebaseEndpoint : '/site-data/albums.json';
 const validImage = /^(https?:\/\/|\/(?!\/)|data:image\/(png|jpeg|webp);base64,)/i;
 const browserFallback: AlbumPhoto[] = [{
   id: 'latest-album-fallback',

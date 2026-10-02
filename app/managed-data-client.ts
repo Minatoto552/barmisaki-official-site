@@ -3,7 +3,7 @@ import type { Cast } from './data';
 // Keep Firebase behind the official-site origin. Some browsers/extensions block
 // direct requests to firebasedatabase.app, which previously emptied every
 // managed section at once.
-const endpoint = '/api/content/all';
+const endpoint = '/site-data/snapshot.json';
 
 type ManagedCast = {
   id: string; name: string; category: string; role: string; imageUrl?: string;
