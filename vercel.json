@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/site-data/casts.json",
+      "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/casts.json"
+    },
+    {
       "source": "/site-data/snapshot.json",
       "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content.json"
     },

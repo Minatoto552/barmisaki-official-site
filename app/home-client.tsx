@@ -18,50 +18,51 @@ import { latestAlbumPhotos, loadAlbums } from './album/album-data';
 type NewsItem = { id: string; title: string; date: string; thumbnail: string; content: string };
 
 function HeroBackgroundSlideshow({ photos }: { photos: string[] }) {
-  const availablePhotos = photos;
+  const [layers, setLayers] = useState<[string, string]>(['', '']);
   const [active, setActive] = useState(0);
-  const [firstPhotoLoaded, setFirstPhotoLoaded] = useState(false);
-  const [revealDelayElapsed, setRevealDelayElapsed] = useState(false);
-
+  const photoKey = JSON.stringify(photos);
   useEffect(() => {
-    setActive(0);
-    setFirstPhotoLoaded(false);
-    setRevealDelayElapsed(false);
-
-    const firstPhoto = availablePhotos[0];
-    if (!firstPhoto) return;
-
-    const preload = new Image();
-    const markLoaded = () => setFirstPhotoLoaded(true);
-    preload.addEventListener('load', markLoaded);
-    preload.addEventListener('error', markLoaded);
-    preload.src = firstPhoto;
-    if (preload.complete) markLoaded();
-
-    const revealTimer = window.setTimeout(() => setRevealDelayElapsed(true), 700);
-    return () => {
-      window.clearTimeout(revealTimer);
-      preload.removeEventListener('load', markLoaded);
-      preload.removeEventListener('error', markLoaded);
+    const availablePhotos: string[] = JSON.parse(photoKey);
+    if (!availablePhotos.length) return;
+    let cancelled = false;
+    let timer: number | undefined;
+    const ready = availablePhotos.map((src) => {
+      const image = new window.Image();
+      image.src = src;
+      return image.decode().then(() => src).catch(() => null);
+    });
+    const start = async () => {
+      const first = await ready[0];
+      if (cancelled || !first) return;
+      setLayers([first, '']);
+      setActive(0);
+      if (availablePhotos.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let index = 0;
+      let layer = 0;
+      const advance = async () => {
+        index = (index + 1) % availablePhotos.length;
+        const next = await ready[index];
+        if (cancelled) return;
+        if (next) {
+          layer = layer === 0 ? 1 : 0;
+          const nextLayer = layer;
+          setLayers((current) => nextLayer === 0 ? [next, current[1]] : [current[0], next]);
+          setActive(nextLayer);
+        }
+        timer = window.setTimeout(advance, 5000);
+      };
+      timer = window.setTimeout(advance, 5000);
     };
-  }, [availablePhotos]);
+    void start();
+    return () => { cancelled = true; window.clearTimeout(timer); };
+  }, [photoKey]);
 
-  useEffect(() => {
-    if (availablePhotos.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const interval = window.setInterval(() => setActive((current) => (current + 1) % availablePhotos.length), 5000);
-    return () => window.clearInterval(interval);
-  }, [availablePhotos.length]);
-
-  const isReady = firstPhotoLoaded && revealDelayElapsed;
-
-  return <div className={`hero-background-slideshow${isReady ? ' is-ready' : ''}`} aria-hidden="true">
-    {availablePhotos.map((photo, index) => <img
-      key={photo}
+  return <div className="hero-background-slideshow" aria-hidden="true">
+    {layers.map((photo, index) => photo && <img
+      key={index}
       src={photo}
       alt=""
       className={index === active ? 'is-active' : ''}
-      onLoad={index === 0 ? () => setFirstPhotoLoaded(true) : undefined}
-      onError={index === 0 ? () => setFirstPhotoLoaded(true) : undefined}
       fetchPriority={index === 0 ? 'high' : 'auto'}
       loading={index < 2 ? 'eager' : 'lazy'}
       decoding="async"
@@ -86,7 +87,7 @@ export function HomeClient({
     void loadManagedCasts().then((data) => data && setCasts(data));
     void loadAlbums().then((albums) => {
       const latest = latestAlbumPhotos(albums);
-      setHeroAlbumPhotos(latest);
+      if (latest.length) setHeroAlbumPhotos(latest);
     });
   }, []);
 

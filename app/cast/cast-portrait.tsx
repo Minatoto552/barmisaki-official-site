@@ -38,7 +38,7 @@ export function CastPortraitCard({ cast, revealed, onReveal, onMore }: { cast: C
 
   return <article className="cast-portrait" data-revealed={revealed} onPointerEnter={(event) => { if (event.pointerType === 'mouse') onReveal(true); }} onPointerMove={tilt} onPointerLeave={reset} onPointerCancel={reset} onKeyDown={(event) => { if (event.key === 'Escape') onReveal(false); }}>
     <div ref={surface} className="cast-portrait-surface">
-      <div className="cast-portrait-photo"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace loading="lazy" /></div>
+      <div className="cast-portrait-photo"><ImageOrPlaceholder src={cast.images?.length ? cast.images : cast.image} alt={cast.name} focusFace preview loading="lazy" /></div>
       {cast.isPickup && <div className="cast-portrait-pickup"><Star size={11} fill="currentColor" aria-hidden="true" />PICK UP</div>}
       <button type="button" className="cast-portrait-reveal" aria-label={`${cast.name}の簡単な紹介を表示`} aria-expanded={revealed} aria-controls={introId} onClick={() => onReveal(true)} />
       <div className="cast-portrait-shade" />

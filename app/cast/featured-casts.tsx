@@ -71,7 +71,7 @@ export function FeaturedCasts({ casts, onProfile, suspended, home = false }: { c
       <CarouselContent className="cast-featured-track">
         {slides.map((cast, index) => <CarouselItem key={`${cast.id}-${index}`} className="cast-featured-slide" aria-label={`${index % members.length + 1} / ${members.length}：${cast.name}`} aria-hidden={index !== active} data-active={index === active} data-position={slidePosition(index, active, slides.length)}>
           <article className="cast-featured-card">
-            <div className="cast-featured-image"><ImageOrPlaceholder src={cast.images?.[0] || cast.image} alt={cast.name} focusFace loading={index === active ? 'eager' : 'lazy'} /></div>
+            <div className="cast-featured-image"><ImageOrPlaceholder src={cast.images?.[0] || cast.image} alt={cast.name} focusFace preview loading={index === active ? 'eager' : 'lazy'} /></div>
             <div className="cast-featured-scrim" />
             <span className="cast-featured-number">{String(index % members.length + 1).padStart(2, '0')}</span><span className="cast-featured-badge">PICK UP</span>
             {index !== active && <button className="cast-featured-select" type="button" tabIndex={-1} aria-label={`${cast.name}を中央に表示`} onClick={() => { interact(); api?.scrollTo(index); }} />}
