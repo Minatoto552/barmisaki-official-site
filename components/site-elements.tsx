@@ -46,7 +46,7 @@ export function Placeholder({ label, className = '' }: { label: string; classNam
 
 export function ImageOrPlaceholder({ src, alt, className = '', focusFace = false, loading, preview = false }: { src: string | string[]; alt: string; className?: string; focusFace?: boolean; loading?: 'lazy' | 'eager'; preview?: boolean }) {
   const images = Array.isArray(src) ? src.filter(Boolean) : src ? [src] : [];
-  const position = alt === 'ayadora' ? 'object-[center_22%]' : alt === 'けろ__' ? 'object-[center_35%]' : alt === 'ReruCh1' ? 'object-[58%_35%]' : alt === 'くろとら96' ? 'object-[47%_center]' : focusFace ? 'object-[center_18%]' : 'object-center';
+  const position = alt === 'えありーー' ? 'object-[35%_center]' : alt === '東雲つばき' ? 'object-[47%_center]' : alt === 'ひぃらぎ' ? 'object-[45%_center]' : alt === 'ayadora' ? 'object-[center_22%]' : alt === 'けろ__' ? 'object-[center_35%]' : alt === 'ReruCh1' ? 'object-[58%_35%]' : alt === 'くろとら96' ? 'object-[47%_center]' : focusFace ? 'object-[center_18%]' : 'object-center';
   const [index, setIndex] = useState(0);
   useEffect(() => {
     setIndex(0);

@@ -44,6 +44,13 @@ export const localCastImages: Record<string, string | string[]> = {
   '眠猫なつね': '/cast/hana/nemuri-neko-natsune.png',
   '雪空すばる': '/cast/hana/yukisora-subaru.png',
   'りゅー16': '/cast/hana/ryu-16.png',
+  'えありーー': '/cast/hana-late/airy-lossless.webp',
+  '流歌': '/cast/staff/ruka-lossless.webp',
+  'あるふぉんす': '/cast/hana-late/alphonse-lossless.webp',
+  'ゆきてゃ': '/cast/hana-late/yukitya-lossless.webp',
+  '東雲つばき': '/cast/hana-late/shinonome-tsubaki-lossless.webp',
+  'mina': '/cast/hana-late/mina-lossless.webp',
+  'ひぃらぎ': '/cast/hana-late/hiiragi-lossless.webp',
 };
 
 const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96', 'Daphne_ダフネ', 'フジジ_Ge', 'J1R0K3N']);
