@@ -86,3 +86,21 @@
   .sp *, .sp *::before, .sp *::after { transition: none !important; animation: none !important; }
   .sp-hero-sparkles { display: none; }
 }
+
+/* Restored copy: multi-line text, status pills, fact boxes, labels */
+.sp-pre { white-space: pre-line; }
+.sp-value { font-family: var(--font-instrument); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.2; color: var(--sp-ink); }
+.sp-card.is-dark .sp-value { color: #fff; }
+.sp-status { justify-self: start; margin: 0; padding: 6px 14px; border-radius: 999px; border: 1px solid currentColor; font-size: 10px; font-weight: 700; letter-spacing: .14em; line-height: 1.4; }
+.sp-card .sp-status.is-open { background: #c4161c; border-color: #c4161c; color: #fff; }
+.sp-card.is-dark .sp-status.is-open { background: #fff; border-color: #fff; color: #c4161c; }
+.sp-card .sp-status.is-closed { color: #8a8a8a; }
+.sp-card.is-dark .sp-status.is-closed { color: #cfcfcf; }
+.sp-empty { color: #8a8a8a; }
+.sp-fact { display: grid; gap: 4px; justify-self: start; padding: 12px 18px; border-radius: 14px; background: rgba(255, 255, 255, .1); }
+.sp-card:not(.is-dark) .sp-fact { background: var(--sp-blush); }
+.sp-fact small { font-size: 10px; font-weight: 700; letter-spacing: .18em; color: #ff8a97; }
+.sp-fact strong { font-family: var(--font-instrument); font-size: 24px; font-weight: 500; }
+.sp-wide { margin-top: 20px; grid-template-columns: 1fr; }
+.sp-label { margin: 28px 0 14px; font-size: 12px; font-weight: 700; letter-spacing: .24em; color: var(--sp-red); }
+.sp-section > .sp-lead { margin: -8px 0 8px; }

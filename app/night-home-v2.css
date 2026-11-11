@@ -184,3 +184,12 @@
 .nh-script + .nh-index { display: none; }
 .nh-news-feature .nh-news-thumb { aspect-ratio: 16 / 8.2; }
 .nh-fact strong { font-size: clamp(26px, 2.5vw, 40px); }
+
+/* Restored copy: official About paragraph links and the monthly cocktail */
+.nh-about-links { display: flex; flex-wrap: wrap; gap: 14px 28px; }
+.nh-monthly { display: grid; gap: 8px; width: 100%; padding: 22px 24px; border-radius: 22px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .18); backdrop-filter: blur(6px); }
+.nh-monthly-eyebrow { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .22em; color: #ff8a97; }
+.nh-monthly h3 { margin: 0; font-family: var(--font-mincho); font-size: clamp(24px, 2.4vw, 32px); font-weight: 700; color: #fff; }
+.nh-monthly h3 em { margin-left: 6px; font-family: var(--font-instrument); font-size: .6em; font-style: italic; color: #ff8a97; }
+.nh-monthly > p:not(.nh-monthly-eyebrow) { margin: 0; font-family: var(--font-mincho); font-size: 14px; line-height: 2; color: #e8dcdc; }
+.nh-monthly small { font-size: 10px; letter-spacing: .2em; color: #bbb; }

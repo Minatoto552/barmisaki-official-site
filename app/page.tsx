@@ -5,7 +5,7 @@ import { SiteNavigation, siteNavigation } from '@/components/new-site/navigation
 import { siteImage } from './site-images';
 import { castImagePosition } from './cast/cast-images';
 import { useSiteData } from './use-site-data';
-import type { SiteCast } from './site-data';
+import { newsCategoryLabels, type SiteCast } from './site-data';
 import { links, siteFacts } from './content-data';
 import { misakiCollection } from './misaki-collection';
 import './night-home.css';
@@ -28,6 +28,7 @@ function homeCastList(casts: SiteCast[]) {
 }
 
 const factLabels = ['OPEN', 'TIME', 'STYLE', 'SYSTEM'];
+const labelOf = (key: string) => newsCategoryLabels.find(([k]) => k === key)?.[1] ?? 'お知らせ';
 
 function Placeholder({ label, detail, className = '', src, alt }: { label: string; detail?: string; className?: string; src?: string; alt?: string }) {
   const image = src ? { src, alt: alt ?? label } : siteImage(label);
@@ -96,7 +97,7 @@ export default function Home() {
         <p className="nh-hero-script" aria-hidden="true">Welcome to the night</p>
         <h1><span>BAR</span><span>MISAKI</span></h1>
         <p className="nh-hero-lead">バーチャルの夜に、<br />もうひとつの居場所を。</p>
-        <p className="nh-hero-sub">キャスト＆スタッフ全員が、海咲ちゃん。</p>
+        <p className="nh-hero-sub">キャスト＆スタッフ全員が、海咲ちゃん。<br />月に二度だけ扉が開く、上品で少し不思議な夜。</p>
         <div className="nh-hero-actions">
           <a className="nh-hero-cta" href="/how-to-join">参加方法を見る <span aria-hidden="true">→</span></a>
           <a className="nh-hero-cta is-ghost" href="/cast">CASTに会う <span aria-hidden="true">♥</span></a>
@@ -124,7 +125,7 @@ export default function Home() {
         <a className="nh-news-feature" href={`/news/detail?id=${encodeURIComponent(featured.id)}`}>
           <span className="nh-news-thumb"><Placeholder label="NEWS 01" src={featured.thumbnail || undefined} alt={featured.title} /><b className="nh-news-new">NEW</b></span>
           <span className="nh-news-body">
-            <span className="nh-meta"><time>{featured.date}</time><span>{featured.category}</span></span>
+            <span className="nh-meta"><time>{featured.date.replace(/-/g, '.')}</time><span>{labelOf(featured.category)}</span></span>
             <strong>{featured.title}</strong>
             {featured.summary && <small>{featured.summary}</small>}
             <em>READ MORE →</em>
@@ -132,7 +133,7 @@ export default function Home() {
         </a>
         <ul className="nh-news-list">{restNews.slice(0, 4).map((item) => <li key={item.id}><a href={`/news/detail?id=${encodeURIComponent(item.id)}`}>
           {item.thumbnail && <img src={item.thumbnail} alt="" loading="lazy" />}
-          <span><span className="nh-meta"><time>{item.date}</time><span>{item.category}</span></span><strong>{item.title}</strong></span>
+          <span><span className="nh-meta"><time>{item.date.replace(/-/g, '.')}</time><span>{labelOf(item.category)}</span></span><strong>{item.title}</strong></span>
         </a></li>)}
           <li className="nh-news-x"><a href={links.x} target="_blank" rel="noreferrer"><span><small>OFFICIAL X</small><strong>最新の営業告知は公式Xで ↗</strong></span></a></li>
         </ul>
@@ -189,10 +190,11 @@ export default function Home() {
       </div>
       <div className="nh-about-copy">
         <Heading en="ABOUT" ja="BarMisakiについて" index="03" script="Our little bar" />
-        <p className="nh-lead">ここは、バーチャルの夜にだけ開く、少し特別なBar。</p>
-        <p>日常から少し離れて、気の合う誰かと語り合える場所。</p>
+        <p className="nh-lead">海咲ちゃんが紡ぐ、やさしい夜。</p>
+        <p>落ち着いた距離感で会話を楽しめる、海咲ちゃんだけの特別なBar。静かな高揚感と、ここでしか生まれない出会いを。</p>
+        <p>ここは、バーチャルの夜にだけ開く、少し特別なBar。日常から少し離れて、気の合う誰かと語り合える場所。</p>
         <p>音楽、会話、そして、ここにいるみんながつくる特別な時間をあなたに。</p>
-        <ArrowLink href="/about">VIEW MORE</ArrowLink>
+        <div className="nh-about-links"><ArrowLink href="/about">VIEW MORE</ArrowLink><ArrowLink href="/how-to-join">HOW TO JOIN</ArrowLink></div>
       </div>
     </section>
 
@@ -224,6 +226,12 @@ export default function Home() {
       <div className="nh-counter-body">
         <p>グラスを片手に、今夜だけの会話を。</p>
         <span>ふとしたひと言から、特別な時間がはじまる。バーチャルのBarで、あなたらしい夜を。</span>
+        <div className="nh-monthly">
+          <p className="nh-monthly-eyebrow">今月のおすすめ</p>
+          <h3>月影 <em>— Tsukikage —</em></h3>
+          <p>月明かりを映したような、静かな余韻のオリジナルカクテル。夜のBar Misakiで、会話とともにゆっくりお楽しみください。</p>
+          <small>MONTHLY COCKTAIL / NON-ALCOHOLIC</small>
+        </div>
         <ArrowLink href="/how-to-join">HOW TO JOIN</ArrowLink>
       </div>
     </section>

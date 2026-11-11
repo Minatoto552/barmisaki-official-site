@@ -52,7 +52,11 @@ const localNewsImages: Record<string, string> = {
   'bb4820a6-e6f1-4b4d-a0e4-6ed18f3a898f': '/news/open-today-2026-09-18.png',
 };
 
-const newsCategories = ['BUSINESS', 'EVENT', 'CAST', 'WORLD', 'INFORMATION', 'IMPORTANT'];
+// Category key and the Japanese label shown on the site (the admin may store either one).
+export const newsCategoryLabels: [string, string][] = [
+  ['BUSINESS', '営業情報'], ['EVENT', 'イベント'], ['CAST', 'キャスト'],
+  ['WORLD', 'ワールド'], ['INFORMATION', 'お知らせ'], ['IMPORTANT', '重要'],
+];
 
 export function normalizeCasts(raw: unknown): SiteCast[] {
   return records(raw).flatMap((item): SiteCast[] => {
@@ -88,8 +92,8 @@ export function normalizeNews(raw: unknown): SiteNews[] {
     const id = text(item.id);
     const title = text(item.title).trim();
     if (!id || !title) return [];
-    const rawCategory = text(item.category).toUpperCase();
-    const category = newsCategories.includes(rawCategory) ? rawCategory : 'INFORMATION';
+    const rawCategory = text(item.category);
+    const category = newsCategoryLabels.find(([key, label]) => key === rawCategory.toUpperCase() || label === rawCategory)?.[0] ?? 'INFORMATION';
     const content = text(item.content);
     const thumbnail = localNewsImages[id] || text(item.thumbnailUrl || item.thumbnail);
     return [{

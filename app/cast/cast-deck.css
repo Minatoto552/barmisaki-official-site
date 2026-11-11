@@ -67,3 +67,6 @@
 /* The hero art slot no longer clips: the deck is allowed to fan out past its column */
 .nc-hero-art.nc-deck-slot { clip-path: none; overflow: visible; height: auto; }
 .nc-deck-card.is-front { --bonus: .1; }
+
+/* Restored copy: one-line introduction under the CAST title */
+.nc-hero-lead { margin: 14px 0 0; max-width: 28em; font-family: var(--font-mincho); font-size: 15px; line-height: 1.9; color: #e8dcdc; }

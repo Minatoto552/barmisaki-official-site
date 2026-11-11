@@ -30,3 +30,13 @@
 @media (prefers-reduced-motion: reduce) {
   .mk-hero-moon { animation: none; }
 }
+
+/* Restored copy: film notes and the quotation from the product page */
+.mk-film-details { grid-column: 1 / -1; display: grid; gap: 4px; margin-top: -14px; }
+.mk-film-details p { margin: 0; font-size: 12px; letter-spacing: .1em; color: #cfcfcf; }
+.mk-film-details a { color: #fff; border-bottom: 1px solid var(--mk-red); }
+.mk-quote { margin: 0; padding: 22px 24px; border-left: 3px solid var(--mk-red); border-radius: 0 18px 18px 0; background: var(--mk-blush); }
+.mk-quote p { margin: 0 0 12px; font-size: 14px; line-height: 2.05; color: #333; }
+.mk-quote footer { font-size: 12px; letter-spacing: .06em; color: #555; }
+.mk-quote footer a { color: var(--mk-red); border-bottom: 1px solid currentColor; }
+.mk-facts a, .mk-note a { color: var(--mk-red); border-bottom: 1px solid currentColor; }
