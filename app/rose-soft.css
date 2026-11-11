@@ -1,0 +1,77 @@
+/* Soft rose colors instead of flat strong red, with rose illustrations.
+   Large areas (the open-hours strip, the pick-up band, the closing band, the first fact card) now use a pale
+   rose ground with wine-colored text, so they are easy on the eyes and easy to read. Loaded last. */
+:root {
+  --rs-blush: #fdf1f2;
+  --rs-petal: #f8dce1;
+  --rs-rose: #eaa3b1;
+  --rs-deep: #b3354b;
+  --rs-wine: #5e1424;
+  --rs-ink: #2a0f14;
+  --rs-rose-img: url("/decor/rose.svg");
+}
+
+/* ---- Open-hours strip (home) ---- */
+:root .nh-next { position: relative; overflow: hidden; background: linear-gradient(90deg, #fdeff1 0%, #f9d9de 55%, #fdeff1 100%); color: var(--rs-wine); border-block: 1px solid #f0bcc6; }
+:root .nh-next::before, :root .nh-next::after { content: ""; position: absolute; top: 50%; width: 92px; aspect-ratio: 1; background: var(--rs-rose-img) center / contain no-repeat; opacity: .85; pointer-events: none; }
+:root .nh-next::before { left: -26px; transform: translateY(-50%) rotate(-14deg); }
+:root .nh-next::after { right: -26px; transform: translateY(-50%) rotate(16deg); }
+:root .nh-next > * { position: relative; z-index: 1; }
+:root .nh-next-label { color: var(--rs-deep); }
+:root .nh-next-date { color: var(--rs-ink); }
+:root .nh-next-date small { color: var(--rs-wine); opacity: .8; }
+:root .nh-next-time { color: var(--rs-wine); }
+:root .nh-next-go { color: var(--rs-deep); border-bottom-color: currentColor; }
+
+/* ---- Crossing bands ---- */
+:root .nh-band.is-red { background: linear-gradient(90deg, #f6cdd4, #fde6e9 50%, #f6cdd4); color: #8f1d2c; box-shadow: 0 12px 30px rgba(179, 53, 75, .18); }
+:root .nh-band.is-red b { color: #d9788a; }
+
+/* ---- First fact card ---- */
+:root .nh-fact:first-child { background: var(--rs-petal); color: var(--rs-wine); }
+:root .nh-fact:first-child small { color: var(--rs-deep); }
+:root .nh-fact:hover:first-child { background: var(--nh-ink, #111); color: #fff; }
+:root .nh-fact:hover:first-child small { color: #ffb3bd; }
+
+/* ---- Pick-up band ---- */
+:root .nh-pickup { position: relative; overflow: hidden; background: radial-gradient(circle at 12% 18%, #ffffff 0, transparent 38%), linear-gradient(135deg, #fdeff1, #f6d3da); color: var(--rs-ink); }
+:root .nh-pickup::before, :root .nh-pickup::after { content: ""; position: absolute; background: var(--rs-rose-img) center / contain no-repeat; pointer-events: none; }
+:root .nh-pickup::before { left: -70px; bottom: -80px; width: 280px; aspect-ratio: 1; opacity: .8; transform: rotate(-12deg); }
+:root .nh-pickup::after { right: -60px; top: -70px; width: 240px; aspect-ratio: 1; opacity: .75; transform: rotate(24deg); }
+:root .nh-pickup > * { position: relative; z-index: 1; }
+:root .nh-pickup .nh-kicker { color: var(--rs-deep); opacity: 1; }
+:root .nh-pickup h2 { color: var(--rs-ink); }
+:root .nh-pickup-text { color: var(--rs-wine); }
+:root .nh-pickup .nh-link { color: var(--rs-wine); }
+:root .nh-pickup .nh-link i { color: var(--rs-deep); }
+:root .nh-pickup-visual { box-shadow: 16px 16px 0 #f0b8c2, 0 24px 50px rgba(179, 53, 75, .2); }
+:root .nh-pickup-stamp { background: var(--rs-deep); color: #fff; box-shadow: 0 10px 24px rgba(179, 53, 75, .35); }
+
+/* ---- Home: round sticker on the About photos ---- */
+:root .nh-sticker { background: var(--rs-deep); box-shadow: 0 12px 26px rgba(179, 53, 75, .3); }
+
+/* ---- Misaki: closing band ---- */
+:root .mk-thanks { position: relative; overflow: hidden; background: radial-gradient(circle at 85% 20%, #ffffff 0, transparent 40%), linear-gradient(135deg, #fdeff1, #f6d3da); color: var(--rs-ink); }
+:root .mk-thanks::before, :root .mk-thanks::after { content: ""; position: absolute; background: var(--rs-rose-img) center / contain no-repeat; pointer-events: none; }
+:root .mk-thanks::before { right: -50px; bottom: -70px; width: 270px; aspect-ratio: 1; opacity: .8; transform: rotate(14deg); }
+:root .mk-thanks::after { left: -60px; top: -60px; width: 190px; aspect-ratio: 1; opacity: .6; transform: rotate(-20deg); }
+:root .mk-thanks > * { position: relative; z-index: 1; }
+:root .mk-thanks .mk-kicker { color: var(--rs-deep); opacity: 1; }
+:root .mk-thanks h2 { color: var(--rs-ink); }
+:root .mk-thanks h2 em { color: var(--rs-deep); }
+:root .mk-thanks p { color: var(--rs-wine); }
+:root .mk-thanks .sp-action { background: var(--rs-deep); color: #fff; box-shadow: 0 12px 28px rgba(179, 53, 75, .3); }
+:root .mk-thanks .sp-action:hover { background: var(--rs-wine); color: #fff; }
+:root .mk-thanks .sp-action.is-ghost { background: transparent; color: var(--rs-wine); border-color: var(--rs-wine); box-shadow: none; }
+:root .mk-thanks .sp-action.is-ghost:hover { background: var(--rs-wine); color: #fff; }
+
+/* ---- Subpages: pale rose accent on the closing blush sections ---- */
+:root .sp-section:nth-of-type(even)::before { background: none; }
+
+@media (max-width: 700px) {
+  :root .nh-next::before, :root .nh-next::after { width: 64px; opacity: .7; }
+  :root .nh-pickup::before { width: 180px; left: -60px; bottom: -60px; }
+  :root .nh-pickup::after { width: 150px; right: -50px; top: -50px; }
+  :root .mk-thanks::before { width: 180px; }
+  :root .mk-thanks::after { width: 120px; }
+}

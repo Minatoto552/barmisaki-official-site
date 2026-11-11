@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import './motion.css';
 
 // Site-wide motion layer. It decorates existing elements instead of changing every page:
@@ -18,16 +19,32 @@ const WIPE = ['.sp-section-head h2', '.nh-heading h2', '.mk-gallery-head h2', '.
 const TILT = ['.sp-card', '.nh-fact', '.nh-guide-steps a', '.nc-card'].join(',');
 
 export function MotionDirector() {
+  const pathname = usePathname();
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
   const hearts = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const resetReveal = (element: HTMLElement) => {
+      delete element.dataset.rv;
+      delete element.dataset.rvIn;
+      element.style.removeProperty('--rv-d');
+    };
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    if (reduced || !('IntersectionObserver' in window)) {
+      document.querySelectorAll<HTMLElement>('[data-rv]').forEach(resetReveal);
+      return;
+    }
+    const marked = new Set<HTMLElement>();
+    const timers = new Set<number>();
+    const later = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => { timers.delete(timer); callback(); }, delay);
+      timers.add(timer);
+    };
 
     // Reveal and tilt markers
     let observer: IntersectionObserver | null = null;
+    let revealExpired = false;
     // A wiped heading is clipped to nothing at first, which the browser treats as "not visible",
     // so headings are watched through their parent block instead of themselves.
     const watchers = new Map<Element, Set<HTMLElement>>();
@@ -39,20 +56,29 @@ export function MotionDirector() {
       observer?.observe(target);
     };
     const reveal = (element: HTMLElement) => {
+      if (element.dataset.rvIn || element.dataset.rvDone) return;
       element.dataset.rvIn = '1';
       // Once played, hand the element back to its own styles (hover transitions etc.).
       const delay = parseFloat(element.style.getPropertyValue('--rv-d')) || 0;
-      window.setTimeout(() => {
-        delete element.dataset.rv;
-        delete element.dataset.rvIn;
+      later(() => {
+        resetReveal(element);
         element.dataset.rvDone = '1';
-        element.style.removeProperty('--rv-d');
       }, delay + 1600);
     };
 
     const mark = () => {
       document.querySelectorAll<HTMLElement>(`${REVEAL},${WIPE}`).forEach((element) => {
-        if (element.dataset.rv || element.dataset.rvDone || element.closest('.ni')) return;
+        if (element.dataset.rvDone || element.closest('.ni')) return;
+        marked.add(element);
+        if (revealExpired) {
+          resetReveal(element);
+          element.dataset.rvDone = '1';
+          return;
+        }
+        if (element.dataset.rv) {
+          if (!element.dataset.rvIn) watch(element);
+          return;
+        }
         const isWipe = element.matches(WIPE);
         const parent = element.parentElement;
         const group = parent ? Array.from(parent.children).filter((child) => child.matches(isWipe ? WIPE : REVEAL)) : [];
@@ -73,6 +99,15 @@ export function MotionDirector() {
       }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
       watchers.forEach((_, target) => observer?.observe(target));
       mark();
+      onScrollCatch();
+      // Animation is optional: never leave content hidden if observation stalls.
+      later(() => {
+        revealExpired = true;
+        marked.forEach((element) => { resetReveal(element); element.dataset.rvDone = '1'; });
+        watchers.clear();
+        observer?.disconnect();
+        observer = null;
+      }, 8000);
     };
 
     // Mark right away (hidden under the loading screen), start revealing once the intro is gone.
@@ -81,7 +116,6 @@ export function MotionDirector() {
     const tryStart = () => { if (!started && !document.documentElement.hasAttribute('data-intro')) { started = true; start(); } };
     const introWatch = new MutationObserver(tryStart);
     introWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-intro'] });
-    tryStart();
 
     // Fast scrolling or jumping to an anchor can skip past a block between observer callbacks:
     // anything already above the bottom of the screen is revealed on the next frame.
@@ -97,7 +131,11 @@ export function MotionDirector() {
       });
     };
     const onScrollCatch = () => { if (!catchFrame) catchFrame = window.requestAnimationFrame(catchUp); };
+    tryStart();
+    later(tryStart, 1000);
+    later(() => { if (!started) { started = true; start(); } }, 10000);
     window.addEventListener('scroll', onScrollCatch, { passive: true });
+    window.addEventListener('resize', onScrollCatch);
 
     // Content that arrives later (Firebase data) gets marked too.
     let pending = 0;
@@ -151,16 +189,20 @@ export function MotionDirector() {
 
     return () => {
       observer?.disconnect();
+      timers.forEach(timer => window.clearTimeout(timer));
+      marked.forEach(resetReveal);
+      release();
       introWatch.disconnect();
       domWatch.disconnect();
       if (pending) window.cancelAnimationFrame(pending);
       if (catchFrame) window.cancelAnimationFrame(catchFrame);
       window.removeEventListener('scroll', onScrollCatch);
+      window.removeEventListener('resize', onScrollCatch);
       document.removeEventListener('pointermove', onMove);
       document.removeEventListener('pointerleave', release);
       document.removeEventListener('pointerdown', onTap);
     };
-  }, []);
+  }, [pathname]);
 
   // Reading progress and the TOP button
   useEffect(() => {

@@ -5,7 +5,8 @@ import './cast-deck.css';
 export type DeckMember = { id: string; name: string; card: string; generation: string };
 
 const AUTO_MS = 3400;   // time each cast member stays in front
-const REACH = 3;        // cards shown on each side of the front one
+const REACH_PHONE = 3;  // cards shown on each side of the front one
+const REACH_WIDE = 4;   // on wide screens the fan opens further
 const MAX_CARDS = 12;
 
 // Cast cards on an arc. Every card keeps its own element and only changes a position number,
@@ -16,10 +17,16 @@ export function CastDeck({ members, onOpen }: { members: DeckMember[]; onOpen: (
   const [front, setFront] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [reach, setReach] = useState(REACH_PHONE);
   const stage = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const wide = window.matchMedia('(min-width: 901px)');
+    const update = () => setReach(wide.matches ? REACH_WIDE : REACH_PHONE);
+    update();
+    wide.addEventListener('change', update);
+    return () => wide.removeEventListener('change', update);
   }, []);
 
   useEffect(() => {
@@ -55,7 +62,7 @@ export function CastDeck({ members, onOpen }: { members: DeckMember[]; onOpen: (
         let rel = ((index - front) % total + total) % total;
         if (rel > total / 2) rel -= total;
         const abs = Math.abs(rel);
-        const shown = abs <= REACH;
+        const shown = abs <= reach;
         return <button type="button" key={member.id} className={`nc-deck-card${rel === 0 ? ' is-front' : ''}`} data-abs={abs}
           style={{ '--rel': rel, '--abs': abs, '--o': shown ? 1 - abs * 0.13 : 0, zIndex: 20 - abs } as React.CSSProperties}
           tabIndex={shown ? 0 : -1} aria-hidden={!shown}

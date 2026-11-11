@@ -1,0 +1,23 @@
+/* CAST profile and the cards below it: smaller, tighter, and the face stays visible. Loaded after the other CAST styles. */
+:root .nc-stage { grid-template-columns: minmax(220px, 360px) minmax(0, 1fr); align-items: center; gap: clamp(24px, 3.4vw, 52px); max-width: 1040px; margin-inline: auto; padding: clamp(32px, 4vw, 56px) clamp(22px, 5vw, 84px); }
+:root .nc-visual { width: 100%; max-width: 360px; justify-self: end; box-shadow: 12px 12px 0 var(--nc-rose); }
+:root .nc-info { align-content: center; gap: 12px; padding-top: 0; }
+:root .nc-info h2 { font-size: clamp(30px, 3.4vw, 46px); }
+:root .nc-message { margin: 0; }
+
+:root .nc-extras { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 18px; max-width: 1040px; margin-inline: auto; padding: 8px clamp(22px, 5vw, 84px) clamp(36px, 4vw, 56px); }
+:root .nc-card { flex: 0 1 280px; padding: 16px 16px 18px; gap: 8px; border-top: 0; border-radius: 22px; box-shadow: 0 12px 30px rgba(80, 20, 30, .1); }
+:root .nc-card h3 { font-family: var(--font-mincho); font-size: 18px; font-weight: 700; }
+:root .nc-card-media { aspect-ratio: 4 / 5; border-radius: 16px; }
+:root .nc-card-media img { object-position: center 14%; }
+:root .nc-card.is-dark { flex-basis: 240px; }
+:root .nc-card .nc-kicker { font-size: 10px; }
+:root .nc-sns { font-size: 11px; }
+
+@media (max-width: 900px) {
+  :root .nc-stage { grid-template-columns: 1fr; max-width: 520px; }
+  :root .nc-visual { justify-self: center; max-width: 340px; }
+  :root .nc-extras { max-width: 560px; }
+  :root .nc-card { flex: 1 1 240px; }
+}
+:root .nc-facts { grid-template-columns: minmax(96px, .5fr) minmax(0, 1.8fr); }

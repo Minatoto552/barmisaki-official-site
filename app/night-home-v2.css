@@ -193,3 +193,6 @@
 .nh-monthly h3 em { margin-left: 6px; font-family: var(--font-instrument); font-size: .6em; font-style: italic; color: #ff8a97; }
 .nh-monthly > p:not(.nh-monthly-eyebrow) { margin: 0; font-family: var(--font-mincho); font-size: 14px; line-height: 2; color: #e8dcdc; }
 .nh-monthly small { font-size: 10px; letter-spacing: .2em; color: #bbb; }
+
+/* Restored copy: the introduction of the interior photos */
+.nh-gallery-intro { margin: -14px 0 28px; font-family: var(--font-mincho); font-size: 15px; line-height: 2; color: #444; }

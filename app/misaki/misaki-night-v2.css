@@ -40,3 +40,7 @@
 .mk-quote footer { font-size: 12px; letter-spacing: .06em; color: #555; }
 .mk-quote footer a { color: var(--mk-red); border-bottom: 1px solid currentColor; }
 .mk-facts a, .mk-note a { color: var(--mk-red); border-bottom: 1px solid currentColor; }
+
+/* The closing line sits on the red band, so it must not be red itself */
+.mk-thanks h2 em { color: #fff; }
+.mk-thanks .mk-kicker { color: #fff; }

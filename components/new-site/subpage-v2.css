@@ -104,3 +104,10 @@
 .sp-wide { margin-top: 20px; grid-template-columns: 1fr; }
 .sp-label { margin: 28px 0 14px; font-size: 12px; font-weight: 700; letter-spacing: .24em; color: var(--sp-red); }
 .sp-section > .sp-lead { margin: -8px 0 8px; }
+
+/* The footer is also used on pages that are not wrapped in .sp (Misaki, CAST): give it its own colors */
+.sp-footer { --sp-dark: #0b0b0b; --sp-red: #c4161c; --sp-muted: #6b6b6b; background: #0b0b0b; color: #fff; }
+.sp-footer a { color: inherit; text-decoration: none; }
+.sp-footer::before { background: radial-gradient(circle at 18px 18px, #0b0b0b 17px, transparent 18px) 0 0 / 36px 18px repeat-x; }
+.sp-card:not(.is-dark) .sp-fact small { color: #c4161c; }
+.sp-card.is-dark .sp-fact small { color: #ffb3bd; }

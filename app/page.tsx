@@ -237,7 +237,8 @@ export default function Home() {
     </section>
 
     <section className="nh-section nh-gallery nh-reveal" id="gallery">
-      <div className="nh-section-head"><Heading en="GALLERY" ja="ギャラリー" index="05" script="Inside the bar" /><ArrowLink href="/gallery">VIEW ALL</ArrowLink></div>
+      <div className="nh-section-head"><Heading en="GALLERY" ja="ギャラリー / 店内の雰囲気" index="05" script="Inside the bar" /><ArrowLink href="/gallery">VIEW ALL</ArrowLink></div>
+      <p className="nh-gallery-intro">光に誘われ、夜の奥へ。<br />あなたの時間が始まる場所。</p>
       <div className="nh-gallery-grid">{[1, 2, 3, 4, 5, 6].map((n) => <Placeholder key={n} label={`GALLERY ${String(n).padStart(2, '0')}`} detail={n === 1 || n === 4 ? '4 : 5' : '4 : 3'} className={`nh-gallery-${n}`} />)}</div>
     </section>
 

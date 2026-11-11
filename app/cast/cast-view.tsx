@@ -6,6 +6,7 @@ import type { SiteCast } from '../site-data';
 import './night-cast.css';
 import './night-cast-v2.css';
 import { CastDeck } from './cast-deck';
+import './cast-compact.css';
 
 type Member = SiteCast & { no: string; nameEn: string };
 

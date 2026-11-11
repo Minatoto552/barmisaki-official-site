@@ -9,6 +9,7 @@ import './brand-refresh.css';
 import './page-system.css';
 import './title-scale.css';
 import './moon.css';
+import './rose-soft.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ?? 'https://barmisaki-official-site.vercel.app';

@@ -23,6 +23,22 @@ const FADE_MS = 450;
 const faces = misakiCollection.slice(0, 9);
 const middle = (faces.length - 1) / 2;
 
+// Has this browser tab already entered the site? (Without storage: "came from another page of the site".)
+function hasEntered(): boolean {
+  try {
+    return Boolean(window.sessionStorage.getItem(ENTRY_KEY));
+  } catch {
+    return document.referrer.startsWith(window.location.origin);
+  }
+}
+
+// The first screen of a visit is always the home. A link straight to a news article is left alone,
+// so shared article links keep working.
+function shouldStartAtHome(): boolean {
+  const path = window.location.pathname;
+  return !hasEntered() && path !== '/' && path !== '/index.html' && !path.startsWith('/news/detail');
+}
+
 // True once per browser tab visit. Without storage, fall back to "arrived from outside the site".
 function isEntry(): boolean {
   try {
@@ -48,7 +64,12 @@ export function NightIntro() {
   const entry = useRef<boolean | null>(null);
 
   useEffect(() => {
-    if (entry.current === null) entry.current = isEntry();
+    if (entry.current === null) {
+      // First visit landing on another page: go to the home first. The entry flag is not set yet,
+      // so the loading sequence plays on the home itself (the cover hides the page until then).
+      if (shouldStartAtHome()) { window.location.replace('/'); return; }
+      entry.current = isEntry();
+    }
     const isFirstVisit = entry.current;
 
     let ready = false;
