@@ -1,36 +1,34 @@
-/* Soft rose colors instead of flat strong red, with rose illustrations.
-   Large areas (the open-hours strip, the pick-up band, the closing band, the first fact card) now use a pale
-   rose ground with wine-colored text, so they are easy on the eyes and easy to read. Loaded last. */
+/* Soft rose colors for the two big bands (pick-up and the Misaki closing band), with rose illustrations.
+   Everything smaller stays in the brand red; the open-hours strip is red again but with large white text. Loaded last. */
 :root {
   --rs-blush: #fdf1f2;
   --rs-petal: #f8dce1;
   --rs-rose: #eaa3b1;
-  --rs-deep: #b3354b;
+  --rs-deep: #c4161c;
   --rs-wine: #5e1424;
   --rs-ink: #2a0f14;
   --rs-rose-img: url("/decor/rose.svg");
 }
 
 /* ---- Open-hours strip (home) ---- */
-:root .nh-next { position: relative; overflow: hidden; background: linear-gradient(90deg, #fdeff1 0%, #f9d9de 55%, #fdeff1 100%); color: var(--rs-wine); border-block: 1px solid #f0bcc6; }
-:root .nh-next::before, :root .nh-next::after { content: ""; position: absolute; top: 50%; width: 92px; aspect-ratio: 1; background: var(--rs-rose-img) center / contain no-repeat; opacity: .85; pointer-events: none; }
-:root .nh-next::before { left: -26px; transform: translateY(-50%) rotate(-14deg); }
-:root .nh-next::after { right: -26px; transform: translateY(-50%) rotate(16deg); }
-:root .nh-next > * { position: relative; z-index: 1; }
-:root .nh-next-label { color: var(--rs-deep); }
-:root .nh-next-date { color: var(--rs-ink); }
-:root .nh-next-date small { color: var(--rs-wine); opacity: .8; }
-:root .nh-next-time { color: var(--rs-wine); }
-:root .nh-next-go { color: var(--rs-deep); border-bottom-color: currentColor; }
+/* The strip is a link, and ".nh a { color: inherit }" used to turn its text dark on the red. White is forced here. */
+:root .nh-next { gap: 12px 34px; padding-block: 22px; background: linear-gradient(90deg, #a8121a, #c4161c 50%, #a8121a); color: #fff; }
+:root .nh-next, :root .nh-next * { color: #fff; }
+:root .nh-next-label { padding: 7px 16px; border: 1.5px solid #fff; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: .24em; }
+:root .nh-next-date { font-size: clamp(38px, 4.4vw, 56px); font-weight: 500; line-height: 1; text-shadow: 0 2px 10px rgba(80, 0, 6, .35); }
+:root .nh-next-date small { margin-left: 8px; font-size: clamp(20px, 2.4vw, 30px); letter-spacing: 0; color: #ffe1e4; opacity: 1; }
+:root .nh-next-time { font-size: clamp(15px, 1.5vw, 19px); font-weight: 700; letter-spacing: .08em; }
+:root .nh-next-go { padding: 9px 18px; border: 1.5px solid #fff; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: .12em; transition: background .25s ease, color .25s ease; }
+:root a.nh-next:hover .nh-next-go { background: #fff; color: #c4161c !important; }
 
-/* ---- Crossing bands ---- */
-:root .nh-band.is-red { background: linear-gradient(90deg, #f6cdd4, #fde6e9 50%, #f6cdd4); color: #8f1d2c; box-shadow: 0 12px 30px rgba(179, 53, 75, .18); }
-:root .nh-band.is-red b { color: #d9788a; }
+/* ---- Crossing bands: back to red ---- */
+:root .nh-band.is-red { background: #c4161c; color: #fff; box-shadow: 0 12px 30px rgba(196, 22, 28, .25); }
+:root .nh-band.is-red b { color: #ffb3bd; }
 
-/* ---- First fact card ---- */
-:root .nh-fact:first-child { background: var(--rs-petal); color: var(--rs-wine); }
-:root .nh-fact:first-child small { color: var(--rs-deep); }
-:root .nh-fact:hover:first-child { background: var(--nh-ink, #111); color: #fff; }
+/* ---- First fact card: back to red ---- */
+:root .nh-fact:first-child { background: #c4161c; color: #fff; }
+:root .nh-fact:first-child small { color: #ffd0d5; }
+:root .nh-fact:hover:first-child { background: #111; color: #fff; }
 :root .nh-fact:hover:first-child small { color: #ffb3bd; }
 
 /* ---- Pick-up band ---- */
@@ -44,11 +42,11 @@
 :root .nh-pickup-text { color: var(--rs-wine); }
 :root .nh-pickup .nh-link { color: var(--rs-wine); }
 :root .nh-pickup .nh-link i { color: var(--rs-deep); }
-:root .nh-pickup-visual { box-shadow: 16px 16px 0 #f0b8c2, 0 24px 50px rgba(179, 53, 75, .2); }
-:root .nh-pickup-stamp { background: var(--rs-deep); color: #fff; box-shadow: 0 10px 24px rgba(179, 53, 75, .35); }
+:root .nh-pickup-visual { box-shadow: 16px 16px 0 #f0b8c2, 0 24px 50px rgba(196, 22, 28, .2); }
+:root .nh-pickup-stamp { background: var(--rs-deep); color: #fff; box-shadow: 0 10px 24px rgba(196, 22, 28, .35); }
 
 /* ---- Home: round sticker on the About photos ---- */
-:root .nh-sticker { background: var(--rs-deep); box-shadow: 0 12px 26px rgba(179, 53, 75, .3); }
+:root .nh-sticker { background: var(--rs-deep); box-shadow: 0 12px 26px rgba(196, 22, 28, .3); }
 
 /* ---- Misaki: closing band ---- */
 :root .mk-thanks { position: relative; overflow: hidden; background: radial-gradient(circle at 85% 20%, #ffffff 0, transparent 40%), linear-gradient(135deg, #fdeff1, #f6d3da); color: var(--rs-ink); }
@@ -60,7 +58,7 @@
 :root .mk-thanks h2 { color: var(--rs-ink); }
 :root .mk-thanks h2 em { color: var(--rs-deep); }
 :root .mk-thanks p { color: var(--rs-wine); }
-:root .mk-thanks .sp-action { background: var(--rs-deep); color: #fff; box-shadow: 0 12px 28px rgba(179, 53, 75, .3); }
+:root .mk-thanks .sp-action { background: var(--rs-deep); color: #fff; box-shadow: 0 12px 28px rgba(196, 22, 28, .3); }
 :root .mk-thanks .sp-action:hover { background: var(--rs-wine); color: #fff; }
 :root .mk-thanks .sp-action.is-ghost { background: transparent; color: var(--rs-wine); border-color: var(--rs-wine); box-shadow: none; }
 :root .mk-thanks .sp-action.is-ghost:hover { background: var(--rs-wine); color: #fff; }
@@ -75,3 +73,4 @@
   :root .mk-thanks::before { width: 180px; }
   :root .mk-thanks::after { width: 120px; }
 }
+@media (max-width: 700px) { :root .nh-next-go { text-align: center; } }
