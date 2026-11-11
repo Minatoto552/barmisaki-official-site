@@ -7,8 +7,6 @@ export type AlbumPhoto = {
   height?: number;
 };
 
-const firebaseEndpoint = 'https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/albums.json';
-const endpoint = () => typeof window === 'undefined' ? firebaseEndpoint : '/site-data/albums.json';
 const validImage = /^(https?:\/\/|\/(?!\/)|data:image\/(png|jpeg|webp);base64,)/i;
 const browserFallback: AlbumPhoto[] = [{
   id: 'latest-album-fallback',
@@ -43,14 +41,7 @@ export function normalizeAlbums(raw: unknown): AlbumPhoto[] {
 }
 
 export async function loadAlbums(): Promise<AlbumPhoto[]> {
-  try {
-    const response = await fetch(`${endpoint()}?t=${Date.now()}`, { cache: 'no-store' });
-    if (!response.ok) return typeof window === 'undefined' ? [] : browserFallback;
-    const albums = normalizeAlbums(await response.json());
-    return albums.length || typeof window === 'undefined' ? albums : browserFallback;
-  } catch {
-    return typeof window === 'undefined' ? [] : browserFallback;
-  }
+  return browserFallback;
 }
 
 export function latestAlbumPhotos(albums: AlbumPhoto[]): string[] {

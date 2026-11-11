@@ -1,0 +1,83 @@
+/* Loading screen: bar lights come on, cast cards flip, the logo appears, the curtain opens. */
+.ni { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden; color: #fff; font-family: var(--font-inter), sans-serif; }
+.ni { --cw: clamp(180px, 28vw, 340px); }
+/* Cover: night colors from the first paint (red glow, moon, caption), never a plain black screen.
+   It fades out when the page is ready, or hands over to the cat / cards screens. */
+.ni.is-cover, .ni.is-fade, .ni.is-cat, .ni.is-cat-out { background: radial-gradient(circle at 50% 42%, rgba(196, 22, 28, .32), transparent 55%), #0b0b0b; }
+.ni.is-fade, .ni.is-cat-out { opacity: 0; transition: opacity .45s ease; }
+.ni-half { position: absolute; left: 0; right: 0; height: 50.3%; background: #0b0b0b; transition: transform .8s cubic-bezier(.76, 0, .24, 1); }
+.ni-half.is-top { top: 0; }
+.ni-half.is-bottom { bottom: 0; }
+.ni.is-leave .ni-half.is-top { transform: translateY(-101%); }
+.ni.is-leave .ni-half.is-bottom { transform: translateY(101%); }
+
+.ni-stage { position: relative; display: grid; place-items: center; width: 100%; height: 100%; transition: opacity .35s ease; }
+.ni-stage::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, rgba(196, 22, 28, .32), transparent 55%); }
+.ni.is-leave .ni-stage { opacity: 0; }
+
+/* The page under the intro waits: its animations stay paused until the intro is removed. */
+html[data-intro] body > :not(.ni), html[data-intro] body > :not(.ni) * { animation-play-state: paused !important; }
+
+/* Lights */
+.ni-moon { position: absolute; top: 12%; left: 10%; width: clamp(70px, 13vmin, 150px); aspect-ratio: 1; border-radius: 50%; background: #c4161c; animation: ni-fade .8s .25s ease both; }
+.ni-lamp { position: absolute; top: 0; left: calc(10% + var(--n) * 20%); width: 26vmin; height: 70vh; transform: translateX(-50%); background: radial-gradient(ellipse 50% 100% at 50% 0, rgba(255, 214, 190, .26), transparent 72%); animation: ni-lamp 1.1s calc(var(--n) * .16s + .1s) steps(1, end) both; }
+.ni-lamp::before { content: ""; position: absolute; top: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%; background: #ffe3cf; box-shadow: 0 0 18px 6px rgba(255, 200, 170, .7); transform: translate(-50%, -50%); }
+
+/* Cards */
+.ni-cards { --w: clamp(60px, 11vw, 150px); position: relative; display: flex; justify-content: center; align-items: center; height: calc(var(--w) * 1.4); }
+.ni-card { position: relative; width: var(--w); aspect-ratio: 3 / 4; margin-left: calc(var(--w) * -.38); transform-origin: 50% 130%; transform: rotate(calc(var(--k) * 5deg)) translateY(calc(var(--a) * var(--a) * 1.1vmin)); transition: transform .8s cubic-bezier(.7, 0, .3, 1), opacity .5s .3s ease; }
+.ni-card:first-child { margin-left: 0; }
+.ni-in { display: block; width: 100%; height: 100%; perspective: 700px; animation: ni-rise .7s calc(var(--n) * .05s + .3s) cubic-bezier(.22, 1, .36, 1) both; }
+.ni-flip { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; animation: ni-flip .6s calc(1s + var(--n) * .11s) cubic-bezier(.45, 0, .2, 1) both; }
+.ni-back, .ni-face { position: absolute; inset: 0; display: block; border-radius: 8% / 6%; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.ni-back { display: grid; place-items: center; background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .09) 0 2px, transparent 2px 9px), linear-gradient(160deg, #e0252c, #8f0f15); border: 2px solid rgba(255, 255, 255, .35); box-shadow: 0 14px 30px rgba(0, 0, 0, .5); }
+.ni-back::before { content: "♥"; font-size: calc(var(--w) * .34); color: rgba(255, 255, 255, .88); }
+.ni-face { transform: rotateY(180deg); padding: 5% 5% 12%; background: #fff; animation: ni-lit 1.1s calc(1.25s + var(--n) * .11s) ease-out both; }
+.ni-face img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+
+/* Gather: cards converge, the logo badge appears */
+.ni.is-gather .ni-card, .ni.is-leave .ni-card { transform-origin: 50% 50%; transform: translateX(calc(var(--k) * var(--w) * -.62)) scale(.12); opacity: 0; }
+.ni-mark { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: calc(var(--w) * 1.7); aspect-ratio: 1; border-radius: 50%; background: #fff; box-shadow: 0 0 60px rgba(255, 150, 160, .5); transform: translate(-50%, -50%) scale(0); transition: transform .7s .3s cubic-bezier(.34, 1.56, .64, 1); }
+.ni-mark img { width: 56%; mix-blend-mode: multiply; }
+.ni.is-gather .ni-mark, .ni.is-leave .ni-mark { transform: translate(-50%, -50%) scale(1); }
+
+/* Running cat: 8-frame sprite sheet (512px frames) stepped in place while the wrapper crosses the screen */
+.ni-ground { position: absolute; left: 0; right: 0; bottom: calc(24% + var(--cw) * .19); height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 217, 222, .5) 15%, rgba(255, 217, 222, .5) 85%, transparent); }
+.ni-cat-run { position: absolute; left: 0; bottom: 24%; width: var(--cw); height: var(--cw); animation: ni-cross 2.8s linear infinite; }
+.ni-cat { display: block; width: 100%; height: 100%; background: url("/loading/cat-run-sheet.webp") 0 0 / calc(var(--cw) * 8) 100% no-repeat; animation: ni-run .72s steps(8) infinite; }
+
+/* Caption */
+.ni-caption { position: absolute; left: 0; right: 0; bottom: 14%; display: grid; place-items: center; margin: 0; text-align: center; animation: ni-fade .6s .5s ease both; }
+.ni-caption > * { grid-area: 1 / 1; transition: opacity .4s ease; }
+.ni-loading { font-size: 11px; letter-spacing: .34em; color: #ff8a97; animation: ni-pulse 1.4s ease-in-out infinite; }
+.ni-welcome { font-family: var(--font-script), cursive; font-size: clamp(32px, 5vmin, 54px); font-style: normal; color: #ffd9de; opacity: 0; }
+.ni.is-gather .ni-loading, .ni.is-leave .ni-loading { opacity: 0; animation: none; }
+.ni.is-gather .ni-welcome, .ni.is-leave .ni-welcome { opacity: 1; transition-delay: .35s; }
+
+.ni-skip { position: absolute; right: clamp(16px, 3vw, 40px); bottom: clamp(16px, 3vw, 36px); padding: 10px 16px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 999px; background: transparent; color: #fff; font: 700 11px var(--font-inter), sans-serif; letter-spacing: .2em; cursor: pointer; animation: ni-fade .6s 1.2s ease both; }
+.ni-skip:hover, .ni-skip:focus-visible { background: #fff; color: #c4161c; outline: none; }
+
+@keyframes ni-fade { from { opacity: 0; } }
+@keyframes ni-lamp { 0% { opacity: 0; } 20% { opacity: .9; } 32% { opacity: .2; } 46% { opacity: 1; } 58% { opacity: .5; } 100% { opacity: 1; } }
+@keyframes ni-rise { from { opacity: 0; transform: translateY(70px) scale(.9); } }
+@keyframes ni-flip { from { transform: rotateY(0); } to { transform: rotateY(180deg); } }
+@keyframes ni-lit { from { filter: brightness(1.6); box-shadow: 0 0 40px 10px rgba(255, 190, 200, .8); } to { filter: none; box-shadow: 0 0 22px rgba(255, 160, 170, .3); } }
+@keyframes ni-pulse { 50% { opacity: .35; } }
+@keyframes ni-run { to { background-position-x: calc(var(--cw) * -8); } }
+@keyframes ni-cross { from { transform: translateX(calc(var(--cw) * -1)); } to { transform: translateX(100vw); } }
+
+@media (max-width: 700px) {
+  .ni { --cw: clamp(130px, 40vw, 220px); }
+  .ni-cards { --w: clamp(44px, 12.4vw, 70px); }
+  .ni-lamp { width: 40vmin; }
+  .ni-caption { bottom: 18%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ni *, .ni *::before, .ni *::after { animation: none !important; transition: none !important; }
+  .ni { transition: opacity .3s ease; }
+  .ni.is-leave { opacity: 0; }
+  .ni-flip { transform: rotateY(180deg); }
+  .ni-cat-run { transform: translateX(calc(50vw - var(--cw) / 2)); }
+  .ni-skip { opacity: 1; }
+}

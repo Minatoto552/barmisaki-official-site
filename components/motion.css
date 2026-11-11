@@ -1,0 +1,45 @@
+/* Site-wide motion layer (see motion-director.tsx). Attributes are added by script only,
+   so without JavaScript every block is simply visible. */
+
+/* Fade up */
+:root [data-rv="up"] { opacity: 0; transform: translateY(34px) scale(.985); transition: opacity .8s ease var(--rv-d, 0ms), transform 1s cubic-bezier(.22, 1, .36, 1) var(--rv-d, 0ms); }
+:root [data-rv="up"][data-rv-in] { opacity: 1; transform: none; }
+
+/* Big headings wipe in from the left behind a red bar */
+:root [data-rv="wipe"] { position: relative; clip-path: inset(-30% 100% -30% 0); transition: clip-path 1.05s cubic-bezier(.77, 0, .18, 1) var(--rv-d, 0ms); }
+:root [data-rv="wipe"]::after { content: ""; position: absolute; left: 0; bottom: .08em; width: 100%; height: .12em; background: #c4161c; transform: scaleX(0); transform-origin: left; transition: transform .7s cubic-bezier(.77, 0, .18, 1) calc(var(--rv-d, 0ms) + .55s), opacity .6s ease calc(var(--rv-d, 0ms) + 1.4s); }
+:root [data-rv="wipe"][data-rv-in] { clip-path: inset(-30% -10% -30% -2%); }
+:root [data-rv="wipe"][data-rv-in]::after { transform: scaleX(1); opacity: 0; }
+
+/* Cards lean toward the pointer */
+:root [data-tilt].is-tilting { transform: perspective(900px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg)) translateY(-6px); transition: transform .12s ease-out, box-shadow .3s ease; box-shadow: 0 26px 50px rgba(196, 22, 28, .18); }
+
+/* Reading progress */
+.mo-progress { position: fixed; top: 0; left: 0; right: 0; z-index: 120; height: 3px; transform-origin: left; background: linear-gradient(90deg, #ff8a97, #c4161c 60%, #8f0f15); pointer-events: none; }
+
+/* Back to top */
+.mo-top { position: fixed; right: clamp(14px, 2.4vw, 30px); bottom: clamp(14px, 2.4vw, 30px); z-index: 110; display: grid; place-items: center; gap: 0; width: 58px; height: 58px; border: 0; border-radius: 50%; background: #c4161c; color: #fff; font: 700 10px/1 var(--font-inter); letter-spacing: .16em; cursor: pointer; box-shadow: 0 12px 28px rgba(196, 22, 28, .4); opacity: 0; transform: translateY(20px) scale(.8); pointer-events: none; transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.56, .64, 1), background .2s ease; }
+.mo-top span { display: block; font-size: 15px; line-height: 1; margin-bottom: -6px; }
+.mo-top.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+.mo-top:hover { background: #111; }
+.mo-top:hover span { animation: mo-beat .5s ease; }
+
+/* Tap hearts */
+.mo-hearts { position: fixed; inset: 0; z-index: 130; pointer-events: none; overflow: hidden; }
+.mo-heart { position: absolute; font-style: normal; font-size: 16px; color: #e0252c; text-shadow: 0 0 10px rgba(255, 140, 150, .7); transform: translate(-50%, -50%); animation: mo-float .9s ease-out both; }
+.mo-heart:nth-child(3n + 2) { color: #ff8a97; font-size: 12px; }
+
+/* Hero photos drift slower than the page (browsers with scroll-driven animations) */
+@supports (animation-timeline: scroll()) {
+  .nh-hero-art img, .sp-hero-art img, .nh-counter-bg img { animation: mo-parallax linear both; animation-timeline: scroll(root); animation-range: 0 120vh; }
+}
+
+@keyframes mo-float { from { opacity: 1; transform: translate(-50%, -50%) scale(.4); } to { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% - 70px)) rotate(var(--dr)) scale(1.2); } }
+@keyframes mo-beat { 50% { transform: scale(1.4); } }
+@keyframes mo-parallax { from { transform: scale(1.12) translateY(0); } to { transform: scale(1.12) translateY(5%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rv] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  .mo-heart { display: none; }
+  .nh-hero-art img, .sp-hero-art img, .nh-counter-bg img { animation: none !important; }
+}

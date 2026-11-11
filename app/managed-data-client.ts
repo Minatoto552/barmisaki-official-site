@@ -1,14 +1,4 @@
-import type { Cast } from './data';
-
-// Keep Firebase behind the official-site origin. Some browsers/extensions block
-// direct requests to firebasedatabase.app, which previously emptied every
-// managed section at once.
-const endpoint = '/site-data/casts.json';
-
-type ManagedCast = {
-  id: string; name: string; category: string; role: string; imageUrl?: string;
-  xUrl?: string; favorite?: string; message?: string; isPickup?: boolean;
-};
+import { casts, type Cast } from './data';
 
 export const localCastImages: Record<string, string | string[]> = {
   'くりん': '/cast/1st/kurin.png',
@@ -37,70 +27,16 @@ export const localCastImages: Record<string, string | string[]> = {
   'papiko papi': '/cast/hana/papiko-papi.png',
   'はとたろ': '/cast/hana/hatotaro.png',
   'はとたろ　': '/cast/hana/hatotaro.png',
-  'Slium': '/cast/hana/slium.png',
+  'Slium': '/cast/hana/slium.webp',
   '・ニーナ・': '/cast/hana/nina.webp',
+  'usagi210': '/cast/hana/usagi210.webp',
   'ビタミンC不足': '/cast/hana/vitamin-c.png',
   '辻_tsuji': '/cast/hana/tsuji.png',
   '眠猫なつね': '/cast/hana/nemuri-neko-natsune.png',
   '雪空すばる': '/cast/hana/yukisora-subaru.png',
   'りゅー16': '/cast/hana/ryu-16.png',
-  'えありーー': '/cast/hana-late/airy-lossless.webp',
-  '流歌': '/cast/staff/ruka-lossless.webp',
-  'あるふぉんす': '/cast/hana-late/alphonse-lossless.webp',
-  'ゆきてゃ': '/cast/hana-late/yukitya-lossless.webp',
-  '東雲つばき': '/cast/hana-late/shinonome-tsubaki-lossless.webp',
-  'mina': '/cast/hana-late/mina-lossless.webp',
-  'ひぃらぎ': '/cast/hana-late/hiiragi-lossless.webp',
 };
 
-const localStaffNames = new Set(['桜庭ルイ', 'みな_とと', 'ぽよ', 'くろとら96', 'Daphne_ダフネ', 'フジジ_Ge', 'J1R0K3N']);
-
-let pendingCasts: Promise<Cast[] | null> | null = null;
-let loadedAt = 0;
-
-export function loadManagedCasts(): Promise<Cast[] | null> {
-  if (!pendingCasts || Date.now() - loadedAt > 15000) {
-    loadedAt = Date.now();
-    pendingCasts = fetchManagedCasts().then((data) => {
-      if (!data) pendingCasts = null;
-      return data;
-    });
-  }
-  return pendingCasts;
-}
-
-async function fetchManagedCasts(): Promise<Cast[] | null> {
-  try {
-    const response = await fetch(`${endpoint}?t=${Date.now()}`, { cache: 'no-store' });
-    if (!response.ok) return null;
-    const data = await response.json() as ManagedCast[] | null;
-    if (!Array.isArray(data)) return null;
-    return data.filter(Boolean).map((item, index) => {
-      const [rawGeneration, rawGroup = ''] = item.category === 'スタッフ'
-        ? ['スタッフ', '']
-        : item.category.split(' ');
-      const isSecondGeneration = rawGeneration === '2期生' || rawGeneration === '２期生';
-      const generation = isSecondGeneration ? '２期生' : rawGeneration;
-      const group = isSecondGeneration ? '' : rawGroup;
-      const localImage = localCastImages[item.name];
-      const images = (Array.isArray(localImage) ? localImage : localImage ? [localImage] : [])
-        .map((image) => image.replace(/\.png$/i, '-lossless.webp'));
-      return {
-        id: item.id,
-        name: item.name,
-        generation,
-        group,
-        role: localStaffNames.has(item.name) ? 'STAFF' : item.role,
-        image: item.imageUrl || images[0] || '',
-        images: item.imageUrl ? [item.imageUrl] : images,
-        xUrl: item.xUrl || '',
-        favorite: item.favorite || '',
-        message: item.message || '',
-        isPickup: Boolean(item.isPickup),
-        pickupOrder: item.isPickup ? index + 1 : null,
-      };
-    });
-  } catch {
-    return null;
-  }
+export async function loadManagedCasts(): Promise<Cast[] | null> {
+  return casts;
 }

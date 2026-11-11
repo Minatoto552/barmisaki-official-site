@@ -1,0 +1,96 @@
+/* Misaki page: the night-bar language with a film hero and a photo gallery. Classes use the mk- prefix. */
+.mk {
+  --mk-red: #c4161c;
+  --mk-ink: #111;
+  --mk-dark: #0b0b0b;
+  --mk-muted: #6b6b6b;
+  display: block;
+  min-height: 100vh;
+  background: #fff;
+  color: var(--mk-ink);
+  font-family: var(--font-inter), "Yu Gothic", sans-serif;
+  overflow-x: hidden;
+}
+.mk a { color: inherit; text-decoration: none; }
+.mk :focus-visible { outline: 2px solid var(--mk-red); outline-offset: 3px; }
+.mk-kicker { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .22em; color: var(--mk-red); }
+
+/* Hero with film */
+.mk-hero { display: grid; gap: 28px; padding: clamp(56px, 7vw, 96px) clamp(22px, 5vw, 84px) clamp(64px, 8vw, 110px); background: var(--mk-dark); color: #fff; }
+.mk-hero-copy { display: grid; gap: 12px; }
+.mk-hero-copy .mk-kicker { color: #ff5a60; }
+.mk-hero h1 { margin: 0; font-family: var(--font-instrument), Georgia, serif; font-size: clamp(52px, 7.6vw, 112px); font-weight: 400; line-height: .95; }
+.mk-hero h1 em { display: block; font-size: .42em; font-style: italic; color: var(--mk-red); letter-spacing: .02em; }
+.mk-hero-sub { margin: 0; font-size: 11px; letter-spacing: .2em; color: #bbb; }
+.mk-film { width: min(980px, 100%); border: 1px solid #222; }
+.mk-caption { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 11px; letter-spacing: .16em; color: #bbb; }
+.mk-caption a { color: #fff; border-bottom: 1px solid var(--mk-red); padding-bottom: 3px; }
+.mk-film .ms-film { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.mk-film .ms-film iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Sections */
+.mk-section { padding: clamp(64px, 8vw, 110px) clamp(22px, 5vw, 84px); }
+.mk-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.mk-two h2, .mk-section h2, .mk-thanks h2, .mk-gallery-head h2 { margin: 16px 0 0; font-family: var(--font-instrument), Georgia, serif; font-size: clamp(34px, 4.4vw, 60px); font-weight: 400; line-height: 1.08; }
+.mk-two h2 em, .mk-section h2 em, .mk-thanks h2 em, .mk-gallery-head h2 em { display: block; font-style: italic; color: var(--mk-red); }
+.mk-sign { margin: 22px 0 0; font-family: var(--font-mincho); font-size: 18px; letter-spacing: .08em; }
+.mk-copy { display: grid; gap: 18px; justify-items: start; }
+.mk-copy p { margin: 0; font-size: 14px; line-height: 2.05; color: #333; }
+.mk-facts { display: grid; gap: 0; width: 100%; margin: 6px 0 0; border-top: 1px solid var(--mk-ink); }
+.mk-facts div { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid #ddd; }
+.mk-facts dt { font-size: 10px; font-weight: 700; letter-spacing: .16em; color: var(--mk-muted); padding-top: 3px; }
+.mk-facts dd { margin: 0; font-size: 14px; line-height: 1.7; }
+.mk-facts a { border-bottom: 1px solid var(--mk-red); }
+.mk-link { padding-bottom: 4px; border-bottom: 1px solid var(--mk-red); font-size: 12px; font-weight: 700; letter-spacing: .12em; color: var(--mk-red); }
+.mk-note { margin: 28px 0 0; font-size: 12px; line-height: 1.9; color: var(--mk-muted); }
+.mk-note a { border-bottom: 1px solid currentColor; }
+.mk-lead { margin: 0 0 36px; font-family: var(--font-mincho); font-size: 17px; line-height: 2; color: #444; }
+
+/* Dark feature section */
+.mk-dark { background: var(--mk-dark); color: #fff; }
+.mk-dark .sp-section-head h2 { color: #fff; }
+.mk-dark .sp-section-head p { color: #ff5a60; }
+.mk-dark .mk-lead { color: #cfcfcf; }
+.mk-dark .mk-note { color: #aaa; }
+.mk-dark .mk-note a { color: #fff; }
+
+/* Gallery head */
+.mk-gallery-head { display: grid; gap: 4px; margin-bottom: 40px; }
+.mk-gallery-head .mk-lead { margin: 14px 0 0; }
+
+/* Thanks band */
+.mk-thanks { display: grid; gap: 20px; justify-items: start; padding: clamp(80px, 10vw, 130px) clamp(22px, 5vw, 84px); background: var(--mk-red); color: #fff; }
+.mk-thanks .mk-kicker { color: #fff; opacity: .85; }
+.mk-thanks p { margin: 0; font-family: var(--font-mincho); font-size: 15px; line-height: 2; }
+.mk-thanks .sp-action { background: #fff; color: var(--mk-ink); }
+.mk-thanks .sp-action:hover { background: var(--mk-ink); color: #fff; }
+.mk-thanks .sp-action.is-ghost { background: transparent; color: #fff; border-color: #fff; }
+.mk-thanks .sp-action.is-ghost:hover { background: #fff; color: var(--mk-ink); }
+
+/* Gallery (MisakiMedia gallery mode) */
+.ms-gallery { display: grid; gap: 14px; }
+.ms-gallery-stage { position: relative; display: grid; place-items: center; height: clamp(360px, 60vh, 640px); background: var(--mk-dark); overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; }
+.ms-gallery-stage img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; animation: mk-slide .5s cubic-bezier(.22, 1, .36, 1); }
+.ms-gallery-controls { display: flex; gap: 10px; justify-content: flex-end; }
+.ms-gallery-controls button { width: 48px; height: 48px; border: 1px solid var(--mk-ink); background: transparent; font-size: 18px; cursor: pointer; transition: background .25s ease, color .25s ease; }
+.ms-gallery-controls button:hover { background: var(--mk-red); border-color: var(--mk-red); color: #fff; }
+.ms-thumbnails { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 12px; scrollbar-width: thin; }
+.ms-thumbnails button { flex: 0 0 84px; height: 104px; padding: 0; border: 0; background: #111; cursor: pointer; opacity: .55; transition: opacity .25s ease, outline-color .25s ease; outline: 2px solid transparent; outline-offset: 2px; }
+.ms-thumbnails button:hover { opacity: 1; }
+.ms-thumbnails button[aria-pressed="true"] { opacity: 1; outline-color: var(--mk-red); }
+.ms-thumbnails img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+@keyframes mk-slide { from { opacity: 0; } to { opacity: 1; } }
+
+/* Phone */
+@media (max-width: 760px) {
+  .mk-two { grid-template-columns: 1fr; }
+  .mk-facts div { grid-template-columns: 1fr; gap: 4px; }
+  .ms-gallery-stage { height: 340px; }
+  .ms-thumbnails button { flex-basis: 64px; height: 80px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mk *, .mk *::before, .mk *::after { transition: none !important; animation: none !important; }
+}

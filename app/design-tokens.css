@@ -1,0 +1,30 @@
+:root {
+  --misaki-paper: #fafaf8;
+  --misaki-paper-deep: #f2f0ec;
+  --misaki-ink: #181818;
+  --misaki-muted: #6f6f6f;
+  --misaki-night: #111111;
+  --misaki-wine: #b3202a;
+  --misaki-wine-light: #d03a40;
+  --misaki-line: rgba(24, 24, 24, 0.18);
+  --misaki-max: 1180px;
+  --misaki-radius: 18px;
+  --misaki-ease: cubic-bezier(.22, 1, .36, 1);
+  --misaki-section: clamp(72px, 9vw, 132px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--misaki-paper);
+  color: var(--misaki-ink);
+}
+
+::selection {
+  background: var(--misaki-wine);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

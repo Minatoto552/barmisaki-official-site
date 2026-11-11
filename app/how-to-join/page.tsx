@@ -1,30 +1,21 @@
-import type { Metadata } from 'next';
-import { ArrowUpRight, Clock3, Sparkles } from 'lucide-react';
-import { externalLinks } from '../data';
-import { EditorialHero, EditorialHeading, StatusBadge } from '@/components/editorial';
+import { ContentPage, PageFooter, PageHero, PageNav, SectionHead } from '@/components/new-site/content-page';
+import { links } from '../content-data';
 
-export const metadata: Metadata = { title: 'HOW TO JOIN | BarMisaki', description: 'BarMisakiへの参加方法をご案内します。' };
-const steps = [
-  ['FRIEND REQUEST', 'インスタンスリーダーへ\nフレンド申請', '営業当日のインスタンスリーダーを、Bar Misaki公式Xにてご案内します。\n\n公式Xをご確認のうえ、案内されたインスタンスリーダーへVRChatでフレンド申請をお願いします。'],
-  ['LOTTERY ENTRY', '抽選に応募', '公式Xで案内される抽選システムから応募します。'],
-  ['REQUEST INVITE', '抽選結果を確認', '当選した方は22:40〜22:50に、当日のインスタンスリーダーへRequest Inviteしてください。'],
-];
-const lines = (text: string) => text.split('\n').map((line, index) => <span key={`${line}-${index}`}>{line}{index < text.split('\n').length - 1 ? <br /> : null}</span>);
-export default function HowToJoinPage() {
-  return <main className="editorial-page">
-    <EditorialHero index="03" eyebrow="HOW TO JOIN" word="JOIN US" title={<>BarMisakiへの<em>参加方法</em></>} intro="VRChatイベントが初めての方も、3つのステップでご参加いただけます。" />
-    <section className="editorial-content">
-      <EditorialHeading eyebrow="YOUR FIRST NIGHT" title="3 steps to Misaki." note="ご来店までの流れ" />
-      <ol className="entry-steps">{steps.map(([en, title, text], index) => <li key={en} className="entry-step">
-        <div className="entry-step-top"><span className="editorial-number">0{index + 1}</span><span>{en}</span></div>
-        <h2>{lines(title)}</h2><p>{lines(text)}</p>
-        <div className="entry-step-action">
-          {index === 0 && <a href={externalLinks.officialX} target="_blank" rel="noopener noreferrer" className="editorial-text-link">Xで申請先を確認 <ArrowUpRight size={18} /></a>}
-          {index === 1 && (externalLinks.lotteryUrl ? <a href={externalLinks.lotteryUrl} target="_blank" rel="noreferrer" className="editorial-button">抽選に応募する <ArrowUpRight size={18} /></a> : <div className="editorial-state-note"><StatusBadge state="soon" /><span>現在受付準備中です</span></div>)}
-          {index === 2 && <div className="entry-hours"><Clock3 size={18} /><div><small>OPEN HOURS</small><span>22:50 — 24:00</span></div></div>}
-        </div>
-      </li>)}</ol>
-      <aside className="same-day-entry"><Sparkles size={28} strokeWidth={1} /><div><p className="editorial-kicker">SAME DAY ENTRY</p><h2>当日リクイン枠もあります</h2><p>通常の抽選とは別に当日枠をご用意する場合があります。詳細は公式Xをご確認ください。</p></div><a href={externalLinks.officialX} target="_blank" rel="noreferrer" className="editorial-text-link">公式Xを見る <ArrowUpRight size={18} /></a></aside>
+const steps = [['FRIEND REQUEST', 'インスタンスリーダーへフレンド申請', '営業当日のインスタンスリーダーは公式Xでご案内します。'], ['LOTTERY ENTRY', '抽選に応募', '公式Xで案内される抽選システムから応募します。'], ['REQUEST INVITE', '抽選結果を確認', '当選した方は22:40〜22:50にRequest Inviteしてください。']];
+
+export default function Page() {
+  return <ContentPage>
+    <PageNav />
+    <PageHero index="03" en="JOIN US" ja="参加方法" lead="VRChatイベントが初めての方も、3つのステップでご参加いただけます。" />
+    <section className="sp-section">
+      <SectionHead en="3 steps to Misaki." note="YOUR FIRST NIGHT" />
+      <div className="sp-grid sp-steps">{steps.map((step, i) => <article className={`sp-card${i === 1 ? ' is-dark' : ''}`} key={step[0]}>
+        <small>0{i + 1} / {step[0]}</small><h3>{step[1]}</h3><p>{step[2]}</p>
+        {i === 0 && <a href={links.x}>公式Xを確認 →</a>}
+        {i === 1 && <a href={links.lottery}>抽選ページ →</a>}
+      </article>)}</div>
+      <aside className="sp-note">通常の抽選とは別に当日リクイン枠をご用意する場合があります。詳細は公式Xをご確認ください。</aside>
     </section>
-  </main>;
+    <PageFooter />
+  </ContentPage>;
 }

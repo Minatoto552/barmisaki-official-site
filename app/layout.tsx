@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
-import { Cabin, Instrument_Serif, Inter, Manrope } from 'next/font/google';
 import { SiteFooter, SiteHeader } from '@/components/site-chrome';
+import { NightIntro } from '@/components/night-intro';
+import { MotionDirector } from '@/components/motion-director';
 import './globals.css';
+import './design-tokens.css';
+import './animations.css';
+import './brand-refresh.css';
+import './page-system.css';
+import './title-scale.css';
+import './moon.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ?? 'https://barmisaki-official-site.vercel.app';
-
-const manrope = Manrope({ variable: '--font-manrope', subsets: ['latin'] });
-const cabin = Cabin({ variable: '--font-cabin', subsets: ['latin'] });
-const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
-const instrument = Instrument_Serif({ variable: '--font-instrument', subsets: ['latin'], weight: '400', style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -31,5 +33,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja"><body className={`${manrope.variable} ${cabin.variable} ${inter.variable} ${instrument.variable}`}><SiteHeader /><div className="luxury-side luxury-side-left" aria-hidden="true"># BAR MISAKI　# VRCHAT　# ONE AVATAR</div><div className="luxury-side luxury-side-right" aria-hidden="true">ELEGANT NIGHT　# CAST　# CONVERSATION</div>{children}<SiteFooter /></body></html>;
+  return <html lang="ja" data-intro="1">
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Great+Vibes&family=Shippori+Mincho:wght@500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" />
+    </head>
+    <body><NightIntro /><MotionDirector /><SiteHeader />{children}<SiteFooter /></body>
+  </html>;
 }

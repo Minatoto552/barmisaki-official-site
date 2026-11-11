@@ -2,6 +2,7 @@
 
 import { ArrowRight, ArrowUpRight, Users } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useState } from 'react';
 import { externalLinks } from '@/app/data';
 import { Dialog } from '@base-ui/react/dialog';
@@ -27,14 +28,23 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  if (pathname) return null;
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <header className="site-header">
-        <a href="/" className="site-brand" aria-label="BarMisaki ホーム">
+        <Link href="/" className="site-brand" aria-label="BarMisaki ホーム">
           <img src="/barmisaki-logo.png" alt="BarMisaki" width="96" height="64" />
-        </a>
+          <span className="site-brand-wordmark">Bar Misaki</span>
+        </Link>
+        <nav className="site-desktop-navigation" aria-label="メインナビゲーション">
+          {navigation.map((item) => (
+            <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined}>{item.label}</Link>
+          ))}
+        </nav>
         <div className="site-header-actions">
           <SocialLinks />
+          <Link className="site-join-button" href="/how-to-join">参加方法</Link>
           <Dialog.Trigger className="site-menu-toggle" aria-label="メニューを開く">Menu</Dialog.Trigger>
         </div>
       </header>
@@ -50,9 +60,9 @@ export function SiteHeader() {
         </div>
         <nav className="site-menu-links" aria-label="メインナビゲーション">
           {navigation.map((item) => (
-            <a key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined} onClick={() => setOpen(false)}>
+            <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? 'page' : undefined} onClick={() => setOpen(false)}>
               <span>{item.label}</span><span className="site-menu-arrow"><ArrowRight size={18} /></span>
-            </a>
+            </Link>
           ))}
         </nav>
       </Dialog.Popup>
@@ -71,6 +81,8 @@ function SocialLinks() {
 }
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  if (pathname) return null;
   const partnerLinks = [
     { label: 'VISION TOKYO X', href: externalLinks.visionTokyoX },
     { label: 'VISION TOKYO BOOTH', href: externalLinks.visionTokyoBooth },
@@ -83,7 +95,7 @@ export function SiteFooter() {
   ];
 
   return <footer className="site-footer">
-    <div className="site-footer-main"><a href="/" className="site-footer-brand" aria-label="BarMisaki ホーム"><img src="/barmisaki-logo.png" alt="BarMisaki" width="144" height="96" /><span>VRCHAT BAR EVENT</span></a><nav className="site-footer-navigation" aria-label="フッターナビゲーション">{navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav><div className="site-footer-social"><span>STAY CONNECTED</span><a href={externalLinks.officialX} target="_blank" rel="noreferrer">公式X <ArrowUpRight size={15} /></a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer">VRChatグループ <ArrowUpRight size={15} /></a></div></div>
+    <div className="site-footer-main"><Link href="/" className="site-footer-brand" aria-label="BarMisaki ホーム"><img src="/barmisaki-logo.png" alt="BarMisaki" width="144" height="96" /><span>VRCHAT BAR EVENT</span></Link><nav className="site-footer-navigation" aria-label="フッターナビゲーション">{navigation.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}</nav><div className="site-footer-social"><span>STAY CONNECTED</span><a href={externalLinks.officialX} target="_blank" rel="noreferrer">公式X <ArrowUpRight size={15} /></a><a href={externalLinks.vrcGroup} target="_blank" rel="noreferrer">VRChatグループ <ArrowUpRight size={15} /></a></div></div>
     <div className="site-footer-partner">
       <div>
         <p className="site-footer-label">OFFICIAL AVATAR PARTNER</p>

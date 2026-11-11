@@ -1,0 +1,74 @@
+/* Misaki slideshow: a dark night stage, the whole photo in a soft frame, neighbours peeking out behind. */
+.ms-show { --sh: clamp(440px, 74vh, 760px); display: grid; gap: 18px; outline: none; }
+.ms-stage { position: relative; display: grid; place-items: center; height: var(--sh); padding: 30px 30px 54px; border-radius: 32px; overflow: hidden; isolation: isolate; background: radial-gradient(circle at 18% 8%, #5a0f18, #0b0b0b 68%); cursor: grab; touch-action: pan-y; user-select: none; box-shadow: 0 30px 70px rgba(80, 20, 30, .25); }
+.ms-show:focus-visible .ms-stage { outline: 3px solid #c4161c; outline-offset: 4px; }
+
+/* Blurred copy of the current photo fills the stage, so the sharp photo never needs cropping or black bars */
+.ms-bg { position: absolute; inset: -40px; z-index: -2; background-size: cover; background-position: center; filter: blur(38px) saturate(1.3); opacity: .6; transform: scale(1.1); animation: ms-fade .8s ease both; }
+.ms-stage::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11, 11, 11, .15), rgba(11, 11, 11, .55)); pointer-events: none; }
+
+.ms-sparkles { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.ms-sparkles i { position: absolute; font-style: normal; color: #fff; text-shadow: 0 0 12px rgba(255, 190, 200, .9); font-size: calc(12px + var(--n) * 3px); left: calc(6% + var(--n) * 16%); top: calc(10% + (var(--n) * 37) * 1%); animation: ms-twinkle calc(2.6s + var(--n) * .4s) ease-in-out calc(var(--n) * -.8s) infinite; }
+.ms-sparkles i:nth-child(even) { top: auto; bottom: calc(14% + var(--n) * 4%); }
+
+/* The photo, shown in full */
+.ms-frame { position: relative; z-index: 2; margin: 0; max-width: 100%; max-height: 100%; display: grid; padding: 10px 10px 0; border-radius: 26px; background: #fff; box-shadow: 14px 14px 0 rgba(244, 201, 207, .9), 0 30px 60px rgba(0, 0, 0, .45); transform: rotate(var(--tilt)); animation: ms-pop .7s cubic-bezier(.22, 1, .36, 1) both; }
+.ms-frame img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(var(--sh) - 84px - 56px); border-radius: 18px; object-fit: contain; pointer-events: none; }
+.ms-frame figcaption { padding: 10px 6px 12px; font-family: var(--font-mincho); font-size: 14px; font-weight: 700; text-align: center; color: #111; }
+.ms-frame figcaption em { margin-right: 6px; font-family: var(--font-script); font-style: normal; font-size: 22px; color: #c4161c; vertical-align: -2px; }
+
+/* Neighbouring photos peek out from behind */
+.ms-ghost { position: absolute; z-index: 1; top: 50%; width: clamp(110px, 13vw, 190px); aspect-ratio: 3 / 4; padding: 6px; border: 0; border-radius: 16px; background: #fff; cursor: pointer; opacity: .85; box-shadow: 0 18px 40px rgba(0, 0, 0, .4); transition: transform .45s cubic-bezier(.22, 1, .36, 1), opacity .3s ease; }
+.ms-ghost img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-radius: 11px; }
+.ms-ghost.is-prev { left: 5%; transform: translateY(-50%) rotate(-9deg); }
+.ms-ghost.is-next { right: 5%; transform: translateY(-50%) rotate(9deg); }
+.ms-ghost.is-prev:hover { transform: translateY(-52%) rotate(-5deg) scale(1.06); opacity: 1; }
+.ms-ghost.is-next:hover { transform: translateY(-52%) rotate(5deg) scale(1.06); opacity: 1; }
+
+.ms-count { position: absolute; z-index: 3; top: 22px; left: 28px; font-family: var(--font-instrument); font-size: 30px; color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
+.ms-count small { font-size: 14px; opacity: .7; }
+
+.ms-like { position: absolute; z-index: 3; right: 24px; bottom: 26px; padding: 11px 20px; border: 0; border-radius: 999px; background: #c4161c; color: #fff; font: 700 13px var(--font-inter); letter-spacing: .12em; cursor: pointer; box-shadow: 0 10px 26px rgba(196, 22, 28, .45); transition: transform .2s ease, background .2s ease; }
+.ms-like span { display: inline-block; margin-right: 4px; }
+.ms-like:hover { transform: translateY(-2px) scale(1.05); background: #e0252c; }
+.ms-like:active span { animation: ms-beat .4s ease; }
+.ms-heart { position: absolute; left: 50%; top: 0; font-style: normal; font-size: 20px; color: #ff8a97; pointer-events: none; animation: ms-rise 1.5s ease-out forwards; }
+
+.ms-progress { position: absolute; z-index: 3; left: 0; bottom: 0; height: 4px; width: 100%; transform-origin: left; background: linear-gradient(90deg, #ff8a97, #c4161c); animation: ms-progress linear forwards; }
+.ms-show.is-paused .ms-progress { animation-play-state: paused; }
+
+/* Controls and avatar chips */
+.ms-controls { display: flex; gap: 10px; justify-content: flex-end; }
+.ms-controls button { width: 48px; height: 48px; border: 1px solid #111; border-radius: 50%; background: #fff; font-size: 18px; cursor: pointer; transition: background .25s ease, color .25s ease, transform .25s ease; }
+.ms-controls button:hover { background: #c4161c; border-color: #c4161c; color: #fff; transform: translateY(-2px); }
+.ms-chips { display: flex; gap: 12px; overflow-x: auto; padding: 14px 6px 16px; scrollbar-width: thin; scrollbar-color: #c4161c transparent; }
+.ms-chips button { flex: 0 0 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #111; cursor: pointer; overflow: hidden; opacity: .6; outline: 3px solid transparent; outline-offset: 2px; transition: opacity .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1), outline-color .25s ease; }
+.ms-chips button:hover { opacity: 1; transform: translateY(-3px); }
+.ms-chips button[aria-pressed="true"] { opacity: 1; transform: scale(1.16); outline-color: #c4161c; box-shadow: 0 10px 22px rgba(196, 22, 28, .35); }
+.ms-chips img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
+
+.mk-script { margin: 0 0 -8px; font-family: var(--font-script); font-size: clamp(34px, 3.6vw, 52px); line-height: 1; color: #c4161c; transform: rotate(-4deg); transform-origin: left; }
+
+@keyframes ms-fade { from { opacity: 0; } }
+@keyframes ms-pop { from { opacity: 0; transform: rotate(calc(var(--tilt) * -4)) scale(.9) translateY(18px); } }
+@keyframes ms-twinkle { 0%, 100% { opacity: .15; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.1) rotate(25deg); } }
+@keyframes ms-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ms-rise { from { opacity: 1; transform: translate(-50%, 0) scale(.6); } to { opacity: 0; transform: translate(calc(-50% + var(--x)), -90px) rotate(var(--r)) scale(1.3); } }
+@keyframes ms-beat { 50% { transform: scale(1.5); } }
+
+@media (max-width: 900px) {
+  .ms-ghost { display: none; }
+}
+@media (max-width: 760px) {
+  .ms-show { --sh: clamp(420px, 70vh, 560px); }
+  .ms-stage { padding: 20px 16px 48px; border-radius: 24px; }
+  .ms-frame { padding: 8px 8px 0; border-radius: 20px; box-shadow: 9px 9px 0 rgba(244, 201, 207, .9), 0 20px 40px rgba(0, 0, 0, .4); }
+  .ms-frame img { border-radius: 13px; max-height: calc(var(--sh) - 68px - 50px); }
+  .ms-count { top: 14px; left: 18px; font-size: 24px; }
+  .ms-like { right: 14px; bottom: 16px; padding: 9px 16px; }
+  .ms-chips button { flex-basis: 54px; height: 54px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ms-show *, .ms-show *::before, .ms-show *::after { animation: none !important; transition: none !important; }
+  .ms-sparkles { display: none; }
+}

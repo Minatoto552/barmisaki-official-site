@@ -1,0 +1,42 @@
+/* CAST page, second pass: fanned cast cards in the hero, softer frames, script accents. */
+.nc { --nc-blush: #fcf0f1; --nc-rose: #f4c9cf; }
+.nc-hero h1 { font-weight: 500; }
+.nc-script { font-family: var(--font-script); font-style: normal; font-size: clamp(36px, 3.6vw, 56px); transform: rotate(-4deg); transform-origin: left; }
+.nc-hero-art.nc-fan { clip-path: none; overflow: visible; display: grid; place-items: center; }
+.nc-fan .nc-hero-moon { top: 6%; left: 10%; z-index: 0; animation: nc-float 6s ease-in-out infinite alternate; }
+.nc-fan-card { position: absolute; left: 50%; top: 50%; width: clamp(140px, 13vw, 210px); padding: 9px 9px 12px; background: #fff; box-shadow: 0 20px 44px rgba(0, 0, 0, .4); transform-origin: 50% 120%; --deg: calc((var(--i) - 2) * 9deg); transform: translate(-50%, -50%) rotate(var(--deg)) translateX(calc((var(--i) - 2) * 74px)); animation: nc-fan-in 1s calc(var(--i) * .08s + .2s) cubic-bezier(.22, 1, .36, 1) both; transition: transform .45s cubic-bezier(.22, 1, .36, 1); z-index: calc(5 - (var(--i) - 2) * (var(--i) - 2)); }
+.nc-fan-card img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 22%; }
+.nc-fan-card small { display: block; margin-top: 8px; font-family: var(--font-mincho); font-size: 12px; font-weight: 700; text-align: center; color: #111; }
+.nc-fan:hover .nc-fan-card { transform: translate(-50%, -54%) rotate(calc(var(--deg) * 1.35)) translateX(calc((var(--i) - 2) * 96px)); }
+.nc-fan-heart { position: absolute; right: 8%; bottom: 8%; z-index: 6; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--nc-red); color: #fff; font-size: 26px; box-shadow: 0 12px 26px rgba(196, 22, 28, .4); animation: nc-beat 1.6s ease-in-out infinite; }
+
+/* Profile */
+.nc-visual { border-radius: 220px 220px 24px 24px; box-shadow: 18px 18px 0 var(--nc-rose); }
+.nc-info h2 { font-family: var(--font-mincho); font-weight: 700; }
+.nc-facts { border-top: 0; gap: 10px; }
+.nc-facts div { padding: 14px 16px; border-radius: 16px; background: var(--nc-blush); }
+.nc-message { border-radius: 0 20px 20px 20px; }
+.nc-controls button { border-radius: 999px; }
+.nc-change { border-radius: 999px; }
+.nc .nc-sns-inline { padding: 8px 14px; border: 0; border-radius: 999px; background: #111; color: #fff; }
+
+/* Directory */
+.nc .nc-thumb-media { border-radius: 16px; }
+.nc-thumb.is-selected .nc-thumb-media { outline-offset: 4px; }
+.nc-tabs button { border-radius: 999px; }
+.nc-card { border-radius: 24px; overflow: hidden; }
+.nc-card-media { border-radius: 16px; overflow: hidden; }
+
+@keyframes nc-fan-in { from { opacity: 0; transform: translate(-50%, -30%) rotate(0deg); } }
+@keyframes nc-float { from { translate: 0 0; } to { translate: 0 -14px; } }
+@keyframes nc-beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.14); } 30% { transform: scale(1); } 45% { transform: scale(1.08); } }
+
+@media (max-width: 760px) {
+  .nc-fan { height: 330px; }
+  .nc-fan-card { width: 112px; transform: translate(-50%, -50%) rotate(var(--deg)) translateX(calc((var(--i) - 2) * 40px)); }
+  .nc-fan-heart { width: 48px; height: 48px; font-size: 20px; }
+  .nc-visual { border-radius: 160px 160px 18px 18px; box-shadow: 10px 10px 0 var(--nc-rose); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nc-fan-card, .nc-fan-heart, .nc-fan .nc-hero-moon { animation: none !important; transition: none !important; }
+}
