@@ -1,12 +1,12 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './cast-deck.css';
 
 export type DeckMember = { id: string; name: string; card: string; generation: string };
 
 const AUTO_MS = 3400;   // time each cast member stays in front
 const REACH_PHONE = 3;  // cards shown on each side of the front one
-const REACH_WIDE = 4;   // on wide screens the fan opens further
+const REACH_WIDE = 2;   // on wide screens fewer, bigger cards
 const MAX_CARDS = 12;
 
 // Cast cards on an arc. Every card keeps its own element and only changes a position number,
@@ -18,7 +18,6 @@ export function CastDeck({ members, onOpen }: { members: DeckMember[]; onOpen: (
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [reach, setReach] = useState(REACH_PHONE);
-  const stage = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -40,24 +39,14 @@ export function CastDeck({ members, onOpen }: { members: DeckMember[]; onOpen: (
   const step = (by: number) => setFront((value) => (value + by + total) % total);
   const current = list[front];
 
-  // Pointer position tilts the whole deck a little, like holding it in your hand.
-  const tilt = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse' || reduced) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    stage.current?.style.setProperty('--px', String(((event.clientX - box.left) / box.width - 0.5) * 2));
-    stage.current?.style.setProperty('--py', String(((event.clientY - box.top) / box.height - 0.5) * 2));
-  };
-  const rest = () => { stage.current?.style.setProperty('--px', '0'); stage.current?.style.setProperty('--py', '0'); };
-
   return <div className="nc-deck-wrap" role="group" aria-roledescription="カルーセル" aria-label="キャストのカード"
-    onPointerMove={tilt} onPointerLeave={() => { rest(); setPaused(false); }} onPointerEnter={() => setPaused(true)}
     onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
     <span className="nc-hero-moon" aria-hidden="true" />
     <span className="nc-deck-ring" aria-hidden="true" />
     <span className="nc-deck-ring is-second" aria-hidden="true" />
     <div className="nc-deck-petals" aria-hidden="true">{[0, 1, 2, 3, 4, 5, 6, 7].map((n) => <i key={n} style={{ '--n': n } as React.CSSProperties}>{n % 3 === 0 ? '♥' : '✦'}</i>)}</div>
 
-    <div className="nc-deck" ref={stage}>
+    <div className="nc-deck">
       {list.map((member, index) => {
         let rel = ((index - front) % total + total) % total;
         if (rel > total / 2) rel -= total;
