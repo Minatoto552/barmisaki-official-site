@@ -47,7 +47,7 @@
   animation: nh-art-in 1.4s cubic-bezier(.22, 1, .36, 1) both;
 }
 .nh-hero-art .nh-media { height: 100%; background: var(--nh-dark); }
-.nh-hero-art img { object-fit: cover; object-position: 60% center; }
+.nh-hero-art img { object-fit: cover; object-position: 50% 58%; }
 .nh-hero-art::after {
   content: "";
   position: absolute; inset: 0;

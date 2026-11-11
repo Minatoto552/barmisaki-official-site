@@ -1,5 +1,5 @@
 export function siteImage(label: string): {src: string; alt: string} | undefined {
-  if(label === 'KEY VISUAL') return {src:'/hero/misaki-bar-keyvisual-v4.png',alt:'暖かなBar空間に集まるBarMisakiのキャストたち'};
+  if(label === 'KEY VISUAL') return {src:'/hero/cast-collection-hero.webp',alt:'BarMisakiのキャストたちの顔が並ぶコラージュ'};
   if(label === 'ABOUT VISUAL') return {src:'/atmosphere/interior-01-display.webp',alt:'BarMisakiの店内'};
   if(label === 'MISAKI VISUAL') return {src:'/misaki-gallery/nabechi.webp',alt:'なべち！による海咲アバターの改変例'};
   const gallery = label.match(/^GALLERY (\d+)$/);
