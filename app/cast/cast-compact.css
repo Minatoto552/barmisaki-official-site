@@ -21,3 +21,25 @@
   :root .nc-card { flex: 1 1 240px; }
 }
 :root .nc-facts { grid-template-columns: minmax(96px, .5fr) minmax(0, 1.8fr); }
+
+/* ---- PC: the profile is the main stage, so it gets big and a little tilted ---- */
+@media (min-width: 901px) {
+  :root .nc-stage { grid-template-columns: minmax(380px, 620px) minmax(0, 1fr); max-width: 1480px; gap: clamp(40px, 5vw, 96px); padding: clamp(56px, 6vw, 104px) clamp(32px, 6vw, 120px); }
+  :root .nc-visual { max-width: 620px; transform: rotate(-2.2deg); box-shadow: 22px 22px 0 var(--nc-rose), 0 40px 80px rgba(120, 20, 40, .25); transition: transform .6s cubic-bezier(.22, 1, .36, 1); }
+  :root .nc-visual:hover { transform: rotate(0deg) scale(1.02); }
+  :root .nc-info { gap: clamp(14px, 1.4vw, 22px); }
+  :root .nc-info h2 { font-size: clamp(48px, 5.6vw, 92px); line-height: 1.02; }
+  :root .nc-generation { font-size: 15px; }
+  :root .nc-facts { gap: 14px; }
+  :root .nc-facts div { padding: 18px 22px; border-radius: 20px; }
+  :root .nc-facts dt { font-size: 12px; }
+  :root .nc-facts dd { font-size: clamp(16px, 1.3vw, 20px); }
+  :root .nc-message { padding: 26px 32px; font-size: clamp(18px, 1.5vw, 24px); border-radius: 0 28px 28px 28px; }
+  :root .nc-controls button { padding: 17px 30px; font-size: 14px; }
+  :root .nc-sns-inline { font-size: 14px; padding: 11px 20px; }
+  :root .nc-change { padding: 15px 24px; font-size: 13px; }
+  :root .nc-extras { max-width: 1480px; gap: 28px; }
+  :root .nc-card { flex-basis: 380px; }
+  :root .nc-card.is-dark { flex-basis: 340px; }
+  :root .nc-card h3 { font-size: 22px; }
+}

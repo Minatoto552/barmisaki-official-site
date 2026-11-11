@@ -81,3 +81,9 @@ html[data-intro] body > :not(.ni), html[data-intro] body > :not(.ni) * { animati
   .ni-cat-run { transform: translateX(calc(50vw - var(--cw) / 2)); }
   .ni-skip { opacity: 1; }
 }
+
+/* PC: a bigger, more sweeping fan of cards */
+@media (min-width: 901px) {
+  .ni-cards { --w: clamp(120px, 14.5vw, 280px); }
+  .ni-card { transform: rotate(calc(var(--k) * 6.5deg)) translateY(calc(var(--a) * var(--a) * 1.9vmin)); }
+}

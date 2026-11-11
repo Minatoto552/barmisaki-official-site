@@ -32,6 +32,10 @@ const labelOf = (key: string) => newsCategoryLabels.find(([k]) => k === key)?.[1
 
 function Placeholder({ label, detail, className = '', src, alt }: { label: string; detail?: string; className?: string; src?: string; alt?: string }) {
   const image = src ? { src, alt: alt ?? label } : siteImage(label);
+  if (image && label === 'KEY VISUAL') return <div className={`nh-media ${className}`}><picture>
+    <source media="(min-width: 901px)" srcSet="/hero/cast-collection-wide.webp" />
+    <img src={image.src} alt={image.alt} loading="eager" />
+  </picture></div>;
   if (image) return <div className={`nh-media ${className}`}><img src={image.src} alt={image.alt} loading={label === 'KEY VISUAL' ? 'eager' : 'lazy'} style={{ objectPosition: label === 'CAST IMAGE' ? castImagePosition(image.src) : 'center' }} /></div>;
   return <div className={`nh-media nh-media-empty ${className}`} aria-label={`${label} image placeholder`}>
     <span><b>{label}</b>{detail && <small>{detail}</small>}</span>
