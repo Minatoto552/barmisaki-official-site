@@ -48,8 +48,8 @@ function records(raw: unknown): Record<string, unknown>[] {
 
 // Some news thumbnails were uploaded before the admin console stored URLs, so map them by id.
 const localNewsImages: Record<string, string> = {
-  '2a24e646-1c60-4630-9b4c-73ef6cec4960': '/news/second-generation-introduction.png',
-  'bb4820a6-e6f1-4b4d-a0e4-6ed18f3a898f': '/news/open-today-2026-09-18.png',
+  '2a24e646-1c60-4630-9b4c-73ef6cec4960': '/news/second-generation-introduction.webp',
+  'bb4820a6-e6f1-4b4d-a0e4-6ed18f3a898f': '/news/open-today-2026-09-18.webp',
 };
 
 // Category key and the Japanese label shown on the site (the admin may store either one).
@@ -125,14 +125,16 @@ async function readCollection(name: 'casts' | 'news' | 'albums'): Promise<unknow
   return response.json();
 }
 
-export async function fetchSiteData(): Promise<SiteData> {
-  const [casts, news, albums] = await Promise.all([readCollection('casts'), readCollection('news'), readCollection('albums')]);
-  return { casts: normalizeCasts(casts), news: normalizeNews(news), albums: normalizeAlbums(albums) };
+// Album photos are stored as large inline images, so they are only requested by pages that show them.
+export async function fetchSiteData(withAlbums = false): Promise<SiteData> {
+  const [casts, news, albums] = await Promise.all([readCollection('casts'), readCollection('news'), withAlbums ? readCollection('albums') : null]);
+  return { casts: normalizeCasts(casts), news: normalizeNews(news), albums: withAlbums ? normalizeAlbums(albums) : [] };
 }
 
 // The first load is shared between the intro screen and the page, so the content is requested once.
-let firstLoad: Promise<SiteData> | null = null;
-export function loadSiteData(): Promise<SiteData> {
-  if (!firstLoad) firstLoad = fetchSiteData().catch((error) => { firstLoad = null; throw error; });
-  return firstLoad;
+const firstLoad: Partial<Record<'core' | 'all', Promise<SiteData>>> = {};
+export function loadSiteData(withAlbums = false): Promise<SiteData> {
+  const key = withAlbums ? 'all' : 'core';
+  firstLoad[key] ??= fetchSiteData(withAlbums).catch((error) => { delete firstLoad[key]; throw error; });
+  return firstLoad[key];
 }

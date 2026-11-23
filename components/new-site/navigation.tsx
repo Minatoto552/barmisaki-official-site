@@ -25,7 +25,7 @@ export function SiteNavigation() {
     return () => document.removeEventListener('keydown', escape);
   }, [open]);
   return <header className={`bm-global-header${compact ? ' is-compact' : ''}`}>
-    <a className="bm-global-brand" href="/" aria-label="BarMisaki ホーム"><img className="bm-global-logo" src="/brand/barmisaki-cat-logo.png" width="42" height="42" alt="" />BAR MISAKI</a>
+    <a className="bm-global-brand" href="/" aria-label="BarMisaki ホーム"><img className="bm-global-logo" src="/brand/barmisaki-cat-logo.webp" width="42" height="42" alt="" />BAR MISAKI</a>
     <nav className="bm-global-nav" aria-label="メインナビゲーション">
       {siteNavigation.map(item => <a key={item.href} href={item.href} title={item.title} aria-current={pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
     </nav>

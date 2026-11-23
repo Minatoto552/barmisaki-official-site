@@ -6,7 +6,7 @@ import './subpage-v2.css';
 
 // Each page gets its own photo and a handwritten line in the hero.
 const heroArt: Record<string, { src: string; script: string }> = {
-  NEWS: { src: '/news/second-generation-introduction.png', script: 'Fresh from the bar' },
+  NEWS: { src: '/news/second-generation-introduction.webp', script: 'Fresh from the bar' },
   ALBUM: { src: '/album/latest-album-fallback.jpg', script: 'Our memories' },
   'JOIN US': { src: '/atmosphere/interior-02-display.webp', script: 'Come on in' },
   'OUR TEAM': { src: '/misaki-gallery/kurin.webp', script: 'Join our cast' },
@@ -15,7 +15,7 @@ const heroArt: Record<string, { src: string; script: string }> = {
   SCHEDULE: { src: '/atmosphere/interior-07-display.webp', script: 'When we open' },
   ABOUT: { src: '/atmosphere/interior-01-display.webp', script: 'Our little bar' },
   GALLERY: { src: '/atmosphere/interior-05-display.webp', script: 'Inside the bar' },
-  'PICK UP': { src: '/events/warabare-announcement.png', script: 'Special night' },
+  'PICK UP': { src: '/events/warabare-announcement.webp', script: 'Special night' },
   GUIDE: { src: '/atmosphere/interior-08-display.webp', script: 'First visit' },
 };
 

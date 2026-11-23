@@ -10,6 +10,7 @@ import './page-system.css';
 import './title-scale.css';
 import './moon.css';
 import './rose-soft.css';
+import './dynamic.css';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   ?? 'https://barmisaki-official-site.vercel.app';
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: 'BarMisaki | VRChat Bar Event',
   description: 'キャスト＆スタッフ全員が海咲ちゃん。VRChatで月2回開催するBarイベント「BarMisaki」の公式サイトです。',
-  icons: { icon: '/barmisaki-icon.png' },
+  icons: { icon: '/barmisaki-icon-192.png', apple: '/barmisaki-icon-192.png' },
   openGraph: {
     title: 'BarMisaki | VRChat Bar Event',
     description: 'キャスト＆スタッフ全員が海咲ちゃん。VRChatで過ごす、特別な夜を。',

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SiteNavigation, siteNavigation } from '@/components/new-site/navigation';
 import { siteImage } from './site-images';
 import { castImagePosition } from './cast/cast-images';
+import { cardImage } from './cast/card-image';
 import { useSiteData } from './use-site-data';
 import { newsCategoryLabels, type SiteCast } from './site-data';
 import { links, siteFacts } from './content-data';
@@ -36,7 +37,7 @@ function Placeholder({ label, detail, className = '', src, alt }: { label: strin
     <source media="(min-width: 901px)" srcSet="/hero/cast-collection-wide.webp" />
     <img src={image.src} alt={image.alt} loading="eager" />
   </picture></div>;
-  if (image) return <div className={`nh-media ${className}`}><img src={image.src} alt={image.alt} loading={label === 'KEY VISUAL' ? 'eager' : 'lazy'} style={{ objectPosition: label === 'CAST IMAGE' ? castImagePosition(image.src) : 'center' }} /></div>;
+  if (image) return <div className={`nh-media ${className}`}><img {...(label === 'CAST IMAGE' ? cardImage(image.src, '(min-width: 901px) 30vw, 80vw') : { src: image.src })} alt={image.alt} loading={label === 'KEY VISUAL' ? 'eager' : 'lazy'} style={{ objectPosition: label === 'CAST IMAGE' ? castImagePosition(image.src) : 'center' }} /></div>;
   return <div className={`nh-media nh-media-empty ${className}`} aria-label={`${label} image placeholder`}>
     <span><b>{label}</b>{detail && <small>{detail}</small>}</span>
   </div>;
@@ -61,7 +62,7 @@ function Badge() {
   return <div className="nh-badge" aria-hidden="true">
     <svg viewBox="0 0 200 200"><defs><path id="nh-badge-path" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
       <text><textPath href="#nh-badge-path">BAR MISAKI ✦ VRCHAT ✦ NIGHT ONLY ✦ COCKTAIL &amp; TALK ✦ </textPath></text></svg>
-    <img src="/brand/barmisaki-cat-logo.png" alt="" />
+    <img src="/brand/barmisaki-cat-logo.webp" alt="" />
   </div>;
 }
 
@@ -219,7 +220,7 @@ export default function Home() {
       </div>
       <div className="nh-pickup-frame">
         <span className="nh-pickup-stamp" aria-hidden="true">ENTRY!</span>
-        <Placeholder label="EVENT VISUAL" className="nh-pickup-visual" src="/events/warabare-announcement.png" alt="BarMisaki 我々のバレー、我バレー 出場決定！" />
+        <Placeholder label="EVENT VISUAL" className="nh-pickup-visual" src="/events/warabare-announcement.webp" alt="BarMisaki 我々のバレー、我バレー 出場決定！" />
       </div>
     </section>
 
@@ -254,7 +255,7 @@ export default function Home() {
     </section>
 
     <section className="nh-follow" id="official-x">
-      <img className="nh-follow-logo" src="/brand/barmisaki-cat-logo.png" alt="" />
+      <img className="nh-follow-logo" src="/brand/barmisaki-cat-logo.webp" alt="" />
       <p className="nh-script" aria-hidden="true">See you tonight</p>
       <p className="nh-kicker">FOLLOW US</p>
       <a href={links.x} target="_blank" rel="noreferrer">@BarMisaki_VRC <span aria-hidden="true">→</span></a>

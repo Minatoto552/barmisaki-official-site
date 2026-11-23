@@ -8,7 +8,7 @@ import './album-v2.css';
 const dot = (date: string) => date.replace(/-/g, '.');
 
 export default function AlbumView() {
-  const { data, status } = useSiteData();
+  const { data, status } = useSiteData({ albums: true });
   const photos = useMemo(() => data?.albums ?? [], [data]);
   const [selected, setSelected] = useState<SitePhoto | null>(null);
 

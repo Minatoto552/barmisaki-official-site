@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import './cast-deck.css';
+import { cardImage } from './card-image';
 
 export type DeckMember = { id: string; name: string; card: string; generation: string };
 
@@ -58,7 +59,7 @@ export function CastDeck({ members, onOpen }: { members: DeckMember[]; onOpen: (
           aria-label={rel === 0 ? `${member.name}のプロフィールを見る` : `${member.name}を前に出す`}
           onClick={() => (rel === 0 ? onOpen(member.id) : setFront(index))}>
           <span className="nc-deck-photo">
-            <img src={member.card} alt="" draggable={false} />
+            <img {...cardImage(member.card, '(min-width: 901px) 560px, 200px')} alt="" draggable={false} loading={abs <= reach ? 'eager' : 'lazy'} />
             <small>{member.name}</small>
           </span>
         </button>;

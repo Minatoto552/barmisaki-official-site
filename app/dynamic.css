@@ -1,0 +1,24 @@
+/* Site-wide finishing layer: a little more life on the subpage heroes and buttons, and cheaper rendering for long pages. Loaded last. */
+
+/* Subpage hero photos drift slowly and catch a passing light. "scale" is used so it does not fight the scroll parallax on the image. */
+.sp-hero-art { overflow: hidden; }
+:root .sp-hero-art img { animation: dy-drift 18s ease-in-out infinite alternate; }
+@supports (animation-timeline: scroll()) {
+  :root .sp-hero-art img { animation: mo-parallax linear both, dy-drift 18s ease-in-out infinite alternate; animation-timeline: scroll(root), auto; animation-range: 0 120vh, normal; }
+}
+.sp-hero-art::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(105deg, transparent 35%, rgba(255, 220, 226, .22) 50%, transparent 65%); transform: translateX(-110%); animation: dy-sweep 7s ease-in-out 1.6s infinite; pointer-events: none; }
+@keyframes dy-drift { from { scale: 1; } to { scale: 1.08; } }
+@keyframes dy-sweep { 0%, 55% { transform: translateX(-110%); } 85%, 100% { transform: translateX(110%); } }
+
+/* Main buttons: a shine runs across on hover */
+.sp-action, .nh-hero-cta, .nc-deck-info button, .nh-next-go { position: relative; overflow: hidden; isolation: isolate; }
+.sp-action::after, .nh-hero-cta::after, .nc-deck-info button::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%); transform: translateX(-120%); transition: transform .7s cubic-bezier(.22, 1, .36, 1); pointer-events: none; }
+.sp-action:hover::after, .nh-hero-cta:hover::after, .nc-deck-info button:hover::after { transform: translateX(120%); }
+
+/* Long pages: sections far below the screen are not laid out until they come near */
+.sp-section, .nc-selector, .nc-next, .sp-footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root .sp-hero-art img { animation: none; }
+  .sp-hero-art::before { display: none; }
+}

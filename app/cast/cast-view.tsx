@@ -7,8 +7,11 @@ import './night-cast.css';
 import './night-cast-v2.css';
 import { CastDeck } from './cast-deck';
 import './cast-compact.css';
+import { cardImage, profileImage } from './card-image';
 
 type Member = SiteCast & { no: string; nameEn: string };
+
+const thumbSizes = '(min-width: 901px) 260px, 45vw';
 
 export default function CastView() {
   const { data, status } = useSiteData();
@@ -72,7 +75,7 @@ export default function CastView() {
     <section className="nc-stage" id="profile" aria-label="選択中のキャスト">
       <div className="nc-visual">
         {photo.full
-          ? <img key={photo.full} src={photo.full} alt={`${current.name} メインビジュアル`} />
+          ? <img key={photo.full} {...profileImage(photo.card, photo.full)} alt={`${current.name} メインビジュアル`} />
           : <div className="nc-visual-empty"><span>MAIN CAST IMAGE</span><small>IMAGE TO BE ADDED</small></div>}
         <span className="nc-visual-no">{current.no}</span>
         {current.photos.length > 1 && <button type="button" className="nc-change" onClick={() => setPhotoIndex((photoIndex + 1) % current.photos.length)}>CHANGE <span>{(photoIndex % current.photos.length) + 1} / {current.photos.length}</span></button>}
@@ -109,7 +112,7 @@ export default function CastView() {
         const isSelected = member.id === current.id;
         return <button type="button" key={member.id} className={`nc-thumb${isSelected ? ' is-selected' : ''}`} aria-label={`${member.name}のプロフィールを見る`} aria-pressed={isSelected} onClick={() => choose(member.id)}>
           <span className="nc-thumb-media">{member.card
-            ? <><img className="nc-thumb-main" src={member.card} alt="" loading="lazy" />{member.photos[1] && <img className="nc-thumb-alt" src={member.photos[1].card} alt="" loading="lazy" />}</>
+            ? <><img className="nc-thumb-main" {...cardImage(member.card, thumbSizes)} alt="" loading="lazy" />{member.photos[1] && <img className="nc-thumb-alt" {...cardImage(member.photos[1].card, thumbSizes)} alt="" loading="lazy" />}</>
             : <span className="nc-thumb-empty">{member.role} IMAGE</span>}<span className="nc-thumb-action">{isSelected ? '選択中' : 'PROFILE'} <span aria-hidden="true">↗</span></span></span>
           <span className="nc-thumb-meta"><b>{member.no}</b><span>{member.name}<small>{member.generation}</small></span></span>
         </button>;
@@ -121,7 +124,7 @@ export default function CastView() {
       <article className="nc-card">
         <p className="nc-kicker">GALLERY PREVIEW</p>
         {current.card
-          ? <div className="nc-card-media"><img src={current.card} alt={`${current.name} ギャラリー`} loading="lazy" /></div>
+          ? <div className="nc-card-media"><img {...cardImage(current.card, '380px')} alt={`${current.name} ギャラリー`} loading="lazy" /></div>
           : <div className="nc-card-media nc-card-empty"><span>GALLERY IMAGE</span></div>}
         <h3>{current.name}</h3>
       </article>

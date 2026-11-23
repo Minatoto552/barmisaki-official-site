@@ -175,7 +175,7 @@ export function NightIntro() {
             </span></span>
           </span>;
         })}
-        <span className="ni-mark"><img src="/brand/barmisaki-cat-logo.png" alt="" /></span>
+        <span className="ni-mark"><img src="/brand/barmisaki-cat-logo.webp" alt="" /></span>
       </div>
       <p className="ni-caption">
         <small className="ni-loading">NOW LOADING</small>
