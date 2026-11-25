@@ -1,20 +1,12 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/site-data/casts.json",
-      "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/casts.json"
-    },
-    {
-      "source": "/site-data/snapshot.json",
-      "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content.json"
-    },
-    {
-      "source": "/site-data/news.json",
-      "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/news.json"
-    },
-    {
-      "source": "/site-data/albums.json",
-      "destination": "https://barmisaki-admin-50ff9-default-rtdb.firebaseio.com/admin/content/albums.json"
+      "src": "/.*",
+      "status": 404,
+      "headers": {
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex, nofollow"
+      }
     }
   ]
 }
